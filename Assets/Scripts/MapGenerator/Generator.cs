@@ -29,15 +29,27 @@ namespace EscapeGuan.MapGenerator
 
         public int Size;
 
+        public Transform BorderT, BorderR, BorderB, BorderL;
+        public float BorderWidth;
+
         private void Start()
         {
-            ((GridGraph)Path.graphs[0]).SetDimensions(Size, Size, 1);
-            ((GridGraph)Path.graphs[0]).Scan();
             StartCoroutine(GenerationTask());
         }
 
         public IEnumerator GenerationTask()
         {
+            ((GridGraph)Path.graphs[0]).SetDimensions(Size, Size, 1);
+            ((GridGraph)Path.graphs[0]).Scan();
+            BorderT.localScale = new(Size + BorderWidth * 2, BorderWidth);
+            BorderR.localScale = new(BorderWidth, Size + BorderWidth * 2);
+            BorderB.localScale = BorderT.localScale;
+            BorderL.localScale = BorderR.localScale;
+            BorderT.position = new(0, Size / 2 + BorderWidth / 2);
+            BorderR.position = new(Size / 2 + BorderWidth / 2, 0);
+            BorderB.position = new(0, -(Size / 2 + BorderWidth / 2));
+            BorderL.position = new(-(Size / 2 + BorderWidth / 2), 0);
+
             Stopwatch sw = Stopwatch.StartNew();
             Tile[] t = new Tile[Size * Size];
             Array.Fill(t, GrassTile);
