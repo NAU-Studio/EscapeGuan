@@ -88,10 +88,11 @@ namespace EscapeGuan.MapGenerator
                     for (int x = (int)roadHead.x - (int)scale / 2; x < roadHead.x + scale / 2; x++)
                         roadTiles.Add(new(x, y));
                 }
-                if (roadHead.x > Size / 2 | roadHead.y > Size / 2)
-                    break;
+                if (roadHead.x > Size / 2 | roadHead.y > Size / 2 | roadHead.x < -Size / 2 | roadHead.y < -Size / 2)
+                    roadHead = new(0, 0);
             }
             roadTiles.Distinct();
+            roadTiles.RemoveWhere((x) => { return x.x >= Size / 2 | x.x <= -Size / 2 | x.y >= Size / 2 | x.y <= -Size / 2; });
             float ax = roadTiles.Count / 100f - 1;
             int skip = 0;
             IEnumerator<Vector3Int> enu = roadTiles.GetEnumerator();
