@@ -6,6 +6,8 @@ using System.Linq;
 
 using EscapeGuan.UI.MapGenerator;
 
+using Pathfinding;
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -20,6 +22,7 @@ namespace EscapeGuan.MapGenerator
         public Tilemap Map;
         public Tile GrassTile;
         public BorderTileSet RoadTile;
+        public AstarPath Path;
         public int RoadLength, BranchLength;
 
         public float StepRotateDeg = 5, StartScale = 5;
@@ -28,13 +31,14 @@ namespace EscapeGuan.MapGenerator
 
         private void Start()
         {
+            ((GridGraph)Path.graphs[0]).SetDimensions(Size, Size, 1);
+            ((GridGraph)Path.graphs[0]).Scan();
             StartCoroutine(GenerationTask());
         }
 
         public IEnumerator GenerationTask()
         {
             Stopwatch sw = Stopwatch.StartNew();
-            yield return new WaitForEndOfFrame();
             Tile[] t = new Tile[Size * Size];
             Array.Fill(t, GrassTile);
             HashSet<Vector3Int> v = new();
@@ -44,7 +48,7 @@ namespace EscapeGuan.MapGenerator
                     v.Add(new(i, j));
             }
             Map.SetTiles(v.ToArray(), t);
-            yield return new WaitForEndOfFrame();
+            yield return null;
             // Road generation
             Vector2 roadHead = new(0, 0);
             float dir = 0;
@@ -100,10 +104,10 @@ namespace EscapeGuan.MapGenerator
             {
                 if (skip >= 100)
                 {
-                    C++; // 2x wtf
+                    C++;
                     skip = 0;
                     Waiter.SetValue(C / ax * 100, C, ax);
-                    yield return new WaitForEndOfFrame();
+                    yield return null;
                 }
                 Vector3Int tile = enu.Current;
                 Tile final = RoadTile.Full;
