@@ -69,7 +69,7 @@ namespace EscapeGuan.Entities.Enemy
                 Destinator.position = targetAttack.transform.position;
                 targetPath.maxSpeed = AttackSpeed;
                 if (Vector3.Distance(transform.position, targetAttack.transform.position) < AttackRange && CanAttack)
-                    targetAttack.Attack(AttackValue, (targetAttack.transform.position - transform.position).normalized, Knockback);
+                    Attack(targetAttack);
             }, AttackInterval);
 
             IEnumerator rest()
