@@ -35,8 +35,7 @@ public class DamageText : MonoBehaviour
             transform.DOScale(1, .4f).SetEase(Ease.OutCubic);
             yield return new WaitForSecondsRealtime(1.6f);
             GetComponent<TMP_Text>().DOFade(0, .3f);
-            yield return new WaitForSecondsRealtime(.5f);
-            Destroy(gameObject);
+            Destroy(gameObject, 1);
         }
         StartCoroutine(MoveAnimation());
     }
