@@ -35,6 +35,8 @@ namespace EscapeGuan.Entities.Player
         public List<TileBase> SlowdownTiles;
         public float SlowdownMultiplier;
 
+        public Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
+
         public override void Start()
         {
             base.Start();
@@ -143,14 +145,14 @@ namespace EscapeGuan.Entities.Player
             else
                 CurrentSpeed = 1;
 
-            float final = Speed * CurrentSpeed * Time.fixedDeltaTime;
+            float final = Speed * CurrentSpeed;
             if (SlowdownTiles.Contains(Map.GetTile(new(RoundToInt(transform.position.x) - 1, RoundToInt(transform.position.y) - 1))))
                 final *= SlowdownMultiplier;
 
             if (Abs(h) > 0 && Abs(v) > 0)
-                transform.Translate(h * Sqrt2In2 * final, v * Sqrt2In2 * final, 0);
+                Rigidbody.AddForce(new(h * Sqrt2In2 * final, v * Sqrt2In2 * final));
             else
-                transform.Translate(h * final, v * final, 0);
+                Rigidbody.AddForce(new(h * final, v * final));
 
             Camera.position = Vector3.Lerp(Camera.position, new(transform.position.x, transform.position.y, Camera.position.z), CameraFollowSpeed * Time.fixedDeltaTime);
             #endregion
