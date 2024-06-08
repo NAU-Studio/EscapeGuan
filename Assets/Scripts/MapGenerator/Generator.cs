@@ -60,7 +60,7 @@ namespace EscapeGuan.MapGenerator
                     v.Add(new(i, j));
             }
             Map.SetTiles(v.ToArray(), t);
-            yield return null;
+            yield return new WaitForEndOfFrame();
             // Road generation
             Vector2 roadHead = new(0, 0);
             float dir = 0;
@@ -85,6 +85,7 @@ namespace EscapeGuan.MapGenerator
                 if (roadHead.x > Size / 2 | roadHead.y > Size / 2)
                     break;
             }
+            yield return new WaitForEndOfFrame();
             roadHead = new(0, 0);
             dir = 180;
             scale = StartScale;
@@ -109,18 +110,11 @@ namespace EscapeGuan.MapGenerator
             }
             roadTiles.Distinct();
             roadTiles.RemoveWhere((x) => { return x.x >= Size / 2 | x.x <= -Size / 2 | x.y >= Size / 2 | x.y <= -Size / 2; });
-            float ax = roadTiles.Count / 100f - 1;
-            int skip = 0;
+            yield return new WaitForEndOfFrame();
             IEnumerator<Vector3Int> enu = roadTiles.GetEnumerator();
-            for (int i = 0, C = 0; i < roadTiles.Count && enu.MoveNext(); i++, skip++)
+            TileChangeData[] tcds = new TileChangeData[roadTiles.Count];
+            for (int i = 0; i < roadTiles.Count && enu.MoveNext(); i++)
             {
-                if (skip >= 100)
-                {
-                    C++;
-                    skip = 0;
-                    Waiter.SetValue(C / ax * 100, C, ax);
-                    yield return null;
-                }
                 Vector3Int tile = enu.Current;
                 Tile final = RoadTile.Full;
                 DirBoolTuple d = new();
@@ -133,7 +127,7 @@ namespace EscapeGuan.MapGenerator
                 if (roadTiles.Contains(tile + Vector3Int.down))
                     d.b = true;
 
-                if (d.Only())
+                if (d.Only(0))
                     final = RoadTile.None;
                 else if (d.Only(DirBoolType.l))
                     final = RoadTile.L;
@@ -144,30 +138,31 @@ namespace EscapeGuan.MapGenerator
                 else if (d.Only(DirBoolType.b))
                     final = RoadTile.B;
 
-                else if (d.Only(DirBoolType.l, DirBoolType.t))
+                else if (d.Only(DirBoolType.l | DirBoolType.t))
                     final = RoadTile.LT;
-                else if (d.Only(DirBoolType.t, DirBoolType.r))
+                else if (d.Only(DirBoolType.t | DirBoolType.r))
                     final = RoadTile.TR;
-                else if (d.Only(DirBoolType.r, DirBoolType.b))
+                else if (d.Only(DirBoolType.r | DirBoolType.b))
                     final = RoadTile.RB;
-                else if (d.Only(DirBoolType.b, DirBoolType.l))
+                else if (d.Only(DirBoolType.b | DirBoolType.l))
                     final = RoadTile.BL;
 
-                else if (d.Only(DirBoolType.l, DirBoolType.t, DirBoolType.r))
+                else if (d.Only(DirBoolType.l | DirBoolType.t | DirBoolType.r))
                     final = RoadTile.LTR;
-                else if (d.Only(DirBoolType.t, DirBoolType.r, DirBoolType.b))
+                else if (d.Only(DirBoolType.t | DirBoolType.r | DirBoolType.b))
                     final = RoadTile.TRB;
-                else if (d.Only(DirBoolType.r, DirBoolType.b, DirBoolType.l))
+                else if (d.Only(DirBoolType.r | DirBoolType.b | DirBoolType.l))
                     final = RoadTile.RBL;
-                else if (d.Only(DirBoolType.b, DirBoolType.l, DirBoolType.t))
+                else if (d.Only(DirBoolType.b | DirBoolType.l | DirBoolType.t))
                     final = RoadTile.BLT;
 
-                else if (d.Only(DirBoolType.l, DirBoolType.r))
+                else if (d.Only(DirBoolType.l | DirBoolType.r))
                     final = RoadTile.LR;
-                else if (d.Only(DirBoolType.t, DirBoolType.b))
+                else if (d.Only(DirBoolType.t | DirBoolType.b))
                     final = RoadTile.TB;
-                Map.SetTile(tile, final);
+                tcds[i] = new(enu.Current, final, Color.white, Map.GetTransformMatrix(enu.Current));
             }
+            Map.SetTiles(tcds, true);
             sw.Stop();
             Waiter.SetElapsed(Size * Size, (float)sw.Elapsed.TotalSeconds);
             yield return new WaitForSecondsRealtime(1);
@@ -217,18 +212,15 @@ namespace EscapeGuan.MapGenerator
     {
         public bool t, r, b, l;
 
-        public bool Only(params DirBoolType[] dc)
+        public bool Only(DirBoolType dc)
         {
-            return !((t ^ dc.Contains(DirBoolType.t)) |
-                (r ^ dc.Contains(DirBoolType.r)) |
-                (b ^ dc.Contains(DirBoolType.b)) |
-                (l ^ dc.Contains(DirBoolType.l)));
+            return (byte)((t ? 0b1 : 0b0) | (r ? 0b10 : 0b0) | (b ? 0b100 : 0b0) | (l ? 0b1000 : 0b0)) == (byte)dc;
         }
     }
 
     public enum DirBoolType : byte
     {
-        t, r, b, l
+        t = 0b1, r = 0b10, b = 0b100, l = 0b1000
     }
 
     [Serializable]
