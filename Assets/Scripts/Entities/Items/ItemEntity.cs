@@ -1,5 +1,3 @@
-using System;
-
 namespace EscapeGuan.Entities.Items
 {
     public class ItemEntity : Entity
@@ -24,7 +22,7 @@ namespace EscapeGuan.Entities.Items
 
         public override void PickItem(ItemEntity sender)
         {
-            throw new Exception("Item cannot pick item.");
+            throw new EntityCannotPickupException(EntityId);
         }
     }
 }

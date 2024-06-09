@@ -152,7 +152,7 @@ namespace EscapeGuan.Entities.Enemy
 
         public override void PickItem(ItemEntity sender)
         {
-            throw new NotImplementedException();
+            throw new EntityCannotPickupException();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 using EscapeGuan.Entities.Items;
 
@@ -85,7 +86,7 @@ namespace EscapeGuan.Entities
         public virtual void Damage(float amount)
         {
             HealthPoint -= GetDamageAmount(amount);
-            DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * UnityEngine.Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
+            DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
             dtx.Value = GetDamageAmount(amount);
             dtx.gameObject.SetActive(true);
 
@@ -95,13 +96,14 @@ namespace EscapeGuan.Entities
 
         public virtual void Kill()
         {
+            GameManager.Main.EntityPool.Remove(EntityId);
             Destroy(gameObject);
         }
 
         public virtual void Health(float amount)
         {
             HealthPoint += amount * RecieveHealthMultiplier;
-            DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * UnityEngine.Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
+            DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
             dtx.Value = amount;
             dtx.gameObject.SetActive(true);
         }
@@ -178,4 +180,15 @@ namespace EscapeGuan.Entities
             get => this[IndexOfName(n)];
         }
     }
+}
+
+
+[Serializable]
+public class EntityCannotPickupException : Exception
+{
+    public EntityCannotPickupException() { }
+    public EntityCannotPickupException(int id) : base(id.ToString()) { }
+    protected EntityCannotPickupException(
+      SerializationInfo info,
+      StreamingContext context) : base(info, context) { }
 }
