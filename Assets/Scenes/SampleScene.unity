@@ -820,8 +820,6 @@ MonoBehaviour:
   StaminaRestoreDelay: 1
   CameraFollowSpeed: 5
   Camera: {fileID: 519420032}
-  HealthBar: {fileID: 1417158271}
-  StaminaBar: {fileID: 342864405}
   StaminaBarHideable: {fileID: 878458204}
   Map: {fileID: 587148108}
   SlowdownTiles:
@@ -2099,7 +2097,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999684
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2834,6 +2832,7 @@ MonoBehaviour:
   State: 0
   Stamina: 0
   AttackTimer: 0
+  DamageMultiplier: 1
   Attacking: 0
 --- !u!50 &804682824
 Rigidbody2D:
@@ -3265,6 +3264,7 @@ GameObject:
   - component: {fileID: 878458202}
   - component: {fileID: 878458201}
   - component: {fileID: 878458204}
+  - component: {fileID: 878458205}
   m_Layer: 5
   m_Name: Stamina Bar
   m_TagString: Untagged
@@ -3357,6 +3357,23 @@ MonoBehaviour:
   Transition: 0.5
   ShowAlpha: 0.5
   Hided: 1
+--- !u!114 &878458205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878458199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e980f0a73196b49bea638c0cce5b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsSlicedFillImage: 0
+  AttributeName: Stamina
+  MaxAttributeName: MaxStamina
+  Image_SF: {fileID: 0}
+  Image_UNT: {fileID: 342864405}
 --- !u!1 &883771799
 GameObject:
   m_ObjectHideFlags: 0
@@ -3835,7 +3852,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000043858967}
+  m_AnchoredPosition: {x: 0, y: -0.000006146377}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -4491,6 +4508,7 @@ GameObject:
   - component: {fileID: 1383235242}
   - component: {fileID: 1383235244}
   - component: {fileID: 1383235243}
+  - component: {fileID: 1383235245}
   m_Layer: 5
   m_Name: Health Bar
   m_TagString: Untagged
@@ -4557,6 +4575,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383235241}
   m_CullTransparentMesh: 1
+--- !u!114 &1383235245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383235241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e980f0a73196b49bea638c0cce5b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsSlicedFillImage: 1
+  AttributeName: HealthPoint
+  MaxAttributeName: MaxHealthPoint
+  Image_SF: {fileID: 1417158271}
+  Image_UNT: {fileID: 0}
 --- !u!1 &1415077393
 GameObject:
   m_ObjectHideFlags: 0

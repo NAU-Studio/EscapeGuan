@@ -27,8 +27,6 @@ namespace EscapeGuan.Entities.Player
         public float StaminaRestoreDelay;
         public float CameraFollowSpeed;
         public Transform Camera;
-        public SlicedFilledImage HealthBar;
-        public Image StaminaBar;
         public HideableUI StaminaBarHideable;
 
         public Tilemap Map;
@@ -161,9 +159,6 @@ namespace EscapeGuan.Entities.Player
 
         private void Update()
         {
-            HealthBar.fillAmount = HealthPoint / MaxHealthPoint;
-            StaminaBar.fillAmount = Stamina / MaxStamina;
-
             #region Movement Control
             if (Input.GetKeyDown(KeyCode.LeftShift) && RunStaminaCostable)
                 Running = true;

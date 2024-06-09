@@ -124,7 +124,7 @@ namespace EscapeGuan.Entities
 
         public AttributeList Attributes = new();
 
-        public virtual T GetAttribute<T>(string name, T value)
+        public virtual T GetAttribute<T>(string name)
         {
             foreach (Attribute attre in Attributes)
             {
