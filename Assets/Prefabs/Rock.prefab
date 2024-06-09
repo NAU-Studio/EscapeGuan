@@ -174,9 +174,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthPoint: 0
   MaxHealthPoint: 0
-  AttackValue: 10
+  AttackValue: 64
   CriticalMultiplier: 1.5
-  CriticalRate: 0.6
+  CriticalRate: 0.5
   Knockback: 1
   RecieveHealthMultiplier: 1
   SendHealthValue: 1
@@ -185,7 +185,7 @@ MonoBehaviour:
   Drag: 0.5
   EntityId: 0
   Breakable: 0
-  BreakForce: 120
+  BreakForce: 100
   ParticleTemplate: {fileID: 7286129427934840388, guid: 97ce61ad3c10a80478b092ce10d07346, type: 3}
 --- !u!1 &5950452258804142075
 GameObject:
