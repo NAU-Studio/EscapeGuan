@@ -5,6 +5,8 @@ using EscapeGuan.Entities.Items;
 
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 namespace EscapeGuan.Entities
 {
     public abstract class Entity : MonoBehaviour
@@ -40,7 +42,7 @@ namespace EscapeGuan.Entities
 
         public virtual void Start()
         {
-            EntityId = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+            EntityId = Random.Range(int.MinValue, int.MaxValue);
             RegisterEntity();
         }
 
@@ -58,10 +60,10 @@ namespace EscapeGuan.Entities
             Attributes.Add(new Attribute<float>("DefenseValue", () => DefenseValue, (x) => DefenseValue = x));
         }
 
-        public void Attack(float amount, Vector2 direction, float knockback)
+        public virtual void Attack(Entity target)
         {
-            Damage(amount / (DefenseValue + 1));
-            KnockbackVelocity += direction * knockback;
+            target.Damage(GetAttackAmount());
+            target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
         }
 
         public virtual void FixedUpdate()
@@ -70,11 +72,21 @@ namespace EscapeGuan.Entities
             transform.Translate(KnockbackVelocity);
         }
 
+        public virtual float GetAttackAmount()
+        {
+            return Random.value < CriticalRate ? AttackValue * CriticalMultiplier : AttackValue;
+        }
+
+        public virtual float GetDamageAmount(float basev)
+        {
+            return 100 * basev / (DefenseValue + 100);
+        }
+
         public virtual void Damage(float amount)
         {
-            HealthPoint -= amount;
+            HealthPoint -= GetDamageAmount(amount);
             DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * UnityEngine.Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
-            dtx.Value = amount;
+            dtx.Value = GetDamageAmount(amount);
             dtx.gameObject.SetActive(true);
 
             if (HealthPoint <= 0)

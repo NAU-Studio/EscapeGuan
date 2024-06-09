@@ -1,4 +1,0 @@
-repository "EscapeGuan@auleiyinunity@cloud.cn"
-  path "/"
-    smartbranch "/main/mapgeneration"        
-     
