@@ -150,9 +150,9 @@ namespace EscapeGuan.Entities.Player
                 final *= SlowdownMultiplier;
 
             if (Abs(h) > 0 && Abs(v) > 0)
-                Rigidbody.AddForce(new(h * Sqrt2In2 * final, v * Sqrt2In2 * final));
+                Rigidbody.velocity = new(h * Sqrt2In2 * final, v * Sqrt2In2 * final);
             else
-                Rigidbody.AddForce(new(h * final, v * final));
+                Rigidbody.velocity = new(h * final, v * final);
 
             Camera.position = Vector3.Lerp(Camera.position, new(transform.position.x, transform.position.y, Camera.position.z), CameraFollowSpeed * Time.fixedDeltaTime);
             #endregion
