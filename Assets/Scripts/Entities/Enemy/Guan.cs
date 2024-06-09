@@ -84,11 +84,14 @@ namespace EscapeGuan.Entities.Enemy
         public override void FixedUpdate()
         {
             if (targetAttack != null && Vector3.Distance(transform.position, targetAttack.transform.position) > LoseDistance)
+            {
+                EmotionManager.ChangeEmotion(GuanEmotion.LoseTarget);
                 targetAttack = null;
+            }
+
             if (targetAttack == null)
             {
                 State = Status.Wander;
-                EmotionManager.ChangeEmotion(GuanEmotion.LoseTarget);
                 Destinator.position = transform.position;
             }
             if (targetAttack != null)
