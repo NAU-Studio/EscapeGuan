@@ -8,6 +8,8 @@ public abstract class PropEntity : Entity
     public bool Breakable;
     public float BreakForce;
 
+    public override bool GuanAttackable => false;
+
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.rigidbody.velocity.magnitude * collision.rigidbody.mass >= BreakForce)
