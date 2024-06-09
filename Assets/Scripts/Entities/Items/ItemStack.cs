@@ -35,18 +35,18 @@ namespace EscapeGuan.Entities.Items
             return go.GetComponent<ItemEntity>();
         }
 
-        public ItemEntity CreateEntity(GameObject ItemTemplate, Vector3 Position, float Rotation)
+        public ItemEntity CreateEntity(Vector3 Position)
         {
-            GameObject go = Object.Instantiate(ItemTemplate, Position, Quaternion.Euler(0, 0, Rotation));
+            GameObject go = Object.Instantiate(GameManager.Templates["item"], Position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
             go.GetComponent<ItemEntity>().item = this;
             go.GetComponent<SpriteRenderer>().sprite = Base.Icon;
             return go.GetComponent<ItemEntity>();
         }
 
-        internal ItemStack(Item b, ItemStackOptions o)
+        internal ItemStack(Item b)
         {
             Base = b;
-            Options = o;
+            Options = new(1);
         }
     }
 

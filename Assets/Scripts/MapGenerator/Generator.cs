@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using EscapeGuan.Entities.Items;
+using EscapeGuan.Registries;
 using EscapeGuan.UI.MapGenerator;
 
 using Pathfinding;
@@ -39,7 +41,11 @@ namespace EscapeGuan.MapGenerator
 
         [InspectorLabel("Rocks")]
         public GameObject RockTemplate;
-        public int MinRockCount, MaxRockCount;
+        public int MinRocksCount, MaxRocksCount;
+
+        [InspectorLabel("Bottles")]
+        public int MinBottlesCount;
+        public int MaxBottlesCount;
 
         private void Start()
         {
@@ -190,10 +196,18 @@ namespace EscapeGuan.MapGenerator
             yield return null;
             
             // Rocks
-            for (int _ = 0; _ < Random.Range(MinRockCount, MaxRockCount + 1); _++)
+            for (int _ = 0; _ < Random.Range(MinRocksCount, MaxRocksCount + 1); _++)
             {
                 Vector2 pos = new(Random.Range(-Size / 2, Size / 2), Random.Range(-Size / 2, Size / 2));
-                Instantiate(RockTemplate, position: pos, Quaternion.identity);
+                Instantiate(GameManager.Templates["rock"], position: pos, Quaternion.identity);
+            }
+
+            // Bottles
+            for (int _ = 0; _ < Random.Range(MinBottlesCount, MaxBottlesCount + 1); _++)
+            {
+                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
+                ItemStack ix = ItemRegistry.Main.CreateItemStack("water_bottle");
+                ix.CreateEntity(pos);
             }
 
             sw.Stop();

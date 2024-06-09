@@ -185,7 +185,7 @@ MonoBehaviour:
   Drag: 0.5
   EntityId: 0
   Breakable: 0
-  BreakForce: 100
+  BreakForce: 64
   ParticleTemplate: {fileID: 7286129427934840388, guid: 97ce61ad3c10a80478b092ce10d07346, type: 3}
 --- !u!1 &5950452258804142075
 GameObject:

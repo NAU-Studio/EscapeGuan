@@ -19,28 +19,28 @@ namespace EscapeGuan
         public int ControlledEntityId;
         public Dictionary<int, Entity> EntityPool = new();
         public List<int> ItemEntities = new();
-        public GameObject ItemTemplate;
         public static GameManager Main = new();
 
         public static Dictionary<string, Sprite> ImageResources = new();
+
+        public static Dictionary<string, GameObject> Templates = new();
 
         private void Start()
         {
             Main = this;
 
+            // 一切都是为了mod和可持续的发展 T_T
+            #region Initialize Resources
             ImageResources.Add("water_bottle", AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Items/water_bottle_item.png"));
+            #endregion
 
-            #region Initialize items
+            #region Initialize Item Registry
             ItemRegistry.Main.RegisterObject("water_bottle", new("蓝标矿泉水", "TEST", ImageResources["water_bottle"]));
+            #endregion
 
-            ItemStack ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
-            ix.CreateEntity(ItemTemplate, new(-0.19f, -4.22f), 0);
-            ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
-            ix.CreateEntity(ItemTemplate, new(-1.19f, -4.22f), 0);
-            ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
-            ix.CreateEntity(ItemTemplate, new(-0.19f, -3.22f), 0);
-            ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
-            ix.CreateEntity(ItemTemplate, new(-1.19f, -3.22f), 0);
+            #region Initialize Templates
+            Templates.Add("item", AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Item.prefab"));
+            Templates.Add("rock", AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Rock.prefab"));
             #endregion
         }
 
