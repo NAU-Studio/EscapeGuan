@@ -8,6 +8,8 @@ using EscapeGuan.UI.MapGenerator;
 
 using Pathfinding;
 
+using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -18,19 +20,26 @@ namespace EscapeGuan.MapGenerator
     public class Generator : MonoBehaviour
     {
         public GenerationWaiter Waiter;
-
-        public Tilemap Map;
-        public Tile GrassTile;
-        public BorderTileSet RoadTile;
         public AstarPath Path;
-        public int RoadLength, BranchLength;
-
-        public float StepRotateDeg = 5, StartScale = 5;
-
         public int Size;
 
-        public Transform BorderT, BorderR, BorderB, BorderL;
+        [InspectorLabel("Border")]
+        public Transform BorderT;
+        public Transform BorderR, BorderB, BorderL;
         public float BorderWidth;
+
+        [InspectorLabel("Tiles")]
+        public Tilemap Map;
+        public Tile GrassTile;
+
+        [InspectorLabel("Road")]
+        public BorderTileSet RoadTile;
+        public int RoadLength, BranchLength;
+        public float StepRotateDeg = 5, StartScale = 5;
+
+        [InspectorLabel("Rocks")]
+        public GameObject RockTemplate;
+        public int MinRockCount, MaxRockCount;
 
         private void Start()
         {
@@ -44,6 +53,8 @@ namespace EscapeGuan.MapGenerator
             ((GridGraph)Path.graphs[0]).SetDimensions(Size, Size, 1);
             ((GridGraph)Path.graphs[0]).Scan();
             yield return null;
+
+            // Border
             BorderT.localScale = new(Size + BorderWidth * 2, BorderWidth);
             BorderR.localScale = new(BorderWidth, Size + BorderWidth * 2);
             BorderB.localScale = BorderT.localScale;
@@ -53,6 +64,8 @@ namespace EscapeGuan.MapGenerator
             BorderB.position = new(0, -(Size / 2 + BorderWidth / 2));
             BorderL.position = new(-(Size / 2 + BorderWidth / 2), 0);
             yield return null;
+
+            // Base tile
             Tile[] t = new Tile[Size * Size];
             Array.Fill(t, GrassTile);
             HashSet<Vector3Int> v = new();
@@ -63,6 +76,7 @@ namespace EscapeGuan.MapGenerator
             }
             Map.SetTiles(v.ToArray(), t);
             yield return null;
+
             // Road generation
             Vector2 roadHead = new(0, 0);
             float dir = 0;
@@ -173,6 +187,15 @@ namespace EscapeGuan.MapGenerator
                 tcds[i] = new(enu.Current, final, Color.white, Map.GetTransformMatrix(enu.Current));
             }
             Map.SetTiles(tcds, true);
+            yield return null;
+            
+            // Rocks
+            for (int _ = 0; _ < Random.Range(MinRockCount, MaxRockCount + 1); _++)
+            {
+                Vector2 pos = new(Random.Range(-Size / 2, Size / 2), Random.Range(-Size / 2, Size / 2));
+                Instantiate(RockTemplate, position: pos, Quaternion.identity);
+            }
+
             sw.Stop();
             Waiter.SetElapsed(Size * Size, (float)sw.Elapsed.TotalSeconds);
             yield return new WaitForSecondsRealtime(1);
