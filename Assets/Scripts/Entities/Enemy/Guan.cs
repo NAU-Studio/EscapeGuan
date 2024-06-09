@@ -20,7 +20,7 @@ namespace EscapeGuan.Entities.Enemy
         public Transform Destinator;
 
         public float NoticeDistance, LoseDistance, MaxWanderDistance, AttackRange,
-            WanderInterval, AttackInterval, WanderSpeed, AttackSpeed, RestDuration, RestInterval;
+            WanderInterval, AttackInterval, WanderSpeed, AttackSpeed, Stamina, MaxStamina, AttackStaminaCost, StaminaRestore;
 
         [Header("Bottle")]
         public float ThrowBottleInterval;
@@ -30,7 +30,7 @@ namespace EscapeGuan.Entities.Enemy
         {
             Wander,
             Attack,
-            Rest
+            Rest 
         }
 
         public GuanEmotionManager EmotionManager;
@@ -68,35 +68,10 @@ namespace EscapeGuan.Entities.Enemy
                 if (Vector3.Distance(transform.position, targetAttack.transform.position) < AttackRange && CanAttack)
                     Attack(targetAttack);
             }, AttackInterval);
-
-            IEnumerator rest()
-            {
-                EmotionManager.ChangeEmotion(GuanEmotion.Rest);
-                Status prev = State;
-                State = Status.Rest;
-                Destinator.position = transform.position;
-                yield return new WaitForSeconds(RestDuration);
-                State = prev;
-                GameManager.IntervalAction(this, () => State == Status.Attack, rest, AttackInterval);
-            }
         }
 
         public override void FixedUpdate()
         {
-            if (targetAttack != null && Vector3.Distance(transform.position, targetAttack.transform.position) > LoseDistance)
-            {
-                EmotionManager.ChangeEmotion(GuanEmotion.LoseTarget);
-                targetAttack = null;
-            }
-
-            if (targetAttack == null)
-            {
-                State = Status.Wander;
-                Destinator.position = transform.position;
-            }
-            if (targetAttack != null)
-                Destinator.position = targetAttack.transform.position;
-            base.FixedUpdate();
             Transform nearest = null;
             float nd = float.MaxValue;
             foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool.Where(
@@ -109,13 +84,55 @@ namespace EscapeGuan.Entities.Enemy
                 }
             }
             if (nearest == null)
-                return;
+                goto SkipNearest;
             if (State == Status.Wander)
             {
                 State = Status.Attack;
                 EmotionManager.ChangeEmotion(GuanEmotion.FindTarget);
                 targetAttack = nearest.GetComponent<Entity>();
             }
+
+            SkipNearest:
+
+            if (targetAttack != null && Vector3.Distance(transform.position, targetAttack.transform.position) > LoseDistance)
+            {
+                EmotionManager.ChangeEmotion(GuanEmotion.LoseTarget);
+                targetAttack = null;
+            }
+
+            if (targetAttack == null)
+            {
+                State = Status.Wander;
+                Destinator.position = transform.position;
+            }
+            if (targetAttack != null && State == Status.Attack)
+                Destinator.position = targetAttack.transform.position;
+
+            #region Rest
+            if (State == Status.Attack)
+            {
+                Stamina -= AttackStaminaCost * Time.fixedDeltaTime;
+
+                if (Stamina <= 0)
+                {
+                    Destinator.position = transform.position;
+                    State = Status.Rest;
+                    EmotionManager.ChangeEmotion(GuanEmotion.Rest);
+                }
+            }
+            if (State != Status.Attack)
+            {
+                if (Stamina < MaxStamina)
+                    Stamina += StaminaRestore * Time.fixedDeltaTime;
+                else
+                    Stamina = MaxStamina;
+
+                if (State == Status.Rest && Stamina >= MaxStamina - Random.Range(0, MaxStamina / 5))
+                    State = Status.Attack;
+            }
+            #endregion
+
+            base.FixedUpdate();
         }
 
         private void OnDrawGizmos()
