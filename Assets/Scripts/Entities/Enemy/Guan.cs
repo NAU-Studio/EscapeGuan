@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using EscapeGuan.Entities.Items;
 
@@ -66,7 +66,6 @@ namespace EscapeGuan.Entities.Enemy
             // Attack
             GameManager.IntervalAction(this, () => State == Status.Attack, () =>
             {
-                Destinator.position = targetAttack.transform.position;
                 targetPath.maxSpeed = AttackSpeed;
                 if (Vector3.Distance(transform.position, targetAttack.transform.position) < AttackRange && CanAttack)
                     Attack(targetAttack);
@@ -86,54 +85,53 @@ namespace EscapeGuan.Entities.Enemy
 
         public override void FixedUpdate()
         {
-            (float v, Transform t)? minDist = null;
-            foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool)
-            {
-                if (!e.Value.GuanAttackable)
-                    continue;
-                Transform tr = e.Value.transform;
-                float dist = Vector3.Distance(transform.position, tr.position);
-                minDist = (Mathf.Min(dist), tr);
-            }
-            if (minDist == null)
-                return;
-
-            (float v, Transform t) = minDist.Value;
-            if (v < NoticeDistance && State == Status.Wander)
-            {
-                State = Status.Attack;
-                EmotionManager.ChangeEmotion(GuanEmotion.FindTarget);
-                targetAttack = t.GetComponent<Entity>();
-            }
-            if (v > LoseDistance && State == Status.Attack)
+            if (targetAttack != null && Vector3.Distance(transform.position, targetAttack.transform.position) > LoseDistance)
             {
                 State = Status.Wander;
                 EmotionManager.ChangeEmotion(GuanEmotion.LoseTarget);
                 Destinator.position = transform.position;
+                targetAttack = null;
             }
-
+            if (targetAttack != null)
+                Destinator.position = targetAttack.transform.position;
             base.FixedUpdate();
+            Transform nearest = null;
+            float nd = float.MaxValue;
+            foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool.Where(
+                (x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) < NoticeDistance))
+            {
+                if (Vector3.Distance(transform.position, e.Value.transform.position) < nd)
+                {
+                    nd = Vector3.Distance(transform.position, e.Value.transform.position);
+                    nearest = e.Value.transform;
+                }
+            }
+            if (nearest == null)
+                return;
+            if (State == Status.Wander)
+            {
+                State = Status.Attack;
+                EmotionManager.ChangeEmotion(GuanEmotion.FindTarget);
+                targetAttack = nearest.GetComponent<Entity>();
+            }
         }
 
         private void OnDrawGizmos()
         {
             Color rc = Gizmos.color;
             if (GameManager.Main != null)
-            foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool)
+            foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool.Where(
+                (x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) < NoticeDistance))
             {
-                if (!e.Value.GuanAttackable)
-                    continue;
-                if (e.Value.IsDestroyed())
-                    continue;
                 Transform tr = e.Value.transform;
-                (float v, Transform t) = (Vector3.Distance(transform.position, tr.position), tr);
-                if (v < NoticeDistance)
+                float d = Vector3.Distance(transform.position, tr.position);
+                if (d < NoticeDistance)
                     Gizmos.color = Color.red;
-                else if (v > LoseDistance)
+                else if (d > LoseDistance)
                     Gizmos.color = Color.green;
                 else
                     Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(transform.position, t.position);
+                Gizmos.DrawLine(transform.position, tr.position);
             }
             Gizmos.color = new(.5f, 0, 0);
             Gizmos.DrawWireSphere(transform.position, AttackRange);

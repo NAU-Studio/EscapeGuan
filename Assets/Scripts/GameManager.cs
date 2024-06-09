@@ -7,6 +7,8 @@ using EscapeGuan.Entities;
 using EscapeGuan.Entities.Items;
 using EscapeGuan.Registries;
 
+using Unity.VisualScripting;
+
 using UnityEditor;
 
 using UnityEngine;
@@ -42,6 +44,17 @@ namespace EscapeGuan
             Templates.Add("item", AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Item.prefab"));
             Templates.Add("rock", AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Rock.prefab"));
             #endregion
+        }
+
+        private void Update()
+        {
+            foreach (KeyValuePair<int, Entity> e in EntityPool.Where((x) => x.Value.IsDestroyed()))
+            {
+                EntityPool.Remove(e.Key);
+                int a = ItemEntities.IndexOf(e.Key);
+                if (a >= 0)
+                    ItemEntities.Remove(a);
+            }
         }
 
         public static void Pause()
