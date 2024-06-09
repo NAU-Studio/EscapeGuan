@@ -39,6 +39,8 @@ namespace EscapeGuan.Entities
 
         public List<ItemStack> Inventory = new();
 
+        public Action OnKill = () => { };
+
         public virtual bool GuanAttackable => true;
 
         public virtual void Start()
@@ -63,7 +65,7 @@ namespace EscapeGuan.Entities
 
         public virtual void Attack(Entity target)
         {
-            target.Damage(GetAttackAmount());
+            target.Damage(GetAttackAmount(), this);
             target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
         }
 
@@ -83,7 +85,18 @@ namespace EscapeGuan.Entities
             return 100 * basev / (DefenseValue + 100);
         }
 
-        public virtual void Damage(float amount)
+        protected virtual void Damage(float amount)
+        {
+            HealthPoint -= GetDamageAmount(amount);
+            DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
+            dtx.Value = GetDamageAmount(amount);
+            dtx.gameObject.SetActive(true);
+
+            if (HealthPoint <= 0)
+                Kill();
+        }
+
+        public virtual void Damage(float amount, Entity sender)
         {
             HealthPoint -= GetDamageAmount(amount);
             DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
@@ -98,6 +111,7 @@ namespace EscapeGuan.Entities
         {
             GameManager.Main.EntityPool.Remove(EntityId);
             Destroy(gameObject);
+            OnKill();
         }
 
         public virtual void Health(float amount)

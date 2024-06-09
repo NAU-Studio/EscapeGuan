@@ -6,8 +6,6 @@ using EscapeGuan.Entities.Items;
 
 using Pathfinding;
 
-using Unity.VisualScripting;
-
 using UnityEngine;
 
 using Random = UnityEngine.Random;
@@ -86,11 +84,12 @@ namespace EscapeGuan.Entities.Enemy
         public override void FixedUpdate()
         {
             if (targetAttack != null && Vector3.Distance(transform.position, targetAttack.transform.position) > LoseDistance)
+                targetAttack = null;
+            if (targetAttack == null)
             {
                 State = Status.Wander;
                 EmotionManager.ChangeEmotion(GuanEmotion.LoseTarget);
                 Destinator.position = transform.position;
-                targetAttack = null;
             }
             if (targetAttack != null)
                 Destinator.position = targetAttack.transform.position;
