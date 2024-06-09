@@ -11,6 +11,7 @@ using Sprites = UnityEngine.Sprites;
 
 namespace EscapeGuan.UI
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(SlicedFilledImage)), CanEditMultipleObjects]
     public class SlicedFilledImageEditor : Editor
     {
@@ -35,6 +36,7 @@ namespace EscapeGuan.UI
             serializedObject.ApplyModifiedProperties();
         }
     }
+#endif
 
     [RequireComponent(typeof(CanvasRenderer)), AddComponentMenu("UI/Sliced Filled Image", 11)]
     public class SlicedFilledImage : MaskableGraphic, ISerializationCallbackReceiver, ILayoutElement, ICanvasRaycastFilter
@@ -181,7 +183,9 @@ namespace EscapeGuan.UI
 
                 if (activeSprite && activeSprite.associatedAlphaSplitTexture != null)
                 {
+#if UNITY_EDITOR
                     if (EditorApplication.isPlaying)
+#endif
                         return Image.defaultETC1GraphicMaterial;
                 }
 
@@ -210,13 +214,13 @@ namespace EscapeGuan.UI
             if (m_Tracked)
                 UnTrackImage();
         }
-
+#if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
             m_PixelsPerUnitMultiplier = Mathf.Max(0.01f, m_PixelsPerUnitMultiplier);
         }
-
+#endif
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             if (activeSprite == null)
