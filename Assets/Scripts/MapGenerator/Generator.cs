@@ -39,8 +39,11 @@ namespace EscapeGuan.MapGenerator
 
         public IEnumerator GenerationTask()
         {
+            Stopwatch sw = Stopwatch.StartNew();
+            yield return null;
             ((GridGraph)Path.graphs[0]).SetDimensions(Size, Size, 1);
             ((GridGraph)Path.graphs[0]).Scan();
+            yield return null;
             BorderT.localScale = new(Size + BorderWidth * 2, BorderWidth);
             BorderR.localScale = new(BorderWidth, Size + BorderWidth * 2);
             BorderB.localScale = BorderT.localScale;
@@ -49,8 +52,7 @@ namespace EscapeGuan.MapGenerator
             BorderR.position = new(Size / 2 + BorderWidth / 2, 0);
             BorderB.position = new(0, -(Size / 2 + BorderWidth / 2));
             BorderL.position = new(-(Size / 2 + BorderWidth / 2), 0);
-
-            Stopwatch sw = Stopwatch.StartNew();
+            yield return null;
             Tile[] t = new Tile[Size * Size];
             Array.Fill(t, GrassTile);
             HashSet<Vector3Int> v = new();
@@ -60,7 +62,7 @@ namespace EscapeGuan.MapGenerator
                     v.Add(new(i, j));
             }
             Map.SetTiles(v.ToArray(), t);
-            yield return new WaitForEndOfFrame();
+            yield return null;
             // Road generation
             Vector2 roadHead = new(0, 0);
             float dir = 0;
@@ -82,10 +84,14 @@ namespace EscapeGuan.MapGenerator
                     for (int x = (int)roadHead.x - (int)scale / 2; x < roadHead.x + scale / 2; x++)
                         roadTiles.Add(new(x, y));
                 }
-                if (roadHead.x > Size / 2 | roadHead.y > Size / 2)
-                    break;
+                if (roadHead.x > Size / 2 | roadHead.y > Size / 2 | roadHead.x < -Size / 2 | roadHead.y < -Size / 2)
+                {
+                    roadHead = new(0, 0);
+                    dir += Random.Range(135, 225);
+                    yield return null;
+                }
             }
-            yield return new WaitForEndOfFrame();
+            yield return null;
             roadHead = new(0, 0);
             dir = 180;
             scale = StartScale;
@@ -106,11 +112,15 @@ namespace EscapeGuan.MapGenerator
                         roadTiles.Add(new(x, y));
                 }
                 if (roadHead.x > Size / 2 | roadHead.y > Size / 2 | roadHead.x < -Size / 2 | roadHead.y < -Size / 2)
+                {
                     roadHead = new(0, 0);
+                    dir += Random.Range(135, 225);
+                    yield return null;
+                }
             }
             roadTiles.Distinct();
             roadTiles.RemoveWhere((x) => { return x.x >= Size / 2 | x.x <= -Size / 2 | x.y >= Size / 2 | x.y <= -Size / 2; });
-            yield return new WaitForEndOfFrame();
+            yield return null;
             IEnumerator<Vector3Int> enu = roadTiles.GetEnumerator();
             TileChangeData[] tcds = new TileChangeData[roadTiles.Count];
             for (int i = 0; i < roadTiles.Count && enu.MoveNext(); i++)
