@@ -4,12 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using EscapeGuan.Entities;
-using EscapeGuan.Entities.Items;
 using EscapeGuan.Registries;
 
 using Unity.VisualScripting;
-
-using UnityEditor;
 
 using UnityEngine;
 
@@ -33,7 +30,7 @@ namespace EscapeGuan
 
             // 一切都是为了mod和可持续的发展 T_T
             #region Initialize Resources
-            ImageResources.Add("water_bottle", AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Items/water_bottle_item.png"));
+            ImageResources.Add("water_bottle", Resources.Load<Sprite>("Sprites/Items/water_bottle_item"));
             #endregion
 
             #region Initialize Item Registry
@@ -41,8 +38,8 @@ namespace EscapeGuan
             #endregion
 
             #region Initialize Templates
-            Templates.Add("item", AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Item.prefab"));
-            Templates.Add("rock", AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Rock.prefab"));
+            Templates.Add("item", Resources.Load<GameObject>("Prefabs/Item"));
+            Templates.Add("rock", Resources.Load<GameObject>("Prefabs/Rock"));
             #endregion
         }
 
