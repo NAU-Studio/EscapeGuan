@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using EscapeGuan.Entities.Items;
@@ -36,7 +37,7 @@ namespace EscapeGuan.Entities
         public float Drag = .5f;
         public int EntityId;
 
-        public List<ItemStack> Inventory = new();
+        public Dictionary<int, ItemStack> Inventory = new();
 
         public virtual bool GuanAttackable => true;
 

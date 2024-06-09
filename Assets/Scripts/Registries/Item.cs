@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using EscapeGuan.Entities;
+using EscapeGuan.Entities.Items;
+
+using UnityEngine;
 
 namespace EscapeGuan.Registries
 {
@@ -12,6 +15,11 @@ namespace EscapeGuan.Registries
             Name = name;
             Description = description;
             Icon = icon;
+        }
+
+        public virtual void Use(ItemStack sender, Entity from)
+        {
+
         }
     }
 }

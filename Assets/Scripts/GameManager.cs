@@ -31,7 +31,7 @@ namespace EscapeGuan
             ImageResources.Add("water_bottle", AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Items/water_bottle_item.png"));
 
             #region Initialize items
-            ItemRegistry.Main.RegisterObject("water_bottle", new("蓝标矿泉水", "TEST", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("water_bottle", new TestBottleItem("蓝标矿泉水", "TEST", ImageResources["water_bottle"]));
 
             ItemStack ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
             ix.CreateEntity(ItemTemplate, new(-0.19f, -4.22f), 0);

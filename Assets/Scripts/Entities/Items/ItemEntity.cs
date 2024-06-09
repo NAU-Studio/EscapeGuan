@@ -16,7 +16,7 @@ namespace EscapeGuan.Entities.Items
 
         public void Pickup(Entity e)
         {
-            e.Inventory.Add(item);
+            e.Inventory.Add(1, item);
             GameManager.Main.ItemEntities.Remove(EntityId);
             e.PickItem(this);
             Kill();

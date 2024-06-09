@@ -9,7 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class RockProp : Entity
+public class RockProp : MonoBehaviour
 {
     public BoxCollider2D PathfindingObstacle;
     public ObstaclePropData Data { get; private set; }

@@ -56,6 +56,7 @@ namespace EscapeGuan.Entities.Player
         public float ItemPickupRange = 1;
         public List<int> NearItems = new();
         public ItemPickupList List;
+        public QuickInventoryShower QuickInventory;
 
         #region Item Pickup Actions
         public void RemoveNear(int v)
@@ -66,6 +67,7 @@ namespace EscapeGuan.Entities.Player
 
         public override void PickItem(ItemEntity sender)
         {
+            QuickInventory.Add(sender.item);
             RemoveNear(sender.EntityId);
         }
         #endregion
