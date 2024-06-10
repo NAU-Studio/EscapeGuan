@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 
 namespace EscapeGuan.Entities.Enemy
 {
-    [RequireComponent(typeof(AIDestinationSetter), typeof(AIPath))]
+    [RequireComponent(typeof(AIDestinationSetter), typeof(AIPath), typeof(SpriteRenderer))]
     public class Guan : Entity
     {
         [Header("Guan Attributes")]
@@ -41,8 +41,14 @@ namespace EscapeGuan.Entities.Enemy
 
         public override bool GuanAttackable => false;
 
-        private AIDestinationSetter targetDestinationSetter;
-        private AIPath targetPath;
+        [Header("Sprites")]
+        public Sprite Front, Right, Back, Left;
+
+        public override int InventoryLength => 9;
+
+        private AIDestinationSetter targetDestinationSetter => GetComponent<AIDestinationSetter>();
+        private AIPath targetPath => GetComponent<AIPath>();
+        private SpriteRenderer sprite => GetComponent<SpriteRenderer>();
         private Entity targetAttack;
 
         [SerializeField, ReadOnly]
@@ -55,8 +61,6 @@ namespace EscapeGuan.Entities.Enemy
             Stamina = MaxStamina;
 
             base.Start();
-            targetDestinationSetter = GetComponent<AIDestinationSetter>();
-            targetPath = GetComponent<AIPath>();
             targetDestinationSetter.target = Destinator;
             targetPath.maxSpeed = WanderSpeed;
             // Wander
@@ -153,6 +157,29 @@ namespace EscapeGuan.Entities.Enemy
                         AttackTimer = AttackDelay;
                     }
                 }
+            }
+            #endregion
+
+            #region Sprite
+            Vector2 v = targetPath.velocity;
+            float dir = Mathf.Rad2Deg * Mathf.Atan(-(v.y / v.x));
+            if (v.x > 0)
+            {
+                if (dir > -45 && dir < 45)
+                    sprite.sprite = Right;
+                if (dir > 45)
+                    sprite.sprite = Front;
+                if (dir < -45)
+                    sprite.sprite = Back;
+            }
+            if (v.x < 0)
+            {
+                if (dir > -45 && dir < 45)
+                    sprite.sprite = Left;
+                if (dir > 45)
+                    sprite.sprite = Back;
+                if (dir < -45)
+                    sprite.sprite = Front;
             }
             #endregion
             base.FixedUpdate();

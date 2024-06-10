@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -37,9 +38,11 @@ namespace EscapeGuan.Entities
         public float Drag = .5f;
         public int EntityId;
 
-        public List<ItemStack> Inventory = new();
+        public ItemStackCollection Inventory = new();
 
         public Action OnKill = () => { };
+
+        public abstract int InventoryLength { get; }
 
         public virtual bool GuanAttackable => true;
 
@@ -47,6 +50,13 @@ namespace EscapeGuan.Entities
         {
             EntityId = Random.Range(int.MinValue, int.MaxValue);
             RegisterEntity();
+
+            try
+            {
+                for (int _ = 0; _ < InventoryLength; _++)
+                    Inventory.Add(null);
+            }
+            catch { }
         }
 
         public virtual void RegisterEntity()
@@ -124,7 +134,7 @@ namespace EscapeGuan.Entities
 
         public AttributeList Attributes = new();
 
-        public virtual T GetAttribute<T>(string name, T value)
+        public virtual T GetAttribute<T>(string name)
         {
             foreach (Attribute attre in Attributes)
             {

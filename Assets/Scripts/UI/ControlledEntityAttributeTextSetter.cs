@@ -30,11 +30,7 @@ namespace EscapeGuan.UI
 
         public object Get()
         {
-            return ((Delegate)GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId].Attributes[Name]
-                    .GetType()
-                    .GetField("Getter")
-                    .GetValue(GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId].Attributes[Name]))
-                    .DynamicInvoke();
+            return GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId].GetAttribute<float>(Name);
         }
 
         public override string ToString()

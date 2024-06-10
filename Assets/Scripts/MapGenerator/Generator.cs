@@ -25,25 +25,25 @@ namespace EscapeGuan.MapGenerator
         public AstarPath Path;
         public int Size;
 
-        [InspectorLabel("Border")]
+        [Header("Border")]
         public Transform BorderT;
         public Transform BorderR, BorderB, BorderL;
         public float BorderWidth;
 
-        [InspectorLabel("Tiles")]
+        [Header("Tiles")]
         public Tilemap Map;
         public Tile GrassTile;
 
-        [InspectorLabel("Road")]
+        [Header("Road")]
         public BorderTileSet RoadTile;
         public int RoadLength, BranchLength;
         public float StepRotateDeg = 5, StartScale = 5;
 
-        [InspectorLabel("Rocks")]
+        [Header("Rocks")]
         public GameObject RockTemplate;
         public int MinRocksCount, MaxRocksCount;
 
-        [InspectorLabel("Bottles")]
+        [Header("Bottles")]
         public int MinBottlesCount;
         public int MaxBottlesCount;
 
