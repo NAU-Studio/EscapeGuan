@@ -393,7 +393,6 @@ GameObject:
   m_Component:
   - component: {fileID: 305224370}
   - component: {fileID: 305224372}
-  - component: {fileID: 305224374}
   - component: {fileID: 305224371}
   - component: {fileID: 305224373}
   m_Layer: 5
@@ -490,29 +489,6 @@ MonoBehaviour:
     [mdist=5]\r\n- Usage:      Get the id of near entity in range mdist.\r\n- Parameters:
     mdist: Range."
   InstructionSet: []
---- !u!223 &305224374
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305224369}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 1
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -1351706613
-  m_SortingOrder: 32767
-  m_TargetDisplay: 0
 --- !u!1 &342864403
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,10 +594,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 566885813}
-  - {fileID: 305224370}
   - {fileID: 723166137}
   - {fileID: 878458200}
   - {fileID: 1383235242}
+  - {fileID: 305224370}
   m_Father: {fileID: 488572049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2097,7 +2073,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99397886
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3852,7 +3828,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000006146377}
+  m_AnchoredPosition: {x: 0, y: 0.000025602041}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
