@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using EscapeGuan.Entities;
-using EscapeGuan.Entities.Items;
 using EscapeGuan.Registries;
 
-using UnityEditor;
+using Unity.VisualScripting;
 
 using UnityEngine;
 
@@ -19,29 +18,40 @@ namespace EscapeGuan
         public int ControlledEntityId;
         public Dictionary<int, Entity> EntityPool = new();
         public List<int> ItemEntities = new();
-        public GameObject ItemTemplate;
         public static GameManager Main = new();
 
         public static Dictionary<string, Sprite> ImageResources = new();
+
+        public static Dictionary<string, GameObject> Templates = new();
 
         private void Start()
         {
             Main = this;
 
-            ImageResources.Add("water_bottle", AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Items/water_bottle_item.png"));
-
-            #region Initialize items
-            ItemRegistry.Main.RegisterObject("water_bottle", new TestBottleItem("蓝标矿泉水", "TEST", ImageResources["water_bottle"]));
-
-            ItemStack ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
-            ix.CreateEntity(ItemTemplate, new(-0.19f, -4.22f), 0);
-            ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
-            ix.CreateEntity(ItemTemplate, new(-1.19f, -4.22f), 0);
-            ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
-            ix.CreateEntity(ItemTemplate, new(-0.19f, -3.22f), 0);
-            ix = ItemRegistry.Main.CreateItemStack("water_bottle", new());
-            ix.CreateEntity(ItemTemplate, new(-1.19f, -3.22f), 0);
+            // 一切都是为了mod和可持续的发展 T_T
+            #region Initialize Resources
+            ImageResources.Add("water_bottle", Resources.Load<Sprite>("Sprites/Items/water_bottle_item"));
             #endregion
+
+            #region Initialize Item Registry
+            ItemRegistry.Main.RegisterObject("water_bottle", new("蓝标矿泉水", "TEST", ImageResources["water_bottle"]));
+            #endregion
+
+            #region Initialize Templates
+            Templates.Add("item", Resources.Load<GameObject>("Prefabs/Item"));
+            Templates.Add("rock", Resources.Load<GameObject>("Prefabs/Rock"));
+            #endregion
+        }
+
+        private void Update()
+        {
+            foreach (KeyValuePair<int, Entity> e in EntityPool.Where((x) => x.Value.IsDestroyed()))
+            {
+                EntityPool.Remove(e.Key);
+                int a = ItemEntities.IndexOf(e.Key);
+                if (a >= 0)
+                    ItemEntities.Remove(a);
+            }
         }
 
         public static void Pause()

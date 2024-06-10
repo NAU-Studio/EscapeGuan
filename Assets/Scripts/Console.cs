@@ -166,13 +166,12 @@ namespace EscapeGuan
                 con.WriteLine("Attribute not exists.", ConsoleLine.Types.False);
                 return;
             }
-            con.WriteLine(
-                ((Delegate)attributes[param[1]]
+            object attr = ((Delegate)attributes[param[1]]
                 .GetType()
                 .GetField("Getter")
                 .GetValue(attributes[param[1]]))
-                .DynamicInvoke().ToString(), ConsoleLine.Types.True
-                );
+                .DynamicInvoke();
+            con.WriteLine($"{attr}: {attr.GetType().FullName}", ConsoleLine.Types.True);
         }
 
         public void SetAttribute(string[] param, Console con)
@@ -213,13 +212,12 @@ namespace EscapeGuan
                 .GetValue(attributes[param[1]]))
                 .DynamicInvoke(v);
             }
-            con.WriteLine(
-                ((Delegate)attributes[param[1]]
+            object attr = ((Delegate)attributes[param[1]]
                 .GetType()
                 .GetField("Getter")
                 .GetValue(attributes[param[1]]))
-                .DynamicInvoke().ToString(), ConsoleLine.Types.True
-                );
+                .DynamicInvoke();
+            con.WriteLine($"{attr}: {attr.GetType().FullName}", ConsoleLine.Types.True);
         }
 
         public void DestroyEntity(string[] param, Console con)
