@@ -1,6 +1,9 @@
 using UnityEngine;
 
 using EscapeGuan.Registries;
+using System;
+using Random = UnityEngine.Random;
+using Object = UnityEngine.Object;
 
 namespace EscapeGuan.Entities.Items
 {
@@ -20,12 +23,18 @@ namespace EscapeGuan.Entities.Items
             }
             set => Options.CustomName = value;
         }
-        public string Description
-        {
-            get => Base.Description + '\n' + Options.CustomDescription;
+        public string Description => Base.Description + '\n' + Options.CustomDescription;
+        public Sprite Icon => Base.Icon;
+        public int Count { get => Options.Count; set
+            {
+                if (value <= 0)
+                    OnRemove(this);
+                Options.Count = value;
+            }
         }
+        public float CD => Base.UseCD;
 
-        public void SetCount(int count) => Options.Count = count;
+        public Action<ItemStack> OnRemove = (x) => { };
 
         public ItemEntity CreateEntity(GameObject ItemTemplate)
         {
@@ -41,6 +50,30 @@ namespace EscapeGuan.Entities.Items
             go.GetComponent<ItemEntity>().item = this;
             go.GetComponent<SpriteRenderer>().sprite = Base.Icon;
             return go.GetComponent<ItemEntity>();
+        }
+
+        public void Use(Entity sender)
+        {
+            Base.Use(this, sender);
+        }
+
+        public bool Combine(ItemStack item)
+        {
+            if (item.Base == Base)
+            {
+                Count += item.Count;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public string GetCountString()
+        {
+            if (Count <= 1)
+                return "";
+            else
+                return Count.ToString();
         }
 
         internal ItemStack(Item b)

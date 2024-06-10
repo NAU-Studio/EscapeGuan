@@ -1,3 +1,5 @@
+using System;
+
 using EscapeGuan.Entities;
 using EscapeGuan.Entities.Items;
 
@@ -9,6 +11,7 @@ public abstract class PropEntity : Entity
     public float BreakForce;
 
     public override bool GuanAttackable => false;
+    public override int InventoryLength => throw new Exception($"{EntityId} has no inventory!");
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {

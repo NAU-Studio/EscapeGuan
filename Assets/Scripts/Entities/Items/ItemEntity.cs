@@ -1,3 +1,5 @@
+using System;
+
 namespace EscapeGuan.Entities.Items
 {
     public class ItemEntity : Entity
@@ -5,6 +7,7 @@ namespace EscapeGuan.Entities.Items
         public ItemStack item;
 
         public override bool GuanAttackable => false;
+        public override int InventoryLength => throw new Exception($"{EntityId} has no inventory!");
 
         public override void RegisterEntity()
         {
@@ -14,7 +17,6 @@ namespace EscapeGuan.Entities.Items
 
         public void Pickup(Entity e)
         {
-            e.Inventory.Add(item);
             GameManager.Main.ItemEntities.Remove(EntityId);
             e.PickItem(this);
             Kill();
