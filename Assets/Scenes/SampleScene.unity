@@ -473,21 +473,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d6c3e235c1b004f861fa430804a307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Lines:
-  - Content: Welcome to EscapeGuan Debug Console!
-    Type: 0
-  - Content: Type "help" for helps.
-    Type: 0
   TextUI: {fileID: 1996183680}
   Command: {fileID: 727932265}
+  Scroll: {fileID: 1609870711}
   HelpText: "<color=#AAFF7F>EscapeGuan Debug Console Help</color>\r\nHelp\r\n- Syntax:
     help\r\n- Usage:  Show the help of EscapeGuan Debug Console.\r\n\r\nEcho\r\n-
     Syntax:     echo [-o] <content>\r\n- Usage:      Print content to the screen.\r\n-
     Parameters: -o:      Use one line.\r\n              content: Print content.\r\n                      
-    Multi parameter means multi-line or space.\r\n\r\nGetIdSelf\r\n- Syntax: idself\r\n-
-    Usage:  Get the id of self (player).\r\n\r\nGetIdNear\r\n- Syntax:     idnear
-    [mdist=5]\r\n- Usage:      Get the id of near entity in range mdist.\r\n- Parameters:
-    mdist: Range."
+    Multi parameter means multi-line or space.\r\n\r\nGetIdSelf\r\n- Syntax:  idself\r\n-
+    Usage:   Get the id of self (player).\r\n- Returns: The id of self (player).\r\n\r\nGetIdNear\r\n-
+    Syntax:     idnear [mdist=5]\r\n- Usage:      Get the id of near entity in range
+    mdist.\r\n- Parameters: mdist: Range.\r\n- Returns:    The id of target entity.\r\n\r\nGetAttributeList\r\n-
+    Syntax:     getattrlist <id>\r\n- Usaeg:      Get the list of the entity.\r\n-
+    Parameters: id: The entity's id.\r\n- Returns:    The attributes that entity
+    has.\r\n\r\nGetAttribute\r\n- Syntax:     getattr <id> <attributeName>\r\n- Usage:     
+    Get the attribute of target attribute.\r\n- Parameters: id:            The attribute
+    owner's id.\r\n              attributeName: The name of target attribute.\r\n-
+    Returns:    The type and the value of target attribute.\r\n\r\nSetAttribute\r\n-
+    Syntax:     setattr <id> [attributeName] [value]\r\n- Usage:      Set the attribute's
+    value.\r\n- Parameters: id:            The attribute owner's id.\r\n             
+    attributeName: The name of target attribute.\r\n              value:        
+    The value wanted to set\r\n\r\nKillEntity\r\n- Syntax:     kill <id>\r\n- Usage:     
+    Kill the entity.\r\n- Parameters: id: The entity's id.e."
   InstructionSet: []
 --- !u!1 &342864403
 GameObject:
@@ -2073,7 +2080,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99397886
+  m_Size: 0.9999326
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3828,7 +3835,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000025602041}
+  m_AnchoredPosition: {x: 0, y: 0.000013486325}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892

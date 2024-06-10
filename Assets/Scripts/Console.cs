@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
@@ -9,6 +11,7 @@ using TMPro;
 
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 using Attribute = EscapeGuan.Entities.Attribute;
 
@@ -16,9 +19,10 @@ namespace EscapeGuan
 {
     public class Console : MonoBehaviour
     {
-        public List<ConsoleLine> Lines = new();
+        public ObservableCollection<ConsoleLine> Lines = new();
         public TMP_Text TextUI;
         public TMP_InputField Command;
+        public ScrollRect Scroll;
         [Multiline(6)]
         public string HelpText;
 
@@ -37,11 +41,23 @@ namespace EscapeGuan
                 new(new string[] { "getattrlist"}, GetAttributeList),
                 new(new string[] { "getattr" }, GetAttribute),
                 new(new string[] { "setattr" }, SetAttribute),
-                new(new string[] { "destroyentity"}, DestroyEntity),
+                new(new string[] { "kill"}, Kill),
             };
 
             bis.AddRange(InstructionSet);
             InstructionSet = bis;
+
+            Lines.CollectionChanged += UpdateText;
+        }
+
+        private void UpdateText(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            StringBuilder sb = new();
+            foreach (ConsoleLine l in Lines)
+                sb.AppendLine(l.ToString());
+            TextUI.text = sb.ToString();
+            TextUI.Rebuild(CanvasUpdate.Layout);
+            Scroll.verticalNormalizedPosition = 0;
         }
 
         public void Show()
@@ -67,7 +83,7 @@ namespace EscapeGuan
 
         public void WriteLine(string value, ConsoleLine.Types type = ConsoleLine.Types.NormalText)
         {
-            Lines.Add(new(value, type));
+            Lines.Add(new(value, type)); Scroll.verticalNormalizedPosition = 0;
         }
 
         public void ExecuteCommand(string cmd)
@@ -171,7 +187,7 @@ namespace EscapeGuan
                 .GetField("Getter")
                 .GetValue(attributes[param[1]]))
                 .DynamicInvoke();
-            con.WriteLine($"{attr}: {attr.GetType().FullName}", ConsoleLine.Types.True);
+            con.WriteLine($"{param[1]}: {attr.GetType().FullName} = {attr}", ConsoleLine.Types.True);
         }
 
         public void SetAttribute(string[] param, Console con)
@@ -217,10 +233,10 @@ namespace EscapeGuan
                 .GetField("Getter")
                 .GetValue(attributes[param[1]]))
                 .DynamicInvoke();
-            con.WriteLine($"{attr}: {attr.GetType().FullName}", ConsoleLine.Types.True);
+            con.WriteLine($"{param[1]}: {attr.GetType().FullName} = {attr}", ConsoleLine.Types.True);
         }
 
-        public void DestroyEntity(string[] param, Console con)
+        public void Kill(string[] param, Console con)
         {
             if (param.Length != 1)
             {
@@ -267,31 +283,38 @@ GetIdNear
 - Parameters: mdist: Range.
 - Returns:    The id of target entity.
 
+GetAttributeList
+- Syntax:     getattrlist <id>
+- Usaeg:      Get the list of the entity.
+- Parameters: id: The entity's id.
+- Returns:    The attributes that entity has.
+
 GetAttribute
-- Syntax:     getattribtype <id> <attributeName>
+- Syntax:     getattr <id> <attributeName>
 - Usage:      Get the attribute of target attribute.
 - Parameters: id:            The attribute owner's id.
               attributeName: The name of target attribute.
 - Returns:    The type and the value of target attribute.
 
-
 SetAttribute
-- Syntax:     attribute <id> [attributeName] [value]
+- Syntax:     setattr <id> [attributeName] [value]
 - Usage:      Set the attribute's value.
 - Parameters: id:            The attribute owner's id.
               attributeName: The name of target attribute.
               value:         The value wanted to set
+
+KillEntity
+- Syntax:     kill <id>
+- Usage:      Kill the entity.
+- Parameters: id: The entity's id.
 */
 
         private bool CommandAllowEnter = false;
 
+       
+
         private void Update()
         {
-            StringBuilder sb = new();
-            foreach (ConsoleLine l in Lines)
-                sb.AppendLine(l.ToString());
-            TextUI.text = sb.ToString();
-
             if (CommandAllowEnter && (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter)))
             {
                 if (!string.IsNullOrEmpty(Command.text))
@@ -302,9 +325,7 @@ SetAttribute
                 CommandAllowEnter = false;
             }
             else
-            {
                 CommandAllowEnter = Command.isFocused;
-            }
         }
     }
 
