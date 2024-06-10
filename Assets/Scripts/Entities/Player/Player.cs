@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using EscapeGuan.Entities.Items;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Item;
 
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UI;
 
 using static UnityEngine.Mathf;
 
@@ -34,6 +36,7 @@ namespace EscapeGuan.Entities.Player
         public float SlowdownMultiplier;
 
         public Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
+        public override int InventoryLength => 36;
 
         public override void Start()
         {
@@ -45,6 +48,7 @@ namespace EscapeGuan.Entities.Player
             Attributes.Add(new Attribute<float>("RunStaminaCost", () => RunStaminaCost, (x) => RunStaminaCost = x));
             Attributes.Add(new Attribute<float>("StaminaRestoreAmount", () => StaminaRestoreAmount, (x) => StaminaRestoreAmount = x));
             GameManager.Main.ControlledEntityId = EntityId;
+
             StartCoroutine(SetRestorable());
         }
 
@@ -65,7 +69,16 @@ namespace EscapeGuan.Entities.Player
 
         public override void PickItem(ItemEntity sender)
         {
-            QuickInventory.Add(sender.item);
+            for (int i = 0; i < InventoryLength; i++)
+            {
+                if (Inventory[i] == null)
+                {
+                    Inventory.Set(i, sender.item);
+                    break;
+                }
+                if (Inventory[i].Combine(sender.item))
+                    break;
+            }
             RemoveNear(sender.EntityId);
         }
         #endregion

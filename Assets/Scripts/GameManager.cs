@@ -34,7 +34,7 @@ namespace EscapeGuan
             #endregion
 
             #region Initialize Item Registry
-            ItemRegistry.Main.RegisterObject("water_bottle", new("蓝标矿泉水", "TEST", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("water_bottle", new TestBottleItem("蓝标矿泉水", "TEST", ImageResources["water_bottle"]));
             #endregion
 
             #region Initialize Templates

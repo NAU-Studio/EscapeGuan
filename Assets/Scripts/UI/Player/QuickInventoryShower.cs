@@ -1,6 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+
+using DG.Tweening;
 
 using EscapeGuan;
 using EscapeGuan.Entities.Items;
@@ -11,6 +11,8 @@ public class QuickInventoryShower : MonoBehaviour
 {
     [SerializeField]
     List<QuickInventorySlot> Slots;
+
+    public RectTransform SelectionBox;
 
     public int Selection;
 
@@ -34,8 +36,33 @@ public class QuickInventoryShower : MonoBehaviour
         return false;
     }
 
+    private void Update()
+    {
+        foreach (QuickInventorySlot s in Slots)
+            s.Item = GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId].Inventory[s.Index];
+
+        float scr = Input.mouseScrollDelta.y;
+        if (scr > 0)
+        {
+            Selection++;
+            if (Selection >= Slots.Count)
+                Selection = 0;
+        }
+        if (scr < 0)
+        {
+            Selection--;
+            if (Selection < 0)
+                Selection = Slots.Count - 1;
+        }
+        if (scr != 0)
+            SelectionBox.DOAnchorPosX(Selection * 48, .1f).SetEase(Ease.OutCubic);
+
+        if (Input.GetKeyDown(KeyCode.Z))
+            Use();
+    }
+
     public void Use()
     {
-        Slots[Selection].Item?.Use(GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId]);
+        Slots[Selection].Use();
     }
 }

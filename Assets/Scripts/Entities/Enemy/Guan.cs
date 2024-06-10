@@ -44,6 +44,8 @@ namespace EscapeGuan.Entities.Enemy
         [Header("Sprites")]
         public Sprite Front, Right, Back, Left;
 
+        public override int InventoryLength => 9;
+
         private AIDestinationSetter targetDestinationSetter => GetComponent<AIDestinationSetter>();
         private AIPath targetPath => GetComponent<AIPath>();
         private SpriteRenderer sprite => GetComponent<SpriteRenderer>();

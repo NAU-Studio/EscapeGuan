@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-
 using EscapeGuan.Entities;
 using EscapeGuan.Entities.Items;
 using EscapeGuan.Registries;
@@ -14,6 +11,7 @@ public class TestBottleItem : Item
 
     public override void Use(ItemStack sender, Entity from)
     {
-        sender.Count = 0;
+        sender.Count--;
+        Debug.Log("这个瓶子被用掉了");
     }
 }

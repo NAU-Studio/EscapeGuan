@@ -9,6 +9,7 @@ namespace EscapeGuan.Registries
     {
         public string Name, Description;
         public Sprite Icon;
+        public virtual float UseCD => 0;
 
         public Item(string name, string description, Sprite icon)
         {
