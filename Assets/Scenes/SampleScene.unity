@@ -633,7 +633,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1840,7 +1840,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9963538
+  m_Size: 0.99997747
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2199,8 +2199,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.44, g: 0.26353067, b: 0.10912001, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 88916f3fc3b9c854dab65f27e77977a8, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2220,7 +2220,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.92, y: -3.48, z: 0}
-  m_LocalScale: {x: 0.6, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2105235916}
@@ -2336,10 +2336,10 @@ MonoBehaviour:
   EntityId: 0
   Emotion: {fileID: 2105235914}
   Destinator: {fileID: 1199027329}
-  NoticeDistance: 3
-  LoseDistance: 10
+  NoticeDistance: 5
+  LoseDistance: 15
   MaxWanderDistance: 2
-  AttackRange: 1
+  AttackRange: 2
   WanderInterval: 5
   AttackInterval: 0.5
   WanderSpeed: 1
@@ -2352,6 +2352,10 @@ MonoBehaviour:
   BottleCount: 5
   EmotionManager: {fileID: 2105235917}
   State: 0
+  Front: {fileID: 21300000, guid: 88916f3fc3b9c854dab65f27e77977a8, type: 3}
+  Right: {fileID: 21300000, guid: 326cf29e6b6956a41ac52cac32c6f42a, type: 3}
+  Back: {fileID: 21300000, guid: 3c92715bd319df24799803adbe84f0ee, type: 3}
+  Left: {fileID: 21300000, guid: e2e8ecd894c6f46439d8eafee508736a, type: 3}
   Stamina: 0
   AttackTimer: 0
   DamageMultiplier: 1
@@ -2419,7 +2423,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1, y: 2}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -3188,7 +3192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000055630626}
+  m_AnchoredPosition: {x: 0, y: 0.0008959815}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -6011,7 +6015,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.75, z: 0}
-  m_LocalScale: {x: 0.83333325, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 804682819}
