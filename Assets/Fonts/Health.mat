@@ -28,5 +28,5 @@ Material:
     - _OutlineWidth: 0.625
     m_Colors:
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.21223079, g: 0.15896086, b: 0.013702081, a: 1}
+    - _OutlineColor: {r: 0.048171833, g: 0.21223079, b: 0.013702081, a: 1}
   m_BuildTextureStacks: []
