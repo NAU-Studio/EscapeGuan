@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EscapeGuan.UI.MapGenerator
 {
-    public class GenerationWaiter : HideableUI
+    public class GenerationWaiter : HidableUI
     {
         public SlicedFilledImage PartBar;
         public TMP_Text PartText, Title;
@@ -16,7 +16,7 @@ namespace EscapeGuan.UI.MapGenerator
             Camera.main.orthographicSize = 128;
             ShowNoTransition();
 
-            if (!Hided)
+            if (!Hidden)
                 GameManager.Pause();
         }
 
