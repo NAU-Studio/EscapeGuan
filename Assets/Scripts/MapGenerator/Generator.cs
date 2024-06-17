@@ -6,11 +6,8 @@ using System.Linq;
 
 using EscapeGuan.Entities.Items;
 using EscapeGuan.Registries;
-using EscapeGuan.UI.MapGenerator;
 
 using Pathfinding;
-
-using Unity.VisualScripting;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -21,7 +18,6 @@ namespace EscapeGuan.MapGenerator
 {
     public class Generator : MonoBehaviour
     {
-        public GenerationWaiter Waiter;
         public AstarPath Path;
         public int Size;
 
@@ -54,13 +50,8 @@ namespace EscapeGuan.MapGenerator
 
         public IEnumerator GenerationTask()
         {
-            Stopwatch sw = Stopwatch.StartNew();
-            yield return null;
             ((GridGraph)Path.graphs[0]).SetDimensions(Size, Size, 1);
             ((GridGraph)Path.graphs[0]).Scan();
-            yield return null;
-
-            // Border
             BorderT.localScale = new(Size + BorderWidth * 2, BorderWidth);
             BorderR.localScale = new(BorderWidth, Size + BorderWidth * 2);
             BorderB.localScale = BorderT.localScale;
@@ -69,9 +60,6 @@ namespace EscapeGuan.MapGenerator
             BorderR.position = new(Size / 2 + BorderWidth / 2, 0);
             BorderB.position = new(0, -(Size / 2 + BorderWidth / 2));
             BorderL.position = new(-(Size / 2 + BorderWidth / 2), 0);
-            yield return null;
-
-            // Base tile
             Tile[] t = new Tile[Size * Size];
             Array.Fill(t, GrassTile);
             HashSet<Vector3Int> v = new();
@@ -81,9 +69,6 @@ namespace EscapeGuan.MapGenerator
                     v.Add(new(i, j));
             }
             Map.SetTiles(v.ToArray(), t);
-            yield return null;
-
-            // Road generation
             Vector2 roadHead = new(0, 0);
             float dir = 0;
             float scale = StartScale;
@@ -108,39 +93,10 @@ namespace EscapeGuan.MapGenerator
                 {
                     roadHead = new(0, 0);
                     dir += Random.Range(135, 225);
-                    yield return null;
-                }
-            }
-            yield return null;
-            roadHead = new(0, 0);
-            dir = 180;
-            scale = StartScale;
-            for (int i = 0, br = 0; i < RoadLength; i++, br++)
-            {
-                if (br >= Random.Range(100, 150))
-                {
-                    CreateRoadBranch(roadTiles, roadHead, dir, scale);
-                    br = 0;
-                }
-                dir += Random.Range(-StepRotateDeg, StepRotateDeg);
-                scale += Random.Range(-(scale - StartScale) / 5 - 2, -(scale - StartScale) / 5 + 2);
-                float rad = dir * Mathf.Deg2Rad;
-                roadHead += new Vector2(Mathf.Sin(rad), Mathf.Cos(rad));
-                for (int y = (int)roadHead.y - (int)scale / 2; y < roadHead.y + scale / 2; y++)
-                {
-                    for (int x = (int)roadHead.x - (int)scale / 2; x < roadHead.x + scale / 2; x++)
-                        roadTiles.Add(new(x, y));
-                }
-                if (roadHead.x > Size / 2 | roadHead.y > Size / 2 | roadHead.x < -Size / 2 | roadHead.y < -Size / 2)
-                {
-                    roadHead = new(0, 0);
-                    dir += Random.Range(135, 225);
-                    yield return null;
                 }
             }
             roadTiles.Distinct();
             roadTiles.RemoveWhere((x) => { return x.x >= Size / 2 | x.x <= -Size / 2 | x.y >= Size / 2 | x.y <= -Size / 2; });
-            yield return null;
             IEnumerator<Vector3Int> enu = roadTiles.GetEnumerator();
             TileChangeData[] tcds = new TileChangeData[roadTiles.Count];
             for (int i = 0; i < roadTiles.Count && enu.MoveNext(); i++)
@@ -193,7 +149,6 @@ namespace EscapeGuan.MapGenerator
                 tcds[i] = new(enu.Current, final, Color.white, Map.GetTransformMatrix(enu.Current));
             }
             Map.SetTiles(tcds, true);
-            yield return null;
             
             // Rocks
             for (int _ = 0; _ < Random.Range(MinRocksCount, MaxRocksCount + 1); _++)
@@ -209,11 +164,7 @@ namespace EscapeGuan.MapGenerator
                 ItemStack ix = ItemRegistry.Main.CreateItemStack("water_bottle");
                 ix.CreateEntity(pos);
             }
-
-            sw.Stop();
-            Waiter.SetElapsed(Size * Size, (float)sw.Elapsed.TotalSeconds);
-            yield return new WaitForSecondsRealtime(1);
-            Waiter.Hide();
+            yield return null;
         }
 
         public void CreateRoadBranch(HashSet<Vector3Int> roadTiles, Vector2 pos, float urot, float scale)

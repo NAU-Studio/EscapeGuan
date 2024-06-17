@@ -42,13 +42,16 @@ namespace EscapeGuan.Entities.Enemy
         public override bool GuanAttackable => false;
 
         [Header("Sprites")]
-        public Sprite Front, Right, Back, Left;
+        public Sprite IdleSprite;
+        public AnimationClip MovementClip;
 
         public override int InventoryLength => 9;
 
-        private AIDestinationSetter targetDestinationSetter => GetComponent<AIDestinationSetter>();
-        private AIPath targetPath => GetComponent<AIPath>();
-        private SpriteRenderer sprite => GetComponent<SpriteRenderer>();
+        private AIDestinationSetter TargetDestinationSetter => GetComponent<AIDestinationSetter>();
+        private AIPath TargetPath => GetComponent<AIPath>();
+        private SpriteRenderer Sprite => GetComponent<SpriteRenderer>();
+        private Animator MovementAnimator => GetComponent<Animator>();
+
         private Entity targetAttack;
 
         [SerializeField, ReadOnly]
@@ -61,12 +64,12 @@ namespace EscapeGuan.Entities.Enemy
             Stamina = MaxStamina;
 
             base.Start();
-            targetDestinationSetter.target = Destinator;
-            targetPath.maxSpeed = WanderSpeed;
+            TargetDestinationSetter.target = Destinator;
+            TargetPath.maxSpeed = WanderSpeed;
             // Wander
             GameManager.IntervalAction(this, () => State == Status.Wander, () =>
             {
-                targetPath.maxSpeed = WanderSpeed;
+                TargetPath.maxSpeed = WanderSpeed;
                 Destinator.position = transform.position + new Vector3(Random.Range(-MaxWanderDistance, MaxWanderDistance),
                     Random.Range(-MaxWanderDistance, MaxWanderDistance));
             }, WanderInterval);
@@ -84,7 +87,7 @@ namespace EscapeGuan.Entities.Enemy
                     nd = Vector3.Distance(transform.position, e.Value.transform.position);
                     nearest = e.Value.transform;
                 }
-                targetPath.maxSpeed = AttackSpeed;
+                TargetPath.maxSpeed = AttackSpeed;
             }
             if (nearest == null)
                 goto SkipNearest;
@@ -161,26 +164,12 @@ namespace EscapeGuan.Entities.Enemy
             #endregion
 
             #region Sprite
-            Vector2 v = targetPath.velocity;
-            float dir = Mathf.Rad2Deg * Mathf.Atan(-(v.y / v.x));
-            if (v.x > 0)
-            {
-                if (dir > -45 && dir < 45)
-                    sprite.sprite = Right;
-                if (dir > 45)
-                    sprite.sprite = Front;
-                if (dir < -45)
-                    sprite.sprite = Back;
-            }
+            Vector2 v = TargetPath.velocity;
+            MovementAnimator.SetBool("Moving", v.x != 0 && v.y != 0);
             if (v.x < 0)
-            {
-                if (dir > -45 && dir < 45)
-                    sprite.sprite = Left;
-                if (dir > 45)
-                    sprite.sprite = Back;
-                if (dir < -45)
-                    sprite.sprite = Front;
-            }
+                transform.localScale = Vector3.one;
+            if (v.x > 0)
+                transform.localScale = new(-1, 1, 1);
             #endregion
             base.FixedUpdate();
         }
