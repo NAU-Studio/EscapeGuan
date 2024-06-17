@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace EscapeGuan.UI
 {
-    public class ConfirmDialog : HideableUI
+    public class ConfirmDialog : HidableUI
     {
         public UnityEvent OnConfirm;
         public UnityEvent OnCancel;

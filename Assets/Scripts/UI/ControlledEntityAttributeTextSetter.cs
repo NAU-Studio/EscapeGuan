@@ -28,15 +28,9 @@ namespace EscapeGuan.UI
         public string Name;
         public string KeyValue;
 
-        public object Get()
+        public string ToString(string format = "0")
         {
-            return GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId].GetAttribute<float>(Name);
-        }
-
-        public override string ToString()
-        {
-            return Get().ToString();
+            return GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId].GetAttribute<float>(Name).ToString(format);
         }
     }
-
 }

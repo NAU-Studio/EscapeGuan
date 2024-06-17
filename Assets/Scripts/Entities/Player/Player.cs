@@ -1,12 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 using EscapeGuan.Entities.Items;
-using EscapeGuan.UI;
 using EscapeGuan.UI.Item;
-
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -23,13 +19,10 @@ namespace EscapeGuan.Entities.Player
 
         public float Stamina;
         public float MaxStamina;
-        public float RunStaminaCost;
-        public float StaminaRestoreAmount;
 
         public float StaminaRestoreDelay;
         public float CameraFollowSpeed;
         public Transform Camera;
-        public HideableUI StaminaBarHideable;
 
         public Tilemap Map;
         public List<TileBase> SlowdownTiles;
@@ -45,8 +38,6 @@ namespace EscapeGuan.Entities.Player
             Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, (x) => RunSpeedMultiplier = x));
             Attributes.Add(new Attribute<float>("Stamina", () => Stamina, (x) => Stamina = x));
             Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, (x) => MaxStamina = x));
-            Attributes.Add(new Attribute<float>("RunStaminaCost", () => RunStaminaCost, (x) => RunStaminaCost = x));
-            Attributes.Add(new Attribute<float>("StaminaRestoreAmount", () => StaminaRestoreAmount, (x) => StaminaRestoreAmount = x));
             GameManager.Main.ControlledEntityId = EntityId;
 
             StartCoroutine(SetRestorable());
@@ -141,16 +132,12 @@ namespace EscapeGuan.Entities.Player
             #endregion
             #region Stamina
             if ((Abs(h) > 0 || Abs(v) > 0) && Running)
-                RunStaminaCostable = CostStamina((CurrentSpeed - 1) * RunStaminaCost * Time.fixedDeltaTime);
+                RunStaminaCostable = CostStamina((CurrentSpeed - 1) * Time.fixedDeltaTime);
             else
                 RunStaminaCostable = true;
 
             if (Restorable)
-                RestoreStamina(StaminaRestoreAmount * Time.fixedDeltaTime);
-            if (Stamina >= MaxStamina)
-                StaminaBarHideable.Hide();
-            else
-                StaminaBarHideable.Show();
+                RestoreStamina(Time.fixedDeltaTime);
             #endregion
             #region Movement Control
             if (Running)

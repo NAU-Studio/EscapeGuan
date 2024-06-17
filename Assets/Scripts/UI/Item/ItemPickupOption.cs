@@ -20,14 +20,14 @@ namespace EscapeGuan.UI.Item
 
         public void Show()
         {
-            GetComponent<HideableUI>().Show();
+            GetComponent<HidableUI>().Show();
         }
 
         public void Destroy()
         {
             Destroyed = true;
-            GetComponent<HideableUI>().Hide();
-            GameManager.DelayAction(this, () => { Destroy(gameObject); }, GetComponent<HideableUI>().Transition + .1f);
+            GetComponent<HidableUI>().Hide();
+            GameManager.DelayAction(this, () => { Destroy(gameObject); }, GetComponent<HidableUI>().Transition + .1f);
         }
     }
 }
