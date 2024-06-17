@@ -8,10 +8,11 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 using static UnityEngine.Mathf;
+using static KeyManager;
 
 namespace EscapeGuan.Entities.Player
 {
-    public class Player : Entity
+    public class Player : Entity, IKeyBehaviour
     {
         [Header("Player Attributes")]
         public float Speed;
@@ -30,6 +31,8 @@ namespace EscapeGuan.Entities.Player
 
         public Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
         public override int InventoryLength => 36;
+
+        public int KeyLayer => ControlLayer;
 
         public override void Start()
         {
@@ -108,9 +111,12 @@ namespace EscapeGuan.Entities.Player
         private float CurrentSpeed;
         private bool Running, RunStaminaCostable;
         private bool Restorable;
+
+        private float Horizontal => (KeyPress(KeyCode.A, KeyLayer) ? -1 : 0) + (KeyPress(KeyCode.D, KeyLayer) ? 1 : 0);
+        private float Vertical => (KeyPress(KeyCode.S, KeyLayer)? -1 : 0) + (KeyPress(KeyCode.W, KeyLayer)? 1 : 0);
+
         public override void FixedUpdate()
         {
-            float h = Input.GetAxisRaw("Horizontal"), v = Input.GetAxisRaw("Vertical");
             #region Item Pickup
             for (int i = NearItems.Count - 1; i >= 0; i--)
             {
@@ -131,7 +137,7 @@ namespace EscapeGuan.Entities.Player
             }
             #endregion
             #region Stamina
-            if ((Abs(h) > 0 || Abs(v) > 0) && Running)
+            if ((Abs(Horizontal) > 0 || Abs(Vertical) > 0) && Running)
                 RunStaminaCostable = CostStamina((CurrentSpeed - 1) * Time.fixedDeltaTime);
             else
                 RunStaminaCostable = true;
@@ -149,10 +155,10 @@ namespace EscapeGuan.Entities.Player
             if (SlowdownTiles.Contains(Map.GetTile(new(RoundToInt(transform.position.x) - 1, RoundToInt(transform.position.y) - 1))))
                 final *= SlowdownMultiplier;
 
-            if (Abs(h) > 0 && Abs(v) > 0)
-                Rigidbody.velocity = new(h * Sqrt2In2 * final, v * Sqrt2In2 * final);
+            if (Abs(Horizontal) > 0 && Abs(Vertical) > 0)
+                Rigidbody.velocity = new(Horizontal * Sqrt2In2 * final, Vertical * Sqrt2In2 * final);
             else
-                Rigidbody.velocity = new(h * final, v * final);
+                Rigidbody.velocity = new(Horizontal * final, Vertical * final);
 
             Camera.position = Vector3.Lerp(Camera.position, new(transform.position.x, transform.position.y, Camera.position.z), CameraFollowSpeed * Time.fixedDeltaTime);
             #endregion
@@ -162,9 +168,9 @@ namespace EscapeGuan.Entities.Player
         private void Update()
         {
             #region Movement Control
-            if (Input.GetKeyDown(KeyCode.LeftShift) && RunStaminaCostable)
+            if (KeyDown(KeyCode.LeftShift, KeyLayer) && RunStaminaCostable)
                 Running = true;
-            if (!RunStaminaCostable || (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0))
+            if (!RunStaminaCostable || (Horizontal == 0 && Vertical == 0))
                 Running = false;
             #endregion
         }

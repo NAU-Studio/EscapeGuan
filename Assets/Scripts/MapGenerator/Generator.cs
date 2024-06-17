@@ -162,6 +162,7 @@ namespace EscapeGuan.MapGenerator
             {
                 Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
                 ItemStack ix = ItemRegistry.Main.CreateItemStack("water_bottle");
+                ix.Attributes[WaterBottleItem.Mass] = Random.Range(0, WaterBottleItem.MaxMass);
                 ix.CreateEntity(pos);
             }
             yield return null;

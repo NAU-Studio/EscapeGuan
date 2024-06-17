@@ -4,6 +4,7 @@ using EscapeGuan.Registries;
 using System;
 using Random = UnityEngine.Random;
 using Object = UnityEngine.Object;
+using System.Collections.Generic;
 
 namespace EscapeGuan.Entities.Items
 {
@@ -36,6 +37,10 @@ namespace EscapeGuan.Entities.Items
 
         public Action<ItemStack> OnRemove = (x) => { };
 
+        public Item Handler => Base;
+
+        public Dictionary<string, object> Attributes = new();
+
         public ItemEntity CreateEntity(GameObject ItemTemplate)
         {
             GameObject go = Object.Instantiate(ItemTemplate);
@@ -59,8 +64,10 @@ namespace EscapeGuan.Entities.Items
 
         public bool Combine(ItemStack item)
         {
-            if (item.Base == Base)
+            if (item.Base == Base && item.Base.GetDurability(item) == Base.GetDurability(this))
             {
+                if (item.Count + Count >= item.Base.MaxCount)
+                    return false;
                 Count += item.Count;
                 return true;
             }
