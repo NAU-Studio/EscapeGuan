@@ -10,9 +10,7 @@ namespace EscapeGuan.Registries
         public string Name, Description;
         public Sprite Icon;
         public virtual float UseCD => 0;
-
         public virtual int MaxCount => 99;
-
         
         public Item(string name, string description, Sprite icon)
         {
@@ -26,9 +24,9 @@ namespace EscapeGuan.Registries
 
         }
 
-        public virtual ItemStack CreateItemStack()
+        public virtual ItemStack CreateItemStack(int count = 1)
         {
-            return new(this);
+            return new(this, count);
         }
 
         /// <summary>

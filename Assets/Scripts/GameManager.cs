@@ -20,7 +20,7 @@ namespace EscapeGuan
         public Dictionary<int, Entity> EntityPool = new();
         public List<int> ItemEntities = new();
 
-        public WaterDrinkUI WaterUseUI;
+        public WaterBottleManager WaterBottleManager;
 
 
         public static GameManager Main = new();
@@ -40,6 +40,7 @@ namespace EscapeGuan
 
             #region Initialize Item Registry
             ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL，能扔也能喝！", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("空的蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL，但是里面没有水，不过可以往里倒！", ImageResources["water_bottle"]));
             #endregion
 
             #region Initialize Templates

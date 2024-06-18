@@ -7,8 +7,8 @@ using EscapeGuan.UI.Item;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-using static UnityEngine.Mathf;
 using static KeyManager;
+using static UnityEngine.Mathf;
 
 namespace EscapeGuan.Entities.Player
 {
@@ -63,17 +63,22 @@ namespace EscapeGuan.Entities.Player
 
         public override void PickItem(ItemEntity sender)
         {
+            AddItem(sender.item);
+            RemoveNear(sender.EntityId);
+        }
+
+        public override void AddItem(ItemStack sender)
+        {
             for (int i = 0; i < InventoryLength; i++)
             {
                 if (Inventory[i] == null)
                 {
-                    Inventory.Set(i, sender.item);
+                    Inventory.Set(i, sender);
                     break;
                 }
-                if (Inventory[i].Combine(sender.item))
+                if (Inventory[i].Combine(sender))
                     break;
             }
-            RemoveNear(sender.EntityId);
         }
         #endregion
         #region Stamina Actions

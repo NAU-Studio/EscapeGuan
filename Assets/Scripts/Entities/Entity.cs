@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -157,7 +156,8 @@ namespace EscapeGuan.Entities
             throw new Exception("Attribute not found.");
         }
 
-        public abstract void PickItem(ItemEntity sender);
+        public virtual void PickItem(ItemEntity sender) { }
+        public virtual void AddItem(ItemStack sender) { }
     }
 
     public abstract class Attribute

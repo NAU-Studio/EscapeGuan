@@ -8,38 +8,25 @@ using System.Collections.Generic;
 
 namespace EscapeGuan.Entities.Items
 {
-    public class ItemStack
+    public class ItemStack : IDisposable
     {
-        private ItemStackOptions Options;
-        private readonly Item Base;
-
-        public string Name
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(Options.CustomName))
-                    return Base.Name;
-                else
-                    return Options.CustomName;
-            }
-            set => Options.CustomName = value;
-        }
-        public string Description => Base.Description + '\n' + Options.CustomDescription;
+        public Item Base;
         public Sprite Icon => Base.Icon;
-        public int Count { get => Options.Count; set
+        public Dictionary<string, object> Attributes = new();
+
+        public int Count { get => count; set
             {
                 if (value <= 0)
-                    OnRemove(this);
-                Options.Count = value;
+                    Delete();
+                count = value;
             }
         }
         public float CD => Base.UseCD;
 
+
         public Action<ItemStack> OnRemove = (x) => { };
 
-        public Item Handler => Base;
-
-        public Dictionary<string, object> Attributes = new();
+        private int count;
 
         public ItemEntity CreateEntity(GameObject ItemTemplate)
         {
@@ -83,23 +70,21 @@ namespace EscapeGuan.Entities.Items
                 return Count.ToString();
         }
 
-        internal ItemStack(Item b)
+        public void Delete()
+        {
+            OnRemove(this);
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
+        internal ItemStack(Item b, int c = 1)
         {
             Base = b;
-            Options = new(1);
-        }
-    }
-
-    public struct ItemStackOptions
-    {
-        public int Count;
-        public string CustomName, CustomDescription;
-
-        public ItemStackOptions(int count = 1, string customName = "", string customDescription = "") : this()
-        {
-            Count = count;
-            CustomName = customName;
-            CustomDescription = customDescription;
+            count = c;
         }
     }
 }

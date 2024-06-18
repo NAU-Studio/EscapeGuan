@@ -5,10 +5,10 @@ using EscapeGuan.UI;
 
 using UnityEngine;
 
-public class WaterDrinkUI : MonoBehaviour, IKeyBehaviour
+public class WaterBottleManager : MonoBehaviour, IKeyBehaviour
 {
     ItemStack Exhaler;
-
+    
     HidableUI Hidable => GetComponent<HidableUI>();
 
     public int KeyLayer => KeyManager.UILayer + 9999;
@@ -21,7 +21,7 @@ public class WaterDrinkUI : MonoBehaviour, IKeyBehaviour
 
     public void Drink()
     {
-        ((WaterBottleItem)Exhaler.Handler).Drink(Exhaler);
+        ((WaterBottleItem)Exhaler.Base).Drink(Exhaler);
         Exhaler = null;
         Hidable.Hide();
     }
@@ -29,6 +29,11 @@ public class WaterDrinkUI : MonoBehaviour, IKeyBehaviour
     public void Throw()
     {
         Hidable.Hide();
+        throw new NotImplementedException();
+    }
+    
+    public void ThrowEmpty()
+    {
         throw new NotImplementedException();
     }
 
