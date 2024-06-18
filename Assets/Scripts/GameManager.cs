@@ -21,7 +21,7 @@ namespace EscapeGuan
         public List<int> ItemEntities = new();
 
         public WaterBottleManager WaterBottleManager;
-
+        public ItemProfileShower ItemProfile;
 
         public static GameManager Main = new();
 

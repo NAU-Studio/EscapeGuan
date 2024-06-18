@@ -38,6 +38,7 @@ public class WaterBottleItem : Item
             sender.Delete();
         }
         Debug.Log($"喝了 {amount} kg (L)，使用后含量：{sender.Attributes[Mass]} kg (L)");
+        GameManager.Main.ItemProfile.SetText(Name, GetDescription(sender));
     }
 
     public override ItemStack CreateItemStack(int count = 1)
@@ -50,5 +51,10 @@ public class WaterBottleItem : Item
     public override float GetDurability(ItemStack i)
     {
         return (float)i.Attributes[Mass] / MaxMass;
+    }
+
+    public override string GetDescription(ItemStack i)
+    {
+        return $"{Description}剩余量：{(float)i.Attributes[Mass] * 1000:0.00} mL";
     }
 }

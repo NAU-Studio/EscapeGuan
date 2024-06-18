@@ -36,5 +36,10 @@ namespace EscapeGuan.Registries
         {
             return 1;
         }
+
+        public virtual string GetDescription(ItemStack i)
+        {
+            return Description;
+        }
     }
 }
