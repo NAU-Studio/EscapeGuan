@@ -6,11 +6,13 @@ using EscapeGuan;
 using EscapeGuan.Entities.Items;
 
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class QuickInventoryShower : MonoBehaviour
 {
     [SerializeField]
     List<QuickInventorySlot> Slots;
+    ItemStack prevItem;
 
     public RectTransform SelectionBox;
 
@@ -57,6 +59,11 @@ public class QuickInventoryShower : MonoBehaviour
         if (scr != 0)
             SelectionBox.DOAnchorPosX(Selection * 48, .1f).SetEase(Ease.OutCubic);
 
+        if (prevItem != Slots[Selection].Item)
+        {
+            prevItem = Slots[Selection].Item;
+            GameManager.Main.ItemProfile.SetText(Slots[Selection].Item.Base.Name, Slots[Selection].Item.Base.GetDescription(Slots[Selection].Item));
+        }
         if (Input.GetKeyDown(KeyCode.Z))
             Use();
     }

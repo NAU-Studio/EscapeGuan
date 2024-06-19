@@ -5,6 +5,7 @@ using System.Linq;
 
 using EscapeGuan.Entities;
 using EscapeGuan.Registries;
+using EscapeGuan.UI;
 
 using Unity.VisualScripting;
 
@@ -18,6 +19,10 @@ namespace EscapeGuan
         public int ControlledEntityId;
         public Dictionary<int, Entity> EntityPool = new();
         public List<int> ItemEntities = new();
+
+        public WaterBottleManager WaterBottleManager;
+        public ItemProfileShower ItemProfile;
+
         public static GameManager Main = new();
 
         public static Dictionary<string, Sprite> ImageResources = new();
@@ -34,7 +39,8 @@ namespace EscapeGuan
             #endregion
 
             #region Initialize Item Registry
-            ItemRegistry.Main.RegisterObject("water_bottle", new TestBottleItem("蓝标矿泉水", "TEST", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL，能扔也能喝！", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("空的蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL，但是里面没有水，不过可以往里倒！", ImageResources["water_bottle"]));
             #endregion
 
             #region Initialize Templates

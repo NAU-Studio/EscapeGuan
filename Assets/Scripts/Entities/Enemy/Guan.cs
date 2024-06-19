@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -214,6 +213,11 @@ namespace EscapeGuan.Entities.Enemy
         public override void PickItem(ItemEntity sender)
         {
             throw new EntityCannotPickupException();
+        }
+
+        public override void AddItem(ItemStack sender)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

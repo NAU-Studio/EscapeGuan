@@ -14,6 +14,6 @@ namespace EscapeGuan.Registries
 
         public Item GetObject(string name) => Registry[name];
         public void RegisterObject(string name, Item item) => Registry.Add(name, item);
-        public ItemStack CreateItemStack(string name) => new(Registry[name]);
+        public ItemStack CreateItemStack(string name, int count = 1) => Registry[name].CreateItemStack(count);
     }
 }
