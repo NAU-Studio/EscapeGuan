@@ -20,8 +20,7 @@ public class ItemProfileShower : HidableUI
     {
         NameUI.text = name;
         DescriptionUI.text = description;
-
-        transform.sizeDelta = new(Mathf.Max(NameUI.preferredWidth, DescriptionUI.preferredWidth), transform.sizeDelta.y);
+        transform.DOSizeDelta(new(transform.sizeDelta.x, DescriptionUI.preferredHeight + 28), Transition).SetEase(Ease.OutSine);
         Show();
     }
 

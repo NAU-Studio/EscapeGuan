@@ -10,7 +10,7 @@ namespace EscapeGuan.Registries
         public string Name, Description;
         public Sprite Icon;
         public virtual float UseCD => 0;
-        public virtual int MaxCount => 99;
+        public virtual int MaxCount => 64;
         
         public Item(string name, string description, Sprite icon)
         {

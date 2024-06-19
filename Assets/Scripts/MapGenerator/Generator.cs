@@ -35,13 +35,11 @@ namespace EscapeGuan.MapGenerator
         public int RoadLength, BranchLength;
         public float StepRotateDeg = 5, StartScale = 5;
 
-        [Header("Rocks")]
-        public GameObject RockTemplate;
-        public int MinRocksCount, MaxRocksCount;
-
-        [Header("Bottles")]
-        public int MinBottlesCount;
-        public int MaxBottlesCount;
+        [Header("Props")]
+        public int MinRocksCount;
+        public int MaxRocksCount;
+        public int MinBottlesCount, MaxBottlesCount;
+        public int MinSticksCount, MaxSticksCount;
 
         private void Start()
         {
@@ -162,6 +160,15 @@ namespace EscapeGuan.MapGenerator
             {
                 Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
                 ItemStack ix = ItemRegistry.Main.CreateItemStack("water_bottle");
+                ix.Attributes[WaterBottleItem.Mass] = Random.Range(0, WaterBottleItem.MaxMass);
+                ix.CreateEntity(pos);
+            }
+
+            // Sticks
+            for (int _ = 0; _ < Random.Range(MinSticksCount, MaxSticksCount + 1); _++)
+            {
+                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
+                ItemStack ix = ItemRegistry.Main.CreateItemStack("small_stick");
                 ix.Attributes[WaterBottleItem.Mass] = Random.Range(0, WaterBottleItem.MaxMass);
                 ix.CreateEntity(pos);
             }

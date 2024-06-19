@@ -36,11 +36,13 @@ namespace EscapeGuan
             // 一切都是为了mod和可持续的发展 T_T
             #region Initialize Resources
             ImageResources.Add("water_bottle", Resources.Load<Sprite>("Sprites/Items/water_bottle_item"));
+            ImageResources.Add("small_stick", Resources.Load<Sprite>("Sprites/Items/small_stick"));
             #endregion
 
             #region Initialize Item Registry
-            ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL，能扔也能喝！", ImageResources["water_bottle"]));
-            ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("空的蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL，但是里面没有水，不过可以往里倒！", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL。能扔能喝，还能往里兑水，兑各种水！水越多砸人越疼，但攻击速度慢，距离短，适量的水可能是个更好的选择。", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("空的蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL。但是里面没有水，不过可以往里倒，或者「该罚」（砸人）或者扔出去！", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("small_stick", new SmallStickItem("小树枝", "几乎没有伤害，但是好玩，对抗第二，友谊第一！", ImageResources["small_stick"]));
             #endregion
 
             #region Initialize Templates

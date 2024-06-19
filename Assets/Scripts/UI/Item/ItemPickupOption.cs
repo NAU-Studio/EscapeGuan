@@ -1,5 +1,9 @@
 using EscapeGuan.Entities.Items;
 
+using TMPro;
+
+using UnityEngine.UI;
+
 namespace EscapeGuan.UI.Item
 {
     public class ItemPickupOption : RectBehaviour
@@ -8,6 +12,15 @@ namespace EscapeGuan.UI.Item
         public bool Enabled = true;
 
         public bool Destroyed = false;
+
+        public Image Icon;
+        public TMP_Text Text;
+
+        private void Update()
+        {
+            Icon.sprite = Target.item.Icon;
+            Text.text = Target.item.Base.Name;
+        }
 
         public void Pickup()
         {

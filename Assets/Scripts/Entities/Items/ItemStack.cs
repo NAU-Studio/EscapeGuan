@@ -53,7 +53,7 @@ namespace EscapeGuan.Entities.Items
         {
             if (item.Base == Base && item.Base.GetDurability(item) == Base.GetDurability(this))
             {
-                if (item.Count + Count >= item.Base.MaxCount)
+                if (item.Count + Count > item.Base.MaxCount)
                     return false;
                 Count += item.Count;
                 return true;
