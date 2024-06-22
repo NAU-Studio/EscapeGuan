@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using EscapeGuan.Entities.Items;
 using EscapeGuan.UI.Item;
-
+using EscapeGuan.UI.Player;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -19,8 +19,9 @@ namespace EscapeGuan.Entities.Player
 
         public float Stamina;
         public float MaxStamina;
-
         public float StaminaRestoreDelay;
+
+        [Header("Other settings")]
         public float CameraFollowSpeed;
         public Transform Camera;
 
@@ -28,7 +29,7 @@ namespace EscapeGuan.Entities.Player
         public List<TileBase> SlowdownTiles;
         public float SlowdownMultiplier;
 
-        public Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
+        private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
         public override int InventoryLength => 36;
 
         public override void Start()
@@ -38,7 +39,7 @@ namespace EscapeGuan.Entities.Player
             Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, (x) => RunSpeedMultiplier = x));
             Attributes.Add(new Attribute<float>("Stamina", () => Stamina, (x) => Stamina = x));
             Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, (x) => MaxStamina = x));
-            GameManager.Main.ControlledEntityId = EntityId;
+            GameManager.ControlledEntityId = Id;
 
             StartCoroutine(SetRestorable());
         }
@@ -55,22 +56,27 @@ namespace EscapeGuan.Entities.Player
         public void RemoveNear(int v)
         {
             NearItems.Remove(v);
-            List.Remove((ItemEntity)GameManager.Main.EntityPool[v]);
+            List.Remove((ItemEntity)GameManager.EntityPool[v]);
         }
 
         public override void PickItem(ItemEntity sender)
+        {
+            AddItem(sender.item);
+            RemoveNear(sender.Id);
+        }
+
+        public override void AddItem(ItemStack sender)
         {
             for (int i = 0; i < InventoryLength; i++)
             {
                 if (Inventory[i] == null)
                 {
-                    Inventory.Set(i, sender.item);
+                    Inventory.Set(i, sender);
                     break;
                 }
-                if (Inventory[i].Combine(sender.item))
+                if (Inventory[i].Combine(sender))
                     break;
             }
-            RemoveNear(sender.EntityId);
         }
         #endregion
         #region Stamina Actions
@@ -108,30 +114,14 @@ namespace EscapeGuan.Entities.Player
         private float CurrentSpeed;
         private bool Running, RunStaminaCostable;
         private bool Restorable;
+
+        private float Horizontal => (Keys.Press(KeyCode.A, Keys.ControlLayer) ? -1 : 0) + (Keys.Press(KeyCode.D, Keys.ControlLayer) ? 1 : 0);
+        private float Vertical => (Keys.Press(KeyCode.S, Keys.ControlLayer) ? -1 : 0) + (Keys.Press(KeyCode.W, Keys.ControlLayer) ? 1 : 0);
+
         public override void FixedUpdate()
         {
-            float h = Input.GetAxisRaw("Horizontal"), v = Input.GetAxisRaw("Vertical");
-            #region Item Pickup
-            for (int i = NearItems.Count - 1; i >= 0; i--)
-            {
-                ItemEntity e = (ItemEntity)GameManager.Main.EntityPool[NearItems[i]];
-                if (Vector2.Distance(e.transform.position, transform.position) > ItemPickupRange)
-                    RemoveNear(NearItems[i]);
-            }
-            foreach (int x in GameManager.Main.ItemEntities)
-            {
-                if (NearItems.Contains(x))
-                    continue;
-                ItemEntity e = (ItemEntity)GameManager.Main.EntityPool[x];
-                if (Vector2.Distance(e.transform.position, transform.position) <= ItemPickupRange)
-                {
-                    NearItems.Add(x);
-                    List.Add((ItemEntity)GameManager.Main.EntityPool[x]);
-                }
-            }
-            #endregion
             #region Stamina
-            if ((Abs(h) > 0 || Abs(v) > 0) && Running)
+            if ((Abs(Horizontal) > 0 || Abs(Vertical) > 0) && Running)
                 RunStaminaCostable = CostStamina((CurrentSpeed - 1) * Time.fixedDeltaTime);
             else
                 RunStaminaCostable = true;
@@ -149,10 +139,10 @@ namespace EscapeGuan.Entities.Player
             if (SlowdownTiles.Contains(Map.GetTile(new(RoundToInt(transform.position.x) - 1, RoundToInt(transform.position.y) - 1))))
                 final *= SlowdownMultiplier;
 
-            if (Abs(h) > 0 && Abs(v) > 0)
-                Rigidbody.velocity = new(h * Sqrt2In2 * final, v * Sqrt2In2 * final);
+            if (Abs(Horizontal) > 0 && Abs(Vertical) > 0)
+                Rigidbody.velocity = new(Horizontal * Sqrt2In2 * final, Vertical * Sqrt2In2 * final);
             else
-                Rigidbody.velocity = new(h * final, v * final);
+                Rigidbody.velocity = new(Horizontal * final, Vertical * final);
 
             Camera.position = Vector3.Lerp(Camera.position, new(transform.position.x, transform.position.y, Camera.position.z), CameraFollowSpeed * Time.fixedDeltaTime);
             #endregion
@@ -162,11 +152,17 @@ namespace EscapeGuan.Entities.Player
         private void Update()
         {
             #region Movement Control
-            if (Input.GetKeyDown(KeyCode.LeftShift) && RunStaminaCostable)
+            if (Keys.Down(KeyCode.LeftShift, Keys.ControlLayer) && RunStaminaCostable)
                 Running = true;
-            if (!RunStaminaCostable || (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0))
+            if (!RunStaminaCostable || (Horizontal == 0 && Vertical == 0))
                 Running = false;
             #endregion
+        }
+
+        public void AddNear(int i)
+        {
+            NearItems.Add(i);
+            List.Add((ItemEntity)GameManager.EntityPool[i]);
         }
     }
 }

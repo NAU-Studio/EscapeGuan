@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 using EscapeGuan.Entities.Items;
-
+using EscapeGuan.UI;
 using UnityEngine;
 
 using Random = UnityEngine.Random;
@@ -36,7 +35,7 @@ namespace EscapeGuan.Entities
 
         [Header("* Not Attribute *")]
         public float Drag = .5f;
-        public int EntityId;
+        public int Id;
 
         public ItemStackCollection Inventory = new();
 
@@ -48,7 +47,7 @@ namespace EscapeGuan.Entities
 
         public virtual void Start()
         {
-            EntityId = Random.Range(int.MinValue, int.MaxValue);
+            Id = Random.Range(int.MinValue, int.MaxValue);
             RegisterEntity();
 
             try
@@ -61,7 +60,7 @@ namespace EscapeGuan.Entities
 
         public virtual void RegisterEntity()
         {
-            GameManager.Main.EntityPool.Add(EntityId, this);
+            GameManager.EntityPool.Add(Id, this);
             Attributes.Add(new Attribute<float>("HealthPoint", () => HealthPoint, (x) => HealthPoint = x));
             Attributes.Add(new Attribute<float>("MaxHealthPoint", () => MaxHealthPoint, (x) => MaxHealthPoint = x));
             Attributes.Add(new Attribute<float>("AttackValue", () => AttackValue, (x) => AttackValue = x));
@@ -81,8 +80,11 @@ namespace EscapeGuan.Entities
 
         public virtual void FixedUpdate()
         {
-            KnockbackVelocity = Vector2.Lerp(KnockbackVelocity, Vector2.zero, Drag);
-            transform.Translate(KnockbackVelocity);
+            if (KnockbackVelocity != Vector2.zero)
+            {
+                KnockbackVelocity -= KnockbackVelocity * Drag;
+                transform.Translate(KnockbackVelocity);
+            }
         }
 
         public virtual float GetAttackAmount()
@@ -119,7 +121,7 @@ namespace EscapeGuan.Entities
 
         public virtual void Kill()
         {
-            GameManager.Main.EntityPool.Remove(EntityId);
+            GameManager.EntityPool.Remove(Id);
             Destroy(gameObject);
             OnKill();
         }
@@ -152,12 +154,13 @@ namespace EscapeGuan.Entities
                 {
                     attr.Setter(value);
                     return;
-                } 
+                }
             }
             throw new Exception("Attribute not found.");
         }
 
-        public abstract void PickItem(ItemEntity sender);
+        public virtual void PickItem(ItemEntity sender) { }
+        public virtual void AddItem(ItemStack sender) { }
     }
 
     public abstract class Attribute

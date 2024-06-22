@@ -4,37 +4,27 @@ using EscapeGuan.Registries;
 using System;
 using Random = UnityEngine.Random;
 using Object = UnityEngine.Object;
+using System.Collections.Generic;
 
 namespace EscapeGuan.Entities.Items
 {
-    public class ItemStack
+    public class ItemStack : IDisposable
     {
-        private ItemStackOptions Options;
-        private readonly Item Base;
+        public Item Base;
+        public Dictionary<string, object> Attributes = new();
 
-        public string Name
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(Options.CustomName))
-                    return Base.Name;
-                else
-                    return Options.CustomName;
-            }
-            set => Options.CustomName = value;
-        }
-        public string Description => Base.Description + '\n' + Options.CustomDescription;
-        public Sprite Icon => Base.Icon;
-        public int Count { get => Options.Count; set
+        public Action<ItemStack> OnRemove = (x) => { };
+
+        public int Count { get => count; set
             {
                 if (value <= 0)
-                    OnRemove(this);
-                Options.Count = value;
+                    Delete();
+                count = value;
             }
         }
         public float CD => Base.UseCD;
 
-        public Action<ItemStack> OnRemove = (x) => { };
+        private int count;
 
         public ItemEntity CreateEntity(GameObject ItemTemplate)
         {
@@ -52,47 +42,38 @@ namespace EscapeGuan.Entities.Items
             return go.GetComponent<ItemEntity>();
         }
 
-        public void Use(Entity sender)
-        {
-            Base.Use(this, sender);
-        }
+        public void Use(Entity i) => Base.Use(this, i);
 
-        public bool Combine(ItemStack item)
+        public bool Combine(ItemStack i)
         {
-            if (item.Base == Base)
+            if (i.Base == Base && i.Base.GetDurability(i) == Base.GetDurability(this))
             {
-                Count += item.Count;
+                if (i.Count + Count > i.Base.MaxCount)
+                    return false;
+                Count += i.Count;
                 return true;
             }
             else
                 return false;
         }
 
-        public string GetCountString()
+        public string GetCountString() => Count <= 1 ? "" : Count.ToString();
+
+        public void Delete()
         {
-            if (Count <= 1)
-                return "";
-            else
-                return Count.ToString();
+            OnRemove(this);
+            Dispose();
         }
 
-        internal ItemStack(Item b)
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
+        internal ItemStack(Item b, int c = 1)
         {
             Base = b;
-            Options = new(1);
-        }
-    }
-
-    public struct ItemStackOptions
-    {
-        public int Count;
-        public string CustomName, CustomDescription;
-
-        public ItemStackOptions(int count = 1, string customName = "", string customDescription = "") : this()
-        {
-            Count = count;
-            CustomName = customName;
-            CustomDescription = customDescription;
+            count = c;
         }
     }
 }

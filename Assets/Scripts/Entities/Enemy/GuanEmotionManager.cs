@@ -11,12 +11,15 @@ namespace EscapeGuan.Entities.Enemy
     public class GuanEmotionManager : MonoBehaviour
     {
         public Sprite LoseTarget, FindTarget, Rest, Angry;
+    
+        private readonly Color Transparent = new(1, 1, 1, 0);
+        private Coroutine EmotionAnimationCoroutine;
+        
+        private SpriteRenderer Sprite => GetComponent<SpriteRenderer>();
 
-        private readonly Color transp = new(1, 1, 1, 0);
         public void ChangeEmotion(GuanEmotion e)
         {
-            SpriteRenderer rd = GetComponent<SpriteRenderer>();
-            rd.sprite = e switch
+            Sprite.sprite = e switch
             {
                 GuanEmotion.LoseTarget => LoseTarget,
                 GuanEmotion.FindTarget => FindTarget,
@@ -24,16 +27,21 @@ namespace EscapeGuan.Entities.Enemy
                 GuanEmotion.Angry => Angry,
                 _ => throw new ArgumentOutOfRangeException(nameof(e))
             };
-            rd.color = Color.white;
-            IEnumerator emotionAnimation()
-            {
-                rd.transform.DOLocalMoveY(1, .2f).SetEase(Ease.OutCubic);
-                yield return new WaitForSecondsRealtime(.2f);
-                rd.transform.DOLocalMoveY(.75f, .2f).SetEase(Ease.InCubic);
-                yield return new WaitForSecondsRealtime(2.2f);
-                rd.DOColor(transp, 1);
-            }
-            StartCoroutine(emotionAnimation());
+
+            if (EmotionAnimationCoroutine != null)
+                StopCoroutine(EmotionAnimationCoroutine);
+            
+            EmotionAnimationCoroutine = StartCoroutine(EmotionAnimation());
+        }
+
+        private IEnumerator EmotionAnimation()
+        {
+            Sprite.color = Color.white;
+            Sprite.transform.DOLocalMoveY(1, .2f).SetEase(Ease.OutCubic);
+            yield return new WaitForSecondsRealtime(.2f);
+            Sprite.transform.DOLocalMoveY(.75f, .2f).SetEase(Ease.InCubic);
+            yield return new WaitForSecondsRealtime(2.2f);
+            Sprite.DOColor(Transparent, 1);
         }
     }
 }
