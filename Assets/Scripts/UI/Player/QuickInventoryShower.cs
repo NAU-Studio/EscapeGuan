@@ -5,6 +5,7 @@ using DG.Tweening;
 using EscapeGuan.Entities.Items;
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EscapeGuan.UI.Player
 {
@@ -64,11 +65,14 @@ namespace EscapeGuan.UI.Player
                 prevItem = Slots[Selection].Item;
                 GameManager.Main.ItemProfile.SetText(Slots[Selection].Item.Base.Name, Slots[Selection].Item.Base.GetDescription(Slots[Selection].Item));
             }
-            if (Input.GetKeyDown(KeyCode.Z))
-                Use();
         }
 
-        public void Use()
+        private void Start()
+        {
+            GameManager.Action.Player.Use.performed += Use;
+        }
+
+        public void Use(InputAction.CallbackContext cbc)
         {
             Slots[Selection].Use();
         }

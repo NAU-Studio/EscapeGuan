@@ -35,6 +35,7 @@ namespace EscapeGuan
         public static Dictionary<int, Entity> EntityPool = new();
         public static HashSet<int> ItemEntities = new();
         public static Player Player => (Player)EntityPool[ControlledId];
+        public static PlayerAction Action;
 
         private void Start()
         {

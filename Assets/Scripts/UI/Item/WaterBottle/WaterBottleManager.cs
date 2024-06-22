@@ -2,7 +2,7 @@ using System;
 
 using EscapeGuan.Entities.Items;
 using EscapeGuan.Items;
-
+using EscapeGuan.UI.Throw;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +10,8 @@ namespace EscapeGuan.UI.Item.WaterBottle
 {
     public class WaterBottleManager : MonoBehaviour
     {
+        public ThrowUI ThrowManager;
+
         ItemStack Exhaler;
 
         Hidable Hidable => GetComponent<Hidable>();
@@ -30,7 +32,7 @@ namespace EscapeGuan.UI.Item.WaterBottle
         public void Throw()
         {
             Hidable.Hide();
-            GameManager.Main.Crosshair.FloatingAmount = GameManager.Player.BottleThrowFloating;
+            ThrowManager.Throwing = true;
         }
 
         public void ThrowEmpty()

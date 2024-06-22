@@ -42,7 +42,16 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""id"": ""4dc8b0ca-c70c-4bd1-ad26-5f54396056c6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a5acdfa-d62b-44ad-a570-5e33f4b57278"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -112,6 +121,17 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""action"": ""Running Toggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""428d29aa-beae-48f2-bf1f-803f3ad753dc"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -128,6 +148,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_RunningToggle = m_Player.FindAction("Running Toggle", throwIfNotFound: true);
+        m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -191,12 +212,14 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_RunningToggle;
+    private readonly InputAction m_Player_Use;
     public struct PlayerActions
     {
         private @PlayerAction m_Wrapper;
         public PlayerActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @RunningToggle => m_Wrapper.m_Player_RunningToggle;
+        public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -212,6 +235,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @RunningToggle.started += instance.OnRunningToggle;
             @RunningToggle.performed += instance.OnRunningToggle;
             @RunningToggle.canceled += instance.OnRunningToggle;
+            @Use.started += instance.OnUse;
+            @Use.performed += instance.OnUse;
+            @Use.canceled += instance.OnUse;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -222,6 +248,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @RunningToggle.started -= instance.OnRunningToggle;
             @RunningToggle.performed -= instance.OnRunningToggle;
             @RunningToggle.canceled -= instance.OnRunningToggle;
+            @Use.started -= instance.OnUse;
+            @Use.performed -= instance.OnUse;
+            @Use.canceled -= instance.OnUse;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -252,5 +281,6 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnRunningToggle(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
 }

@@ -15,14 +15,15 @@ namespace EscapeGuan.Entities.Items
 
         public Action<ItemStack> OnRemove = (x) => { };
 
-        public int Count { get => count; set
+        public int Count
+        {
+            get => count; set
             {
                 if (value <= 0)
                     Delete();
                 count = value;
             }
         }
-        public float CD => Base.UseCD;
 
         private int count;
 

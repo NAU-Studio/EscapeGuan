@@ -24,6 +24,8 @@ namespace EscapeGuan.Entities.Bullet
 
         private float ElapsedDistance;
 
+        private float HitDelay = 1;
+
         public override void Start()
         {
             base.Start();
@@ -35,6 +37,8 @@ namespace EscapeGuan.Entities.Bullet
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            if (HitDelay > 0)
+                HitDelay -= Time.fixedDeltaTime;
             ElapsedDistance += Rigidbody.velocity.magnitude * Time.fixedDeltaTime;
             if (ElapsedDistance >= DropPointDistance)
                 Drop();
@@ -42,7 +46,7 @@ namespace EscapeGuan.Entities.Bullet
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.gameObject.GetComponent<Entity>() is Entity e)
+            if (other.gameObject.GetComponent<Entity>() is Entity e && HitDelay <= 0)
                 Hit(e);
         }
 

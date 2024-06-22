@@ -29,12 +29,10 @@ namespace EscapeGuan.Entities.Player
         public List<TileBase> SlowdownTiles;
         public float SlowdownMultiplier;
 
-        public float BottleThrowFloating;
+        public float ThrowStability;
 
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
         public override int InventoryLength => 36;
-
-        public PlayerAction Action;
 
         public override void Start()
         {
@@ -121,10 +119,10 @@ namespace EscapeGuan.Entities.Player
 
         private void Awake()
         {
-            Action = new();
-            Action.Enable();
-            Action.Player.Movement.performed += (x) => movement = x.ReadValue<Vector2>();
-            Action.Player.RunningToggle.performed += (x) => Running = true;
+            GameManager.Action = new();
+            GameManager.Action.Player.Movement.performed += (x) => movement = x.ReadValue<Vector2>();
+            GameManager.Action.Player.RunningToggle.performed += (x) => Running = true;
+            GameManager.Action.Enable();
         }
 
         private Vector2 movement;

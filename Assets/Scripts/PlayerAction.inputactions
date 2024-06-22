@@ -20,7 +20,16 @@
                     "id": "4dc8b0ca-c70c-4bd1-ad26-5f54396056c6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Use",
+                    "type": "Button",
+                    "id": "7a5acdfa-d62b-44ad-a570-5e33f4b57278",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
@@ -88,6 +97,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Running Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "428d29aa-beae-48f2-bf1f-803f3ad753dc",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

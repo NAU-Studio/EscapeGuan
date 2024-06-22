@@ -990,6 +990,7 @@ GameObject:
   - component: {fileID: 241128859}
   - component: {fileID: 241128858}
   - component: {fileID: 241128857}
+  - component: {fileID: 241128861}
   m_Layer: 5
   m_Name: Throw UI
   m_TagString: Untagged
@@ -1039,7 +1040,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 241128855}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -1056,7 +1057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.050980393}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.2509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1081,6 +1082,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 241128855}
   m_CullTransparentMesh: 1
+--- !u!114 &241128861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241128855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdea6e7da571614482b12d3625ab080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: 
+  Template: {fileID: 0}
+  RangeDisplayer: {fileID: 613550494}
+  Throwing: 0
 --- !u!1 &279661400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,6 +1511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2f9c49e1510ef499aafb870fa3fc49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ThrowManager: {fileID: 241128861}
 --- !u!114 &381065813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2057,7 +2075,7 @@ MonoBehaviour:
   SlowdownTiles:
   - {fileID: 11400000, guid: b3702f95e475afb4fbf1665bd4428b28, type: 2}
   SlowdownMultiplier: 0.75
-  BottleThrowFloating: 0
+  ThrowStability: 250
   ItemPickupRange: 1
   NearItems: 
   List: {fileID: 1151086893}
@@ -3835,7 +3853,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999825
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4337,10 +4355,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 488572049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 32, y: 32}
+  m_SizeDelta: {x: 16, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &729709696
 MonoBehaviour:
@@ -6526,7 +6544,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000017075025}
+  m_AnchoredPosition: {x: 0, y: 0.0007895549}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -7387,10 +7405,10 @@ MonoBehaviour:
   StartScale: 3
   MinRocksCount: 128
   MaxRocksCount: 256
-  MinBottlesCount: 2
-  MaxBottlesCount: 2
-  MinSticksCount: 2
-  MaxSticksCount: 2
+  MinBottlesCount: 256
+  MaxBottlesCount: 256
+  MinSticksCount: 256
+  MaxSticksCount: 256
 --- !u!4 &1332052864
 Transform:
   m_ObjectHideFlags: 0
