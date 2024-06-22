@@ -24,7 +24,7 @@ namespace EscapeGuan.Items
         {
             // sender.Count--;
             Debug.Log($"使用前含量：{sender.Attributes[Mass]} kg (L)");
-            if (from.Id == GameManager.ControlledEntityId)
+            if (from.Id == GameManager.ControlledId)
                 GameManager.Main.WaterBottleManager.Exhale(sender);
         }
 

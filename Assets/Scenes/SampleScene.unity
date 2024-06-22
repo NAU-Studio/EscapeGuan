@@ -6526,7 +6526,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000060236496}
+  m_AnchoredPosition: {x: 0, y: 0.000017075025}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -7387,10 +7387,10 @@ MonoBehaviour:
   StartScale: 3
   MinRocksCount: 128
   MaxRocksCount: 256
-  MinBottlesCount: 4096
-  MaxBottlesCount: 4096
-  MinSticksCount: 4096
-  MaxSticksCount: 4096
+  MinBottlesCount: 2
+  MaxBottlesCount: 2
+  MinSticksCount: 2
+  MaxSticksCount: 2
 --- !u!4 &1332052864
 Transform:
   m_ObjectHideFlags: 0

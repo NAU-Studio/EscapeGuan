@@ -31,10 +31,10 @@ namespace EscapeGuan
 
         public static Dictionary<string, GameObject> Templates = new();
 
-        public static int ControlledEntityId;
+        public static int ControlledId;
         public static Dictionary<int, Entity> EntityPool = new();
         public static HashSet<int> ItemEntities = new();
-        public static Player Player => (Player)EntityPool[ControlledEntityId];
+        public static Player Player => (Player)EntityPool[ControlledId];
 
         private void Start()
         {

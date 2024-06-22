@@ -34,14 +34,17 @@ namespace EscapeGuan.Entities.Player
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
         public override int InventoryLength => 36;
 
+        public PlayerAction Action;
+
         public override void Start()
         {
             base.Start();
+
             Attributes.Add(new Attribute<float>("Speed", () => Speed, (x) => Speed = x));
             Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, (x) => RunSpeedMultiplier = x));
             Attributes.Add(new Attribute<float>("Stamina", () => Stamina, (x) => Stamina = x));
             Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, (x) => MaxStamina = x));
-            GameManager.ControlledEntityId = Id;
+            GameManager.ControlledId = Id;
 
             StartCoroutine(SetRestorable());
         }
@@ -116,13 +119,21 @@ namespace EscapeGuan.Entities.Player
         private bool Running, RunStaminaCostable;
         private bool Restorable;
 
-        private float Horizontal => (Keys.Press(KeyCode.A, Keys.ControlLayer) ? -1 : 0) + (Keys.Press(KeyCode.D, Keys.ControlLayer) ? 1 : 0);
-        private float Vertical => (Keys.Press(KeyCode.S, Keys.ControlLayer) ? -1 : 0) + (Keys.Press(KeyCode.W, Keys.ControlLayer) ? 1 : 0);
+        private void Awake()
+        {
+            Action = new();
+            Action.Enable();
+            Action.Player.Movement.performed += (x) => movement = x.ReadValue<Vector2>();
+            Action.Player.RunningToggle.performed += (x) => Running = true;
+        }
+
+        private Vector2 movement;
 
         public override void FixedUpdate()
         {
+            base.FixedUpdate();
             #region Stamina
-            if ((Abs(Horizontal) > 0 || Abs(Vertical) > 0) && Running)
+            if ((movement.x != 0 || movement.y != 0) && Running)
                 RunStaminaCostable = CostStamina((CurrentSpeed - 1) * Time.fixedDeltaTime);
             else
                 RunStaminaCostable = true;
@@ -131,6 +142,8 @@ namespace EscapeGuan.Entities.Player
                 RestoreStamina(Time.fixedDeltaTime);
             #endregion
             #region Movement Control
+            if (!RunStaminaCostable || (movement == Vector2.zero))
+                Running = false;
             if (Running)
                 CurrentSpeed = RunSpeedMultiplier;
             else
@@ -139,25 +152,13 @@ namespace EscapeGuan.Entities.Player
             float final = Speed * CurrentSpeed;
             if (SlowdownTiles.Contains(Map.GetTile(new(RoundToInt(transform.position.x) - 1, RoundToInt(transform.position.y) - 1))))
                 final *= SlowdownMultiplier;
-
-            if (Abs(Horizontal) > 0 && Abs(Vertical) > 0)
-                Rigidbody.velocity = new(Horizontal * Sqrt2In2 * final, Vertical * Sqrt2In2 * final);
-            else
-                Rigidbody.velocity = new(Horizontal * final, Vertical * final);
-
-            Camera.position = Vector3.Lerp(Camera.position, new(transform.position.x, transform.position.y, Camera.position.z), CameraFollowSpeed * Time.fixedDeltaTime);
+            Rigidbody.velocity = final * movement;
             #endregion
-            base.FixedUpdate();
         }
 
         private void Update()
         {
-            #region Movement Control
-            if (Keys.Down(KeyCode.LeftShift, Keys.ControlLayer) && RunStaminaCostable)
-                Running = true;
-            if (!RunStaminaCostable || (Horizontal == 0 && Vertical == 0))
-                Running = false;
-            #endregion
+            Camera.position = Vector3.Lerp(Camera.position, new(transform.position.x, transform.position.y, Camera.position.z), CameraFollowSpeed * Time.deltaTime);
         }
 
         public void AddNear(int i)

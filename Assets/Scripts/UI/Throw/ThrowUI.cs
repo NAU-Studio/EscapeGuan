@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using EscapeGuan.Entities.Bullet;
 using UnityEngine;
 
 namespace EscapeGuan.UI.Throw
 {
     public class ThrowUI : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public string Text;
+        public Bullet Template;
+        public RectTransform RangeDisplayer;
+
+        public void Throw()
         {
 
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
 
         }

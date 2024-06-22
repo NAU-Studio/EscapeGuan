@@ -4,6 +4,7 @@ using EscapeGuan.Entities.Items;
 using EscapeGuan.Items;
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EscapeGuan.UI.Item.WaterBottle
 {
@@ -12,8 +13,6 @@ namespace EscapeGuan.UI.Item.WaterBottle
         ItemStack Exhaler;
 
         Hidable Hidable => GetComponent<Hidable>();
-
-        public int KeyLayer => Keys.UILayer + 9999;
 
         public void Exhale(ItemStack sender)
         {
@@ -31,7 +30,7 @@ namespace EscapeGuan.UI.Item.WaterBottle
         public void Throw()
         {
             Hidable.Hide();
-            throw new NotImplementedException();
+            GameManager.Main.Crosshair.FloatingAmount = GameManager.Player.BottleThrowFloating;
         }
 
         public void ThrowEmpty()
@@ -41,12 +40,12 @@ namespace EscapeGuan.UI.Item.WaterBottle
 
         private void Update()
         {
-            if (Keys.Down(KeyCode.X, KeyLayer))
+            if (Keyboard.current.xKey.wasReleasedThisFrame)
             {
                 Drink();
                 return;
             }
-            if (Keys.Down(KeyCode.C, KeyLayer))
+            if (Keyboard.current.cKey.wasReleasedThisFrame)
             {
                 Throw();
                 return;

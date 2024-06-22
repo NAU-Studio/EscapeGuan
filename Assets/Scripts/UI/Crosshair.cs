@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EscapeGuan.UI
 {
@@ -10,7 +11,7 @@ namespace EscapeGuan.UI
 
         private void Update()
         {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(Parent, Input.mousePosition, Camera.main, out Vector2 pos);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(Parent, Mouse.current.position.value, Camera.main, out Vector2 pos);
             transform.anchoredPosition = pos + new Vector2(Random.Range(-FloatingAmount, FloatingAmount), Random.Range(-FloatingAmount, FloatingAmount));
         }
     }
