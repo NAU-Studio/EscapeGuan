@@ -3,20 +3,20 @@ using EscapeGuan.Entities;
 using EscapeGuan.Registries;
 
 using UnityEngine;
-using EscapeGuan;
 
-public class EmptyWaterBottleItem : Item
+namespace EscapeGuan.Items
 {
-    public override int MaxCount => 99;
-
-    public EmptyWaterBottleItem(string name, string description, Sprite icon) : base(name, description, icon)
+    public class EmptyWaterBottleItem : Item
     {
+        public override int MaxCount => 99;
 
-    }
+        public EmptyWaterBottleItem(string name, string description, Sprite icon) : base(name, description, icon)
+        { }
 
-    public override void Use(ItemStack sender, Entity from)
-    {
-        sender.Count--;
-        GameManager.Main.WaterBottleManager.ThrowEmpty();
+        public override void Use(ItemStack i, Entity from)
+        {
+            base.Use(i, from);
+            GameManager.Main.WaterBottleManager.ThrowEmpty();
+        }
     }
 }

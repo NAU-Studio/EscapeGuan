@@ -2,74 +2,75 @@ using System.Collections.Generic;
 
 using DG.Tweening;
 
-using EscapeGuan;
 using EscapeGuan.Entities.Items;
 
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public class QuickInventoryShower : MonoBehaviour
+namespace EscapeGuan.UI.Player
 {
-    [SerializeField]
-    List<QuickInventorySlot> Slots;
-    ItemStack prevItem;
-
-    public RectTransform SelectionBox;
-
-    public int Selection;
-
-    public void Set(int index, ItemStack item)
+    public class QuickInventoryShower : MonoBehaviour
     {
-        Slots[index].Item = item;
-    }
+        [SerializeField]
+        List<QuickInventorySlot> Slots;
+        ItemStack prevItem;
 
-    public bool Add(ItemStack item)
-    {
-        foreach (QuickInventorySlot s in Slots)
+        public RectTransform SelectionBox;
+
+        public int Selection;
+
+        public void Set(int index, ItemStack item)
         {
-            if (s.Item == null)
+            Slots[index].Item = item;
+        }
+
+        public bool Add(ItemStack item)
+        {
+            foreach (QuickInventorySlot s in Slots)
             {
-                s.Item = item;
-                return true;
+                if (s.Item == null)
+                {
+                    s.Item = item;
+                    return true;
+                }
+                if (s.Item.Combine(item))
+                    return true;
             }
-            if (s.Item.Combine(item))
-                return true;
+            return false;
         }
-        return false;
-    }
 
-    private void Update()
-    {
-        foreach (QuickInventorySlot s in Slots)
-            s.Item = GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId].Inventory[s.Index];
-
-        float scr = Input.mouseScrollDelta.y;
-        if (scr > 0)
+        private void Update()
         {
-            Selection++;
-            if (Selection >= Slots.Count)
-                Selection = 0;
-        }
-        if (scr < 0)
-        {
-            Selection--;
-            if (Selection < 0)
-                Selection = Slots.Count - 1;
-        }
-        if (scr != 0)
-            SelectionBox.DOAnchorPosX(Selection * 48, .1f).SetEase(Ease.OutCubic);
+            foreach (QuickInventorySlot s in Slots)
+                s.Item = GameManager.Player.Inventory[s.Index];
 
-        if (prevItem != Slots[Selection].Item)
-        {
-            prevItem = Slots[Selection].Item;
-            GameManager.Main.ItemProfile.SetText(Slots[Selection].Item.Base.Name, Slots[Selection].Item.Base.GetDescription(Slots[Selection].Item));
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-            Use();
-    }
+            float scr = Input.mouseScrollDelta.y;
+            if (scr > 0)
+            {
+                Selection++;
+                if (Selection >= Slots.Count)
+                    Selection = 0;
+            }
+            if (scr < 0)
+            {
+                Selection--;
+                if (Selection < 0)
+                    Selection = Slots.Count - 1;
+            }
+            if (scr != 0)
+                SelectionBox.DOAnchorPosX(Selection * 48, .1f).SetEase(Ease.OutCubic);
 
-    public void Use()
-    {
-        Slots[Selection].Use();
+            if (prevItem != Slots[Selection].Item)
+            {
+                prevItem = Slots[Selection].Item;
+                GameManager.Main.ItemProfile.SetText(Slots[Selection].Item.Base.Name, Slots[Selection].Item.Base.GetDescription(Slots[Selection].Item));
+            }
+            if (Input.GetKeyDown(KeyCode.Z))
+                Use();
+        }
+
+        public void Use()
+        {
+            Slots[Selection].Use();
+        }
     }
 }

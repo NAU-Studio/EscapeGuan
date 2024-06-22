@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EscapeGuan.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class HidableUI : RectBehaviour
+    public class Hidable : RectBehaviour
     {
         public float Transition;
         [Range(0, 1)]

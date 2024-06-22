@@ -4,14 +4,17 @@ using EscapeGuan.Registries;
 
 using UnityEngine;
 
-public class TestBottleItem : Item
+namespace EscapeGuan.Items
 {
-    public TestBottleItem(string name, string description, Sprite icon) : base(name, description, icon)
-    { }
-
-    public override void Use(ItemStack sender, Entity from)
+    public class TestBottleItem : Item
     {
-        sender.Count--;
-        Debug.Log("这个瓶子被用掉了");
+        public TestBottleItem(string name, string description, Sprite icon) : base(name, description, icon)
+        { }
+
+        public override void Use(ItemStack sender, Entity from)
+        {
+            sender.Count--;
+            Debug.Log("这个瓶子被用掉了");
+        }
     }
 }

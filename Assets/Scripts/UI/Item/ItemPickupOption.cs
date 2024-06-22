@@ -18,7 +18,7 @@ namespace EscapeGuan.UI.Item
 
         private void Update()
         {
-            Icon.sprite = Target.item.Icon;
+            Icon.sprite = Target.item.Base.Icon;
             Text.text = Target.item.Base.Name;
         }
 
@@ -26,21 +26,21 @@ namespace EscapeGuan.UI.Item
         {
             if (!Destroyed)
             {
-                Target.Pickup(GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId]);
+                Target.Pickup(GameManager.Player);
                 Destroy();
             }
         }
 
         public void Show()
         {
-            GetComponent<HidableUI>().Show();
+            GetComponent<Hidable>().Show();
         }
 
         public void Destroy()
         {
             Destroyed = true;
-            GetComponent<HidableUI>().Hide();
-            GameManager.DelayAction(this, () => { Destroy(gameObject); }, GetComponent<HidableUI>().Transition + .1f);
+            GetComponent<Hidable>().Hide();
+            GameManager.DelayAction(this, () => { Destroy(gameObject); }, GetComponent<Hidable>().Transition + .1f);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace EscapeGuan.Registries
         public Sprite Icon;
         public virtual float UseCD => 0;
         public virtual int MaxCount => 64;
-        
+
         public Item(string name, string description, Sprite icon)
         {
             Name = name;
@@ -19,9 +19,9 @@ namespace EscapeGuan.Registries
             Icon = icon;
         }
 
-        public virtual void Use(ItemStack sender, Entity from)
+        public virtual void Use(ItemStack i, Entity from)
         {
-
+            i.Count--;
         }
 
         public virtual ItemStack CreateItemStack(int count = 1)

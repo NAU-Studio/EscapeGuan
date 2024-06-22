@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 using EscapeGuan.Entities.Items;
 using EscapeGuan.UI.Item;
-
+using EscapeGuan.UI.Player;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-using static KeyManager;
 using static UnityEngine.Mathf;
 
 namespace EscapeGuan.Entities.Player
 {
-    public class Player : Entity, IKeyBehaviour
+    public class Player : Entity
     {
         [Header("Player Attributes")]
         public float Speed;
@@ -20,8 +19,9 @@ namespace EscapeGuan.Entities.Player
 
         public float Stamina;
         public float MaxStamina;
-
         public float StaminaRestoreDelay;
+
+        [Header("Other settings")]
         public float CameraFollowSpeed;
         public Transform Camera;
 
@@ -29,10 +29,8 @@ namespace EscapeGuan.Entities.Player
         public List<TileBase> SlowdownTiles;
         public float SlowdownMultiplier;
 
-        public Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
+        private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
         public override int InventoryLength => 36;
-
-        public int KeyLayer => ControlLayer;
 
         public override void Start()
         {
@@ -41,7 +39,7 @@ namespace EscapeGuan.Entities.Player
             Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, (x) => RunSpeedMultiplier = x));
             Attributes.Add(new Attribute<float>("Stamina", () => Stamina, (x) => Stamina = x));
             Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, (x) => MaxStamina = x));
-            GameManager.Main.ControlledEntityId = EntityId;
+            GameManager.ControlledEntityId = Id;
 
             StartCoroutine(SetRestorable());
         }
@@ -58,13 +56,13 @@ namespace EscapeGuan.Entities.Player
         public void RemoveNear(int v)
         {
             NearItems.Remove(v);
-            List.Remove((ItemEntity)GameManager.Main.EntityPool[v]);
+            List.Remove((ItemEntity)GameManager.EntityPool[v]);
         }
 
         public override void PickItem(ItemEntity sender)
         {
             AddItem(sender.item);
-            RemoveNear(sender.EntityId);
+            RemoveNear(sender.Id);
         }
 
         public override void AddItem(ItemStack sender)
@@ -117,30 +115,11 @@ namespace EscapeGuan.Entities.Player
         private bool Running, RunStaminaCostable;
         private bool Restorable;
 
-        private float Horizontal => (KeyPress(KeyCode.A, KeyLayer) ? -1 : 0) + (KeyPress(KeyCode.D, KeyLayer) ? 1 : 0);
-        private float Vertical => (KeyPress(KeyCode.S, KeyLayer)? -1 : 0) + (KeyPress(KeyCode.W, KeyLayer)? 1 : 0);
+        private float Horizontal => (Keys.Press(KeyCode.A, Keys.ControlLayer) ? -1 : 0) + (Keys.Press(KeyCode.D, Keys.ControlLayer) ? 1 : 0);
+        private float Vertical => (Keys.Press(KeyCode.S, Keys.ControlLayer) ? -1 : 0) + (Keys.Press(KeyCode.W, Keys.ControlLayer) ? 1 : 0);
 
         public override void FixedUpdate()
         {
-            #region Item Pickup
-            for (int i = NearItems.Count - 1; i >= 0; i--)
-            {
-                ItemEntity e = (ItemEntity)GameManager.Main.EntityPool[NearItems[i]];
-                if (Vector2.Distance(e.transform.position, transform.position) > ItemPickupRange)
-                    RemoveNear(NearItems[i]);
-            }
-            foreach (int x in GameManager.Main.ItemEntities)
-            {
-                if (NearItems.Contains(x))
-                    continue;
-                ItemEntity e = (ItemEntity)GameManager.Main.EntityPool[x];
-                if (Vector2.Distance(e.transform.position, transform.position) <= ItemPickupRange)
-                {
-                    NearItems.Add(x);
-                    List.Add((ItemEntity)GameManager.Main.EntityPool[x]);
-                }
-            }
-            #endregion
             #region Stamina
             if ((Abs(Horizontal) > 0 || Abs(Vertical) > 0) && Running)
                 RunStaminaCostable = CostStamina((CurrentSpeed - 1) * Time.fixedDeltaTime);
@@ -173,11 +152,17 @@ namespace EscapeGuan.Entities.Player
         private void Update()
         {
             #region Movement Control
-            if (KeyDown(KeyCode.LeftShift, KeyLayer) && RunStaminaCostable)
+            if (Keys.Down(KeyCode.LeftShift, Keys.ControlLayer) && RunStaminaCostable)
                 Running = true;
             if (!RunStaminaCostable || (Horizontal == 0 && Vertical == 0))
                 Running = false;
             #endregion
+        }
+
+        public void AddNear(int i)
+        {
+            NearItems.Add(i);
+            List.Add((ItemEntity)GameManager.EntityPool[i]);
         }
     }
 }

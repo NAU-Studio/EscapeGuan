@@ -4,14 +4,17 @@ using EscapeGuan.Registries;
 
 using UnityEngine;
 
-public class SmallStickItem : Item
+namespace EscapeGuan.Items
 {
-    public SmallStickItem(string name, string description, Sprite icon) : base(name, description, icon)
-    { }
-
-    public override void Use(ItemStack sender, Entity from)
+    public class SmallStickItem : Item
     {
-        sender.Count--;
-        Debug.Log("目前仅用作测试UI");
+        public SmallStickItem(string name, string description, Sprite icon) : base(name, description, icon)
+        { }
+
+        public override void Use(ItemStack i, Entity from)
+        {
+            base.Use(i, from);
+            Debug.Log("鐩墠浠呯敤鏉ユ祴璇昒I");
+        }
     }
 }

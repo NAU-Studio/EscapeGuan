@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using EscapeGuan.Entities.Items;
+using EscapeGuan.Items;
 using EscapeGuan.Registries;
 
 using Pathfinding;
@@ -147,7 +147,7 @@ namespace EscapeGuan.MapGenerator
                 tcds[i] = new(enu.Current, final, Color.white, Map.GetTransformMatrix(enu.Current));
             }
             Map.SetTiles(tcds, true);
-            
+
             // Rocks
             for (int _ = 0; _ < Random.Range(MinRocksCount, MaxRocksCount + 1); _++)
             {
@@ -200,17 +200,6 @@ namespace EscapeGuan.MapGenerator
                 if (roadHead.x > Size | roadHead.y > Size)
                     break;
             }
-        }
-    }
-
-    public static class MathfExt
-    {
-        public static float Avg(params float[] v)
-        {
-            float f = 0;
-            foreach (float i in v)
-                f += i;
-            return f / v.Length;
         }
     }
 

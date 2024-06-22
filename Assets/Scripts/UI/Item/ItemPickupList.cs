@@ -14,7 +14,7 @@ namespace EscapeGuan.UI.Item
     {
         public List<ItemPickupOption> Options = new();
         public ItemPickupOption Template;
-        public HidableUI Parent;
+        public Hidable Parent;
         public RectTransform SelectionObject;
         public int Selection = 0;
 

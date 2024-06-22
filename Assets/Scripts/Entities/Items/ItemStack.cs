@@ -11,8 +11,9 @@ namespace EscapeGuan.Entities.Items
     public class ItemStack : IDisposable
     {
         public Item Base;
-        public Sprite Icon => Base.Icon;
         public Dictionary<string, object> Attributes = new();
+
+        public Action<ItemStack> OnRemove = (x) => { };
 
         public int Count { get => count; set
             {
@@ -22,9 +23,6 @@ namespace EscapeGuan.Entities.Items
             }
         }
         public float CD => Base.UseCD;
-
-
-        public Action<ItemStack> OnRemove = (x) => { };
 
         private int count;
 
@@ -44,31 +42,22 @@ namespace EscapeGuan.Entities.Items
             return go.GetComponent<ItemEntity>();
         }
 
-        public void Use(Entity sender)
-        {
-            Base.Use(this, sender);
-        }
+        public void Use(Entity i) => Base.Use(this, i);
 
-        public bool Combine(ItemStack item)
+        public bool Combine(ItemStack i)
         {
-            if (item.Base == Base && item.Base.GetDurability(item) == Base.GetDurability(this))
+            if (i.Base == Base && i.Base.GetDurability(i) == Base.GetDurability(this))
             {
-                if (item.Count + Count > item.Base.MaxCount)
+                if (i.Count + Count > i.Base.MaxCount)
                     return false;
-                Count += item.Count;
+                Count += i.Count;
                 return true;
             }
             else
                 return false;
         }
 
-        public string GetCountString()
-        {
-            if (Count <= 1)
-                return "";
-            else
-                return Count.ToString();
-        }
+        public string GetCountString() => Count <= 1 ? "" : Count.ToString();
 
         public void Delete()
         {

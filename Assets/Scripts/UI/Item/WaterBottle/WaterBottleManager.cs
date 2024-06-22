@@ -1,53 +1,56 @@
 using System;
 
 using EscapeGuan.Entities.Items;
-using EscapeGuan.UI;
+using EscapeGuan.Items;
 
 using UnityEngine;
 
-public class WaterBottleManager : MonoBehaviour, IKeyBehaviour
+namespace EscapeGuan.UI.Item.WaterBottle
 {
-    ItemStack Exhaler;
-    
-    HidableUI Hidable => GetComponent<HidableUI>();
-
-    public int KeyLayer => KeyManager.UILayer + 9999;
-
-    public void Exhale(ItemStack sender)
+    public class WaterBottleManager : MonoBehaviour
     {
-        Exhaler = sender;
-        Hidable.Show();
-    }
+        ItemStack Exhaler;
 
-    public void Drink()
-    {
-        ((WaterBottleItem)Exhaler.Base).Drink(Exhaler);
-        Exhaler = null;
-        Hidable.Hide();
-    }
+        Hidable Hidable => GetComponent<Hidable>();
 
-    public void Throw()
-    {
-        Hidable.Hide();
-        throw new NotImplementedException();
-    }
-    
-    public void ThrowEmpty()
-    {
-        throw new NotImplementedException();
-    }
+        public int KeyLayer => Keys.UILayer + 9999;
 
-    private void Update()
-    {
-        if (KeyManager.KeyDown(KeyCode.X, KeyLayer))
+        public void Exhale(ItemStack sender)
         {
-            Drink();
-            return;
+            Exhaler = sender;
+            Hidable.Show();
         }
-        if (KeyManager.KeyDown(KeyCode.C, KeyLayer))
+
+        public void Drink()
         {
-            Throw();
-            return;
+            ((WaterBottleItem)Exhaler.Base).Drink(Exhaler);
+            Exhaler = null;
+            Hidable.Hide();
+        }
+
+        public void Throw()
+        {
+            Hidable.Hide();
+            throw new NotImplementedException();
+        }
+
+        public void ThrowEmpty()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Update()
+        {
+            if (Keys.Down(KeyCode.X, KeyLayer))
+            {
+                Drink();
+                return;
+            }
+            if (Keys.Down(KeyCode.C, KeyLayer))
+            {
+                Throw();
+                return;
+            }
         }
     }
 }

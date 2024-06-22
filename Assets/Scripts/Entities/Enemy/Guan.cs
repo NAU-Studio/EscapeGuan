@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,38 +26,35 @@ namespace EscapeGuan.Entities.Enemy
         [Header("Bottle")]
         public float ThrowBottleInterval;
         public int BottleCount = 5;
-
-        public enum Status
-        {
-            Wander,
-            Attack,
-            Rest 
-        }
-
-        public GuanEmotionManager EmotionManager;
-
-        [ReadOnly]
-        public Status State = Status.Wander;
-
-        public override bool GuanAttackable => false;
-
         [Header("Sprites")]
         public Sprite IdleSprite;
         public AnimationClip MovementClip;
+
+        public GuanEmotionManager EmotionManager;
+        public Status State = Status.Wander;
+
+        public override bool GuanAttackable => false;
 
         public override int InventoryLength => 9;
 
         private AIDestinationSetter TargetDestinationSetter => GetComponent<AIDestinationSetter>();
         private AIPath TargetPath => GetComponent<AIPath>();
-        private SpriteRenderer Sprite => GetComponent<SpriteRenderer>();
+
         private Animator MovementAnimator => GetComponent<Animator>();
 
-        private Entity targetAttack;
+        private Entity AttackTarget;
 
-        [SerializeField, ReadOnly]
+
+
         private float Stamina, AttackTimer, DamageMultiplier = 1;
-        [SerializeField, ReadOnly]
         private bool Attacking;
+
+        public enum Status
+        {
+            Wander,
+            Attack,
+            Rest
+        }
 
         public override void Start()
         {
@@ -78,8 +76,7 @@ namespace EscapeGuan.Entities.Enemy
         {
             Transform nearest = null;
             float nd = float.MaxValue;
-            foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool.Where(
-                (x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) <= NoticeDistance))
+            foreach (KeyValuePair<int, Entity> e in GameManager.EntityPool.Where((x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) <= NoticeDistance))
             {
                 if (Vector3.Distance(transform.position, e.Value.transform.position) < nd)
                 {
@@ -94,23 +91,23 @@ namespace EscapeGuan.Entities.Enemy
             {
                 State = Status.Attack;
                 EmotionManager.ChangeEmotion(GuanEmotion.FindTarget);
-                targetAttack = nearest.GetComponent<Entity>();
             }
+            AttackTarget = nearest.GetComponent<Entity>();
 
-            SkipNearest:
-            if (targetAttack != null && Vector3.Distance(transform.position, targetAttack.transform.position) > LoseDistance)
+        SkipNearest:
+            if (AttackTarget != null && Vector3.Distance(transform.position, AttackTarget.transform.position) > LoseDistance)
             {
                 EmotionManager.ChangeEmotion(GuanEmotion.LoseTarget);
-                targetAttack = null;
+                AttackTarget = null;
             }
 
-            if (targetAttack == null)
+            if (AttackTarget == null)
             {
                 State = Status.Wander;
                 Destinator.position = transform.position;
             }
-            if (targetAttack != null && State == Status.Attack)
-                Destinator.position = targetAttack.transform.position;
+            if (AttackTarget != null && State == Status.Attack)
+                Destinator.position = AttackTarget.transform.position;
 
             #region Rest
             if (State == Status.Attack)
@@ -143,19 +140,19 @@ namespace EscapeGuan.Entities.Enemy
             #region Normal Attack
             if (State == Status.Attack | State == Status.Rest)
             {
-                if (!Attacking && Vector3.Distance(transform.position, targetAttack.transform.position) <= NoticeDistance)
+                if (!Attacking && Vector3.Distance(transform.position, AttackTarget.transform.position) <= NoticeDistance)
                 {
                     Attacking = true;
                     AttackTimer = 0;
                 }
-                if (Attacking && Vector3.Distance(transform.position, targetAttack.transform.position) > NoticeDistance)
+                if (Attacking && Vector3.Distance(transform.position, AttackTarget.transform.position) > NoticeDistance)
                     Attacking = false;
                 if (Attacking)
                 {
                     AttackTimer -= Time.fixedDeltaTime;
-                    if (AttackTimer <= 0 && Vector3.Distance(transform.position, targetAttack.transform.position) <= AttackRange)
+                    if (AttackTimer <= 0 && Vector3.Distance(transform.position, AttackTarget.transform.position) <= AttackRange)
                     {
-                        Attack(targetAttack);
+                        Attack(AttackTarget);
                         AttackTimer = AttackDelay;
                     }
                 }
@@ -176,20 +173,6 @@ namespace EscapeGuan.Entities.Enemy
         private void OnDrawGizmos()
         {
             Color rc = Gizmos.color;
-            if (GameManager.Main != null)
-            foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool.Where(
-                (x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) < NoticeDistance))
-            {
-                Transform tr = e.Value.transform;
-                float d = Vector3.Distance(transform.position, tr.position);
-                if (d < NoticeDistance)
-                    Gizmos.color = Color.red;
-                else if (d > LoseDistance)
-                    Gizmos.color = Color.green;
-                else
-                    Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(transform.position, tr.position);
-            }
             Gizmos.color = new(.5f, 0, 0);
             Gizmos.DrawWireSphere(transform.position, AttackRange);
             Gizmos.color = Color.red;
@@ -217,7 +200,7 @@ namespace EscapeGuan.Entities.Enemy
 
         public override void AddItem(ItemStack sender)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

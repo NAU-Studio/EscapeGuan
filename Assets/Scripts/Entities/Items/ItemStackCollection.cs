@@ -4,23 +4,23 @@ namespace EscapeGuan.Entities.Items
 {
 	public class ItemStackCollection : List<ItemStack>
 	{
-		public new void Add(ItemStack item)
+		public new void Add(ItemStack i)
 		{
-			base.Add(item);
-			if (item != null)
-				item.OnRemove += Remove;
+			base.Add(i);
+			if (i != null)
+				i.OnRemove += Remove;
 		}
 
-		public void Set(int index, ItemStack item)
+		public void Set(int index, ItemStack i)
 		{
-			this[index] = item;
-            if (item != null)
-                item.OnRemove += Remove;
+			this[index] = i;
+            if (i != null)
+                i.OnRemove += Remove;
         }
 
-		public new void Remove(ItemStack item)
+		public new void Remove(ItemStack i)
 		{
-			this[IndexOf(item)] = null;
+			this[IndexOf(i)] = null;
 		}
 	}
 }

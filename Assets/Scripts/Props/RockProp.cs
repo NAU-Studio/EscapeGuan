@@ -11,7 +11,7 @@ public class RockProp : PropEntity
 
     protected override void Damage(float amount)
     {
-        // 自己死不了（
+        // 鑷繁姝讳笉浜嗭紙
     }
 
     public override void Damage(float amount, Entity sender)

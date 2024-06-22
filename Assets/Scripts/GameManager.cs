@@ -4,8 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 using EscapeGuan.Entities;
+using EscapeGuan.Entities.Items;
+using EscapeGuan.Entities.Player;
+using EscapeGuan.Items;
 using EscapeGuan.Registries;
-using EscapeGuan.UI;
+using EscapeGuan.UI.Item;
+using EscapeGuan.UI.Item.WaterBottle;
 
 using Unity.VisualScripting;
 
@@ -16,12 +20,11 @@ namespace EscapeGuan
     public class GameManager : MonoBehaviour
     {
         public GameObject DamageText;
-        public int ControlledEntityId;
-        public Dictionary<int, Entity> EntityPool = new();
-        public List<int> ItemEntities = new();
 
         public WaterBottleManager WaterBottleManager;
         public ItemProfileShower ItemProfile;
+
+        public AudioSource UIEffect;
 
         public static GameManager Main = new();
 
@@ -29,37 +32,30 @@ namespace EscapeGuan
 
         public static Dictionary<string, GameObject> Templates = new();
 
+        public static int ControlledEntityId;
+        public static Dictionary<int, Entity> EntityPool = new();
+        public static HashSet<int> ItemEntities = new();
+        public static Player Player => (Player)EntityPool[ControlledEntityId];
+
         private void Start()
         {
             Main = this;
 
-            // Ò»ÇĞ¶¼ÊÇÎªÁËmodºÍ¿É³ÖĞøµÄ·¢Õ¹ T_T
             #region Initialize Resources
             ImageResources.Add("water_bottle", Resources.Load<Sprite>("Sprites/Items/water_bottle_item"));
             ImageResources.Add("small_stick", Resources.Load<Sprite>("Sprites/Items/small_stick"));
             #endregion
 
             #region Initialize Item Registry
-            ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("À¶±ê¿óÈªË®", "Ò»Æ¿À¶±ê¿óÈªË®£¬¾»º¬Á¿550 mL¡£ÄÜÈÓÄÜºÈ£¬»¹ÄÜÍùÀï¶ÒË®£¬¶Ò¸÷ÖÖË®£¡Ë®Ô½¶àÔÒÈËÔ½ÌÛ£¬µ«¹¥»÷ËÙ¶ÈÂı£¬¾àÀë¶Ì£¬ÊÊÁ¿µÄË®¿ÉÄÜÊÇ¸ö¸üºÃµÄÑ¡Ôñ¡£", ImageResources["water_bottle"]));
-            ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("¿ÕµÄÀ¶±ê¿óÈªË®", "Ò»Æ¿À¶±ê¿óÈªË®£¬¾»º¬Á¿550 mL¡£µ«ÊÇÀïÃæÃ»ÓĞË®£¬²»¹ı¿ÉÒÔÍùÀïµ¹£¬»òÕß¡¸¸Ã·£¡¹£¨ÔÒÈË£©»òÕßÈÓ³öÈ¥£¡", ImageResources["water_bottle"]));
-            ItemRegistry.Main.RegisterObject("small_stick", new SmallStickItem("Ğ¡Ê÷Ö¦", "¼¸ºõÃ»ÓĞÉËº¦£¬µ«ÊÇºÃÍæ£¬¶Ô¿¹µÚ¶ş£¬ÓÑÒêµÚÒ»£¡", ImageResources["small_stick"]));
+            ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("è“æ ‡çŸ¿æ³‰æ°´", "ä¸€ç“¶è“æ ‡çŸ¿æ³‰æ°´ï¼Œå‡€å«é‡550 mLã€‚èƒ½æ‰”èƒ½å–ï¼Œè¿˜èƒ½å¾€é‡Œå…‘æ°´ï¼Œå…‘å„ç§æ°´ï¼æ°´è¶Šå¤šç ¸äººè¶Šç–¼ï¼Œä½†æ”»å‡»é€Ÿåº¦æ…¢ï¼Œè·ç¦»çŸ­ï¼Œé€‚é‡çš„æ°´å¯èƒ½æ˜¯ä¸ªæ›´å¥½çš„é€‰æ‹©ã€‚", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("ç©ºçš„è“æ ‡çŸ¿æ³‰æ°´", "ä¸€ç“¶è“æ ‡çŸ¿æ³‰æ°´ï¼Œå‡€å«é‡550 mLã€‚ä½†æ˜¯é‡Œé¢æ²¡æœ‰æ°´ï¼Œä¸è¿‡å¯ä»¥å¾€é‡Œå€’ï¼Œæˆ–è€…ã€Œè¯¥ç½šã€ï¼ˆç ¸äººï¼‰æˆ–è€…æ‰”å‡ºå»ï¼", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("small_stick", new SmallStickItem("å°æ ‘æ", "å‡ ä¹æ²¡æœ‰ä¼¤å®³ï¼Œä½†æ˜¯å¥½ç©ï¼Œå¯¹æŠ—ç¬¬äºŒï¼Œå‹è°Šç¬¬ä¸€ï¼", ImageResources["small_stick"]));
             #endregion
 
             #region Initialize Templates
             Templates.Add("item", Resources.Load<GameObject>("Prefabs/Item"));
             Templates.Add("rock", Resources.Load<GameObject>("Prefabs/Rock"));
             #endregion
-        }
-
-        private void Update()
-        {
-            foreach (KeyValuePair<int, Entity> e in EntityPool.Where((x) => x.Value.IsDestroyed()))
-            {
-                EntityPool.Remove(e.Key);
-                int a = ItemEntities.IndexOf(e.Key);
-                if (a >= 0)
-                    ItemEntities.Remove(a);
-            }
         }
 
         public static void Pause()
@@ -119,13 +115,5 @@ namespace EscapeGuan
 
         public delegate bool IntervalActionStatementGetter();
         public delegate IEnumerator CoroutineAction();
-    }
-
-    public static class ExtensionMethods
-    {
-        public static int CountOf<T>(this List<T> list, T value)
-        {
-            return list.Where(d => d.Equals(value)).Count();
-        }
     }
 }
