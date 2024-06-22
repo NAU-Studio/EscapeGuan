@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,47 +26,47 @@ namespace EscapeGuan.Entities.Enemy
         [Header("Bottle")]
         public float ThrowBottleInterval;
         public int BottleCount = 5;
+        [Header("Sprites")]
+        public Sprite IdleSprite;
+        public AnimationClip MovementClip;
+
+        public GuanEmotionManager EmotionManager;
+        public Status State = Status.Wander;
+
+        public override bool GuanAttackable => false;
+
+        public override int InventoryLength => 9;
+
+        private AIDestinationSetter TargetDestinationSetter => GetComponent<AIDestinationSetter>();
+        private AIPath TargetPath => GetComponent<AIPath>();
+
+        private Animator MovementAnimator => GetComponent<Animator>();
+
+        private Entity AttackTarget;
+
+
+
+        private float Stamina, AttackTimer, DamageMultiplier = 1;
+        private bool Attacking;
 
         public enum Status
         {
             Wander,
             Attack,
-            Rest 
+            Rest
         }
-
-        public GuanEmotionManager EmotionManager;
-
-        [ReadOnly]
-        public Status State = Status.Wander;
-
-        public override bool GuanAttackable => false;
-
-        [Header("Sprites")]
-        public Sprite Front, Right, Back, Left;
-
-        public override int InventoryLength => 9;
-
-        private AIDestinationSetter targetDestinationSetter => GetComponent<AIDestinationSetter>();
-        private AIPath targetPath => GetComponent<AIPath>();
-        private SpriteRenderer sprite => GetComponent<SpriteRenderer>();
-        private Entity targetAttack;
-
-        [SerializeField, ReadOnly]
-        private float Stamina, AttackTimer, DamageMultiplier = 1;
-        [SerializeField, ReadOnly]
-        private bool Attacking;
 
         public override void Start()
         {
             Stamina = MaxStamina;
 
             base.Start();
-            targetDestinationSetter.target = Destinator;
-            targetPath.maxSpeed = WanderSpeed;
+            TargetDestinationSetter.target = Destinator;
+            TargetPath.maxSpeed = WanderSpeed;
             // Wander
             GameManager.IntervalAction(this, () => State == Status.Wander, () =>
             {
-                targetPath.maxSpeed = WanderSpeed;
+                TargetPath.maxSpeed = WanderSpeed;
                 Destinator.position = transform.position + new Vector3(Random.Range(-MaxWanderDistance, MaxWanderDistance),
                     Random.Range(-MaxWanderDistance, MaxWanderDistance));
             }, WanderInterval);
@@ -76,15 +76,14 @@ namespace EscapeGuan.Entities.Enemy
         {
             Transform nearest = null;
             float nd = float.MaxValue;
-            foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool.Where(
-                (x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) <= NoticeDistance))
+            foreach (KeyValuePair<int, Entity> e in GameManager.EntityPool.Where((x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) <= NoticeDistance))
             {
                 if (Vector3.Distance(transform.position, e.Value.transform.position) < nd)
                 {
                     nd = Vector3.Distance(transform.position, e.Value.transform.position);
                     nearest = e.Value.transform;
                 }
-                targetPath.maxSpeed = AttackSpeed;
+                TargetPath.maxSpeed = AttackSpeed;
             }
             if (nearest == null)
                 goto SkipNearest;
@@ -92,23 +91,23 @@ namespace EscapeGuan.Entities.Enemy
             {
                 State = Status.Attack;
                 EmotionManager.ChangeEmotion(GuanEmotion.FindTarget);
-                targetAttack = nearest.GetComponent<Entity>();
             }
+            AttackTarget = nearest.GetComponent<Entity>();
 
-            SkipNearest:
-            if (targetAttack != null && Vector3.Distance(transform.position, targetAttack.transform.position) > LoseDistance)
+        SkipNearest:
+            if (AttackTarget != null && Vector3.Distance(transform.position, AttackTarget.transform.position) > LoseDistance)
             {
                 EmotionManager.ChangeEmotion(GuanEmotion.LoseTarget);
-                targetAttack = null;
+                AttackTarget = null;
             }
 
-            if (targetAttack == null)
+            if (AttackTarget == null)
             {
                 State = Status.Wander;
                 Destinator.position = transform.position;
             }
-            if (targetAttack != null && State == Status.Attack)
-                Destinator.position = targetAttack.transform.position;
+            if (AttackTarget != null && State == Status.Attack)
+                Destinator.position = AttackTarget.transform.position;
 
             #region Rest
             if (State == Status.Attack)
@@ -141,19 +140,19 @@ namespace EscapeGuan.Entities.Enemy
             #region Normal Attack
             if (State == Status.Attack | State == Status.Rest)
             {
-                if (!Attacking && Vector3.Distance(transform.position, targetAttack.transform.position) <= NoticeDistance)
+                if (!Attacking && Vector3.Distance(transform.position, AttackTarget.transform.position) <= NoticeDistance)
                 {
                     Attacking = true;
                     AttackTimer = 0;
                 }
-                if (Attacking && Vector3.Distance(transform.position, targetAttack.transform.position) > NoticeDistance)
+                if (Attacking && Vector3.Distance(transform.position, AttackTarget.transform.position) > NoticeDistance)
                     Attacking = false;
                 if (Attacking)
                 {
                     AttackTimer -= Time.fixedDeltaTime;
-                    if (AttackTimer <= 0 && Vector3.Distance(transform.position, targetAttack.transform.position) <= AttackRange)
+                    if (AttackTimer <= 0 && Vector3.Distance(transform.position, AttackTarget.transform.position) <= AttackRange)
                     {
-                        Attack(targetAttack);
+                        Attack(AttackTarget);
                         AttackTimer = AttackDelay;
                     }
                 }
@@ -161,26 +160,12 @@ namespace EscapeGuan.Entities.Enemy
             #endregion
 
             #region Sprite
-            Vector2 v = targetPath.velocity;
-            float dir = Mathf.Rad2Deg * Mathf.Atan(-(v.y / v.x));
-            if (v.x > 0)
-            {
-                if (dir > -45 && dir < 45)
-                    sprite.sprite = Right;
-                if (dir > 45)
-                    sprite.sprite = Front;
-                if (dir < -45)
-                    sprite.sprite = Back;
-            }
+            Vector2 v = TargetPath.velocity;
+            MovementAnimator.SetBool("Moving", v.x != 0 && v.y != 0);
             if (v.x < 0)
-            {
-                if (dir > -45 && dir < 45)
-                    sprite.sprite = Left;
-                if (dir > 45)
-                    sprite.sprite = Back;
-                if (dir < -45)
-                    sprite.sprite = Front;
-            }
+                transform.localScale = Vector3.one;
+            if (v.x > 0)
+                transform.localScale = new(-1, 1, 1);
             #endregion
             base.FixedUpdate();
         }
@@ -188,20 +173,6 @@ namespace EscapeGuan.Entities.Enemy
         private void OnDrawGizmos()
         {
             Color rc = Gizmos.color;
-            if (GameManager.Main != null)
-            foreach (KeyValuePair<int, Entity> e in GameManager.Main.EntityPool.Where(
-                (x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) < NoticeDistance))
-            {
-                Transform tr = e.Value.transform;
-                float d = Vector3.Distance(transform.position, tr.position);
-                if (d < NoticeDistance)
-                    Gizmos.color = Color.red;
-                else if (d > LoseDistance)
-                    Gizmos.color = Color.green;
-                else
-                    Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(transform.position, tr.position);
-            }
             Gizmos.color = new(.5f, 0, 0);
             Gizmos.DrawWireSphere(transform.position, AttackRange);
             Gizmos.color = Color.red;
@@ -225,6 +196,11 @@ namespace EscapeGuan.Entities.Enemy
         public override void PickItem(ItemEntity sender)
         {
             throw new EntityCannotPickupException();
+        }
+
+        public override void AddItem(ItemStack sender)
+        {
+            throw new NotImplementedException();
         }
     }
 }

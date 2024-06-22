@@ -30,7 +30,7 @@ namespace EscapeGuan.UI
 
         public string ToString(string format = "0")
         {
-            return GameManager.Main.EntityPool[GameManager.Main.ControlledEntityId].GetAttribute<float>(Name).ToString(format);
+            return GameManager.Player.GetAttribute<float>(Name).ToString(format);
         }
     }
 }

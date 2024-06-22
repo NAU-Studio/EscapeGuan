@@ -1,30 +1,33 @@
 using System;
 
-using EscapeGuan.Entities;
 using EscapeGuan.Entities.Items;
 
 using UnityEngine;
 
-public abstract class PropEntity : Entity
+namespace EscapeGuan.Entities
 {
-    public bool Breakable;
-    public float BreakForce;
-
-    public override bool GuanAttackable => false;
-    public override int InventoryLength => throw new Exception($"{EntityId} has no inventory!");
-
-    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    public abstract class PropEntity : Entity
     {
-        if (collision.rigidbody.velocity.magnitude * collision.rigidbody.mass >= BreakForce)
+        public bool Breakable;
+        public float BreakForce;
+
+        public override bool GuanAttackable => false;
+        public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
+
+        protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            Kill();
-            if (collision.gameObject.GetComponent<Entity>() != null)
-                Attack(collision.gameObject.GetComponent<Entity>());
+            if (collision.rigidbody.velocity.magnitude * collision.rigidbody.mass >= BreakForce)
+            {
+                Kill();
+                if (collision.gameObject.GetComponent<Entity>() != null)
+                    Attack(collision.gameObject.GetComponent<Entity>());
+            }
+        }
+
+        public override void PickItem(ItemEntity sender)
+        {
+            throw new EntityCannotPickupException(Id);
         }
     }
 
-    public override void PickItem(ItemEntity sender)
-    {
-        throw new EntityCannotPickupException(EntityId);
-    }
 }

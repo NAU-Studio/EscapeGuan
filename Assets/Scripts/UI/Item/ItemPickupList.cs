@@ -14,11 +14,10 @@ namespace EscapeGuan.UI.Item
     {
         public List<ItemPickupOption> Options = new();
         public ItemPickupOption Template;
-        public HidableUI Parent;
+        public Hidable Parent;
         public RectTransform SelectionObject;
         public int Selection = 0;
 
-        private int prevSel = 0;
         private void Update()
         {
             if (Options.Count > 1)
@@ -36,22 +35,12 @@ namespace EscapeGuan.UI.Item
                     if (Selection < 0)
                         Selection = Options.Count - 1;
                 }
-            }
-            if (Options.Count > 0)
-            {
-                if (Selection >= Options.Count)
-                    Selection = Options.Count - 1;
-                if (Selection != prevSel)
-                {
-                    prevSel = Selection;
+                if (scr != 0)
                     SelectionObject.DOAnchorPosY(-Selection * Template.transform.sizeDelta.y, .2f).SetEase(Ease.OutCubic);
-                }
             }
 
             if (Input.GetKeyDown(KeyCode.F) && Options.Count != 0)
-            {
                 Options[Selection].Pickup();
-            }
         }
 
         public void Refresh()
