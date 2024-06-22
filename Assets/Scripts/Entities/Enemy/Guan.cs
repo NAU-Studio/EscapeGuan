@@ -190,7 +190,7 @@ namespace EscapeGuan.Entities.Enemy
 
         public override float GetAttackAmount()
         {
-            return Random.value < CriticalRate ? AttackValue * CriticalMultiplier * DamageMultiplier : AttackValue * DamageMultiplier;
+            return (Random.value < CriticalRate ? CriticalMultiplier : 1) * AttackValue * DamageMultiplier;
         }
 
         public override void PickItem(ItemEntity sender)
