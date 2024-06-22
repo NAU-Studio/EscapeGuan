@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Stamina
+  m_Name: Text Material
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
   m_Parent: {fileID: 8646382387751434953, guid: 25e028af541c90f4fa29cddd49a68c6d, type: 2}
   m_ModifiedSerializedProperties: 0
@@ -25,8 +25,9 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _OutlineWidth: 0.625
+    - _OutlineWidth: 0.5
+    - _ScaleRatioA: 0.6666667
     m_Colors:
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.21223079, g: 0.15896086, b: 0.013702081, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   m_BuildTextureStacks: []

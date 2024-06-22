@@ -679,7 +679,7 @@ MonoBehaviour:
   m_text: "\u4F53\u529B 100 / 100"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25e028af541c90f4fa29cddd49a68c6d, type: 2}
-  m_sharedMaterial: {fileID: 8646382387751434953, guid: 25e028af541c90f4fa29cddd49a68c6d, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 4954c6eeca34bec42bb6f548ea23ae82, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1940,7 +1940,7 @@ MonoBehaviour:
   DefenseValue: 600
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
-  EntityId: 0
+  Id: 0
   Speed: 2
   RunSpeedMultiplier: 2
   Stamina: 100
@@ -3639,7 +3639,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999763
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4103,10 +4103,10 @@ RectTransform:
   - {fileID: 963363963}
   m_Father: {fileID: 343416187}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 44, y: 44}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0}
 --- !u!1 &775395039
 GameObject:
@@ -4383,7 +4383,7 @@ MonoBehaviour:
   DefenseValue: 32
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
-  EntityId: 0
+  Id: 0
   Emotion: {fileID: 2105235914}
   Destinator: {fileID: 1199027329}
   NoticeDistance: 5
@@ -4400,14 +4400,10 @@ MonoBehaviour:
   AttackDelay: 0.5
   ThrowBottleInterval: 0
   BottleCount: 5
-  EmotionManager: {fileID: 2105235917}
-  State: 0
   IdleSprite: {fileID: 0}
   MovementClip: {fileID: 0}
-  Stamina: 0
-  AttackTimer: 0
-  DamageMultiplier: 1
-  Attacking: 0
+  EmotionManager: {fileID: 2105235917}
+  State: 0
 --- !u!50 &804682824
 Rigidbody2D:
   serializedVersion: 4
@@ -4763,14 +4759,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.2509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e408ee1724f813d488e1fb0531e26f0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe792f08b44698f4fa1eb0b8b89a2c41, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5470,14 +5466,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.2509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e408ee1724f813d488e1fb0531e26f0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe792f08b44698f4fa1eb0b8b89a2c41, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5936,7 +5932,7 @@ MonoBehaviour:
   m_text: "\u8840\u91CF 100 / 100"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25e028af541c90f4fa29cddd49a68c6d, type: 2}
-  m_sharedMaterial: {fileID: 8646382387751434953, guid: 25e028af541c90f4fa29cddd49a68c6d, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 4954c6eeca34bec42bb6f548ea23ae82, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6244,7 +6240,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0003271164}
+  m_AnchoredPosition: {x: 0, y: 0.00042433577}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -7103,12 +7099,12 @@ MonoBehaviour:
   BranchLength: 384
   StepRotateDeg: 10
   StartScale: 3
-  MinRocksCount: 256
-  MaxRocksCount: 512
-  MinBottlesCount: 1024
-  MaxBottlesCount: 1024
-  MinSticksCount: 4096
-  MaxSticksCount: 4096
+  MinRocksCount: 128
+  MaxRocksCount: 256
+  MinBottlesCount: 128
+  MaxBottlesCount: 128
+  MinSticksCount: 256
+  MaxSticksCount: 256
 --- !u!4 &1332052864
 Transform:
   m_ObjectHideFlags: 0
@@ -7694,14 +7690,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.2509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e408ee1724f813d488e1fb0531e26f0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe792f08b44698f4fa1eb0b8b89a2c41, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8793,14 +8789,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.2509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e408ee1724f813d488e1fb0531e26f0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe792f08b44698f4fa1eb0b8b89a2c41, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9920,11 +9916,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e980f0a73196b49bea638c0cce5b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsSlicedFillImage: 1
   AttributeName: HealthPoint
   MaxAttributeName: MaxHealthPoint
-  Image_SF: {fileID: 1393882359}
-  Image_UNT: {fileID: 0}
+  Image: {fileID: 0}
 --- !u!114 &1775499504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9993,10 +9987,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DamageText: {fileID: 1521326245}
-  ControlledEntityId: 0
-  ItemEntities: 
   WaterBottleManager: {fileID: 381065812}
   ItemProfile: {fileID: 1828720032}
+  UIEffect: {fileID: 0}
 --- !u!4 &1785148468
 Transform:
   m_ObjectHideFlags: 0
@@ -10172,11 +10165,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e980f0a73196b49bea638c0cce5b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsSlicedFillImage: 1
   AttributeName: Stamina
   MaxAttributeName: MaxStamina
-  Image_SF: {fileID: 422695998}
-  Image_UNT: {fileID: 0}
+  Image: {fileID: 0}
 --- !u!114 &1844848822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10296,23 +10287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6147fffe2b5521b42b44c4957132b4b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Events:
-  - Event:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: EscapeGuan.DebugConsole, Assembly-CSharp
-          m_MethodName: Toggle
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    Key: 96
+  Events: []
 --- !u!1 &1910617032
 GameObject:
   m_ObjectHideFlags: 0
