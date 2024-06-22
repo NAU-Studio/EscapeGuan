@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+
 using EscapeGuan.Entities.Items;
 using EscapeGuan.UI.Item;
-using EscapeGuan.UI.Player;
-using UnityEngine;
-using UnityEngine.Tilemaps;
 
 using static UnityEngine.Mathf;
+
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace EscapeGuan.Entities.Player
 {
@@ -50,7 +50,6 @@ namespace EscapeGuan.Entities.Player
         public float ItemPickupRange = 1;
         public List<int> NearItems = new();
         public ItemPickupList List;
-        public QuickInventoryShower QuickInventory;
 
         #region Item Pickup Actions
         public void RemoveNear(int v)
