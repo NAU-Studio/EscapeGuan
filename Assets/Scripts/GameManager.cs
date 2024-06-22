@@ -1,17 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 using EscapeGuan.Entities;
-using EscapeGuan.Entities.Items;
 using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
 using EscapeGuan.Registries;
+using EscapeGuan.UI;
 using EscapeGuan.UI.Item;
 using EscapeGuan.UI.Item.WaterBottle;
-
-using Unity.VisualScripting;
 
 using UnityEngine;
 
@@ -25,6 +22,8 @@ namespace EscapeGuan
         public ItemProfileShower ItemProfile;
 
         public AudioSource UIEffect;
+
+        public Crosshair Crosshair;
 
         public static GameManager Main = new();
 

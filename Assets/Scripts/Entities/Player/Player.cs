@@ -29,6 +29,8 @@ namespace EscapeGuan.Entities.Player
         public List<TileBase> SlowdownTiles;
         public float SlowdownMultiplier;
 
+        public float BottleThrowFloating;
+
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
         public override int InventoryLength => 36;
 
