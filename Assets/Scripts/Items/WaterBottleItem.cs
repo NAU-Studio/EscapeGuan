@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EscapeGuan.Items
 {
-    public class WaterBottleItem : Item
+    public class WaterBottleItem : Item, IThrowableItem
     {
         public override int MaxCount => 1;
 
@@ -16,16 +16,13 @@ namespace EscapeGuan.Items
         public const string Mass = "WaterBottleItem_Mass";
 
         public WaterBottleItem(string name, string description, Sprite icon) : base(name, description, icon)
-        {
-
-        }
+        { }
 
         public override void Use(ItemStack sender, Entity from)
         {
             // sender.Count--;
-            Debug.Log($"使用前含量：{sender.Attributes[Mass]} kg (L)");
             if (from.Id == GameManager.ControlledId)
-                GameManager.Main.WaterBottleManager.Exhale(sender);
+                Drink(sender);
         }
 
         public void Drink(ItemStack sender)
@@ -34,11 +31,9 @@ namespace EscapeGuan.Items
             sender.Attributes[Mass] = (float)sender.Attributes[Mass] - amount;
             if ((float)sender.Attributes[Mass] <= 0)
             {
-                Debug.Log($"喝光了，变成空瓶子");
-                GameManager.Player.AddItem(ItemRegistry.Main.CreateItemStack("empty_bottle"));
                 sender.Delete();
+                GameManager.Player.AddItem(ItemRegistry.Main.CreateItemStack("empty_bottle"));
             }
-            Debug.Log($"喝了 {amount} kg (L)，使用后含量：{sender.Attributes[Mass]} kg (L)");
             GameManager.Main.ItemProfile.SetText(Name, GetDescription(sender));
         }
 
@@ -64,6 +59,11 @@ namespace EscapeGuan.Items
         public override string GetDescription(ItemStack i)
         {
             return $"{Description}剩余量：{(float)i.Attributes[Mass] * 1000:0.00} mL";
+        }
+
+        public void Throw(ItemStack i)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace EscapeGuan.Entities.Items
 {
-    public class ItemStack : IDisposable
+    public class ItemStack
     {
         public Item Base;
         public Dictionary<string, object> Attributes = new();
@@ -27,17 +27,17 @@ namespace EscapeGuan.Entities.Items
 
         private int count;
 
-        public ItemEntity CreateEntity(GameObject ItemTemplate)
+        public ItemEntity CreateEntity(GameObject itemTemplate)
         {
-            GameObject go = Object.Instantiate(ItemTemplate);
+            GameObject go = Object.Instantiate(itemTemplate);
             go.GetComponent<ItemEntity>().item = this;
             go.GetComponent<SpriteRenderer>().sprite = Base.Icon;
             return go.GetComponent<ItemEntity>();
         }
 
-        public ItemEntity CreateEntity(Vector3 Position)
+        public ItemEntity CreateEntity(Vector3 position, Vector3 rotation)
         {
-            GameObject go = Object.Instantiate(GameManager.Templates["item"], Position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
+            GameObject go = Object.Instantiate(GameManager.Templates["item"], position, Quaternion.Euler(rotation));
             go.GetComponent<ItemEntity>().item = this;
             go.GetComponent<SpriteRenderer>().sprite = Base.Icon;
             return go.GetComponent<ItemEntity>();
@@ -63,12 +63,6 @@ namespace EscapeGuan.Entities.Items
         public void Delete()
         {
             OnRemove(this);
-            Dispose();
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
 
         internal ItemStack(Item b, int c = 1)

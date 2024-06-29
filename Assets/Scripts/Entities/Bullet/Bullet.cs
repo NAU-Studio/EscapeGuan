@@ -18,27 +18,27 @@ namespace EscapeGuan.Entities.Bullet
 
         public Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
 
-        public const float Gravity = 0.98f;
+        public const float Gravity = 9.8f;
 
         private float DropPointDistance => 2 * InitialVelocity * Mathf.Sqrt(Highest / Gravity);
 
         private float ElapsedDistance;
 
-        private float HitDelay = 1;
+        private bool Hitable = false;
+
+        protected float ZCoord => -Gravity * Mathf.Pow(ElapsedDistance / InitialVelocity - Mathf.Sqrt(Highest / Gravity), 2) + Highest;
 
         public override void Start()
         {
             base.Start();
             transform.eulerAngles = new(0, 0, Random.Range(0f, 360));
             Rigidbody.angularVelocity = Random.Range(45f, 135f);
-            Rigidbody.velocity = new(Mathf.Sin(Mathf.Deg2Rad * Direction) * InitialVelocity, Mathf.Cos(Mathf.Deg2Rad * Direction) * InitialVelocity);
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            if (HitDelay > 0)
-                HitDelay -= Time.fixedDeltaTime;
+            Rigidbody.velocity = new(Mathf.Sin(Mathf.Deg2Rad * Direction) * InitialVelocity, Mathf.Cos(Mathf.Deg2Rad * Direction) * InitialVelocity);
             ElapsedDistance += Rigidbody.velocity.magnitude * Time.fixedDeltaTime;
             if (ElapsedDistance >= DropPointDistance)
                 Drop();
@@ -46,8 +46,14 @@ namespace EscapeGuan.Entities.Bullet
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.gameObject.GetComponent<Entity>() is Entity e && HitDelay <= 0)
+            if (other.gameObject.GetComponent<Entity>() is Entity e && Hitable)
                 Hit(e);
+        }
+
+        private void OnCollisionExit2D(Collision2D other)
+        {
+            if (!Hitable)
+                Hitable = true;
         }
 
         public virtual void Drop()
@@ -59,6 +65,13 @@ namespace EscapeGuan.Entities.Bullet
         {
             Attack(e);
             Destroy(gameObject);
+        }
+
+        public virtual void CloneEntityAttribute(Entity e)
+        {
+            AttackValue = e.AttackValue;
+            CriticalRate = e.CriticalRate;
+            CriticalMultiplier = e.CriticalMultiplier;
         }
 
         public override float GetAttackAmount() => (Random.value < CriticalRate ? CriticalMultiplier : 1) * AttackValue * Rigidbody.mass * Rigidbody.velocity.magnitude;

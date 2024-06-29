@@ -8,6 +8,10 @@ using static UnityEngine.Mathf;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using EscapeGuan.UI.Player;
+using EscapeGuan.Items;
+using EscapeGuan.Entities.Bullet;
+using EscapeGuan.UI;
 
 namespace EscapeGuan.Entities.Player
 {
@@ -22,14 +26,16 @@ namespace EscapeGuan.Entities.Player
         public float StaminaRestoreDelay;
 
         [Header("Other settings")]
-        public float CameraFollowSpeed;
-        public Transform Camera;
-
         public Tilemap Map;
         public List<TileBase> SlowdownTiles;
         public float SlowdownMultiplier;
 
+        public QuickInventory QuickInventory;
+
+        public GameObject ThrowCrosshair, ThrowCrosshairVelocity;
         public float ThrowStability;
+
+        public AttackState AttackState;
 
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
         public override int InventoryLength => 36;
@@ -37,6 +43,14 @@ namespace EscapeGuan.Entities.Player
         public override void Start()
         {
             base.Start();
+
+            GameManager.Action = new();
+            GameManager.Action.Player.Movement.performed += (x) => movement = x.ReadValue<Vector2>();
+            GameManager.Action.Player.RunningToggle.performed += (x) => Running = true;
+            GameManager.Action.Player.Attack.performed += (x) => AttackSelector();
+            GameManager.Action.Enable();
+
+            QuickInventory.OnChangeSelection += UpdateAttackState;
 
             Attributes.Add(new Attribute<float>("Speed", () => Speed, (x) => Speed = x));
             Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, (x) => RunSpeedMultiplier = x));
@@ -46,8 +60,6 @@ namespace EscapeGuan.Entities.Player
 
             StartCoroutine(SetRestorable());
         }
-
-        private const float Sqrt2In2 = 0.70710678118654752440084436210485f;
 
         [Header("Item Pickup System")]
         public float ItemPickupRange = 1;
@@ -117,14 +129,6 @@ namespace EscapeGuan.Entities.Player
         private bool Running, RunStaminaCostable;
         private bool Restorable;
 
-        private void Awake()
-        {
-            GameManager.Action = new();
-            GameManager.Action.Player.Movement.performed += (x) => movement = x.ReadValue<Vector2>();
-            GameManager.Action.Player.RunningToggle.performed += (x) => Running = true;
-            GameManager.Action.Enable();
-        }
-
         private Vector2 movement;
 
         public override void FixedUpdate()
@@ -154,9 +158,24 @@ namespace EscapeGuan.Entities.Player
             #endregion
         }
 
-        private void Update()
+        public void UpdateAttackState(int id, ItemStack item)
         {
-            Camera.position = Vector3.Lerp(Camera.position, new(transform.position.x, transform.position.y, Camera.position.z), CameraFollowSpeed * Time.deltaTime);
+            ThrowCrosshair.SetActive(false);
+            ThrowCrosshairVelocity.SetActive(false);
+
+            if (item == null)
+                goto def;
+
+            if (item.Base is IThrowableItem)
+            {
+                AttackState = AttackState.Throw;
+                ThrowCrosshair.SetActive(true);
+                ThrowCrosshairVelocity.SetActive(true);
+                return;
+            }
+
+        def:
+            AttackState = AttackState.Normal;
         }
 
         public void AddNear(int i)
@@ -164,5 +183,31 @@ namespace EscapeGuan.Entities.Player
             NearItems.Add(i);
             List.Add((ItemEntity)GameManager.EntityPool[i]);
         }
+
+        public void AttackSelector()
+        {
+            switch (AttackState)
+            {
+                case AttackState.Normal: return;
+                case AttackState.Throw: Throw(); return;
+            }
+        }
+
+        public void Throw()
+        {
+            WaterBottleBullet go = Instantiate(GameManager.Templates["water_bottle_bullet"], transform.position, Quaternion.identity).GetComponent<WaterBottleBullet>();
+
+            go.InitialVelocity = ThrowCrosshair.GetComponent<Crosshair>().Velocity;
+            go.Base = QuickInventory.Slots[QuickInventory.Selection].Item;
+            go.CloneEntityAttribute(this);
+            Inventory[QuickInventory.Selection] = null;
+        }
+    }
+
+    public enum AttackState
+    {
+        Normal,
+        Throw,
+        Shot
     }
 }

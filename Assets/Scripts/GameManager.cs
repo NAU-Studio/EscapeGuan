@@ -8,7 +8,6 @@ using EscapeGuan.Items;
 using EscapeGuan.Registries;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Item;
-using EscapeGuan.UI.Item.WaterBottle;
 
 using UnityEngine;
 
@@ -18,7 +17,6 @@ namespace EscapeGuan
     {
         public GameObject DamageText;
 
-        public WaterBottleManager WaterBottleManager;
         public ItemProfileShower ItemProfile;
 
         public AudioSource UIEffect;
@@ -55,6 +53,7 @@ namespace EscapeGuan
             #region Initialize Templates
             Templates.Add("item", Resources.Load<GameObject>("Prefabs/Item"));
             Templates.Add("rock", Resources.Load<GameObject>("Prefabs/Rock"));
+            Templates.Add("water_bottle_bullet", Resources.Load<GameObject>("Prefabs/Water Bottle Bullet"));
             #endregion
         }
 
