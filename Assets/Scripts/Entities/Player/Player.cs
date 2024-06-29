@@ -195,11 +195,12 @@ namespace EscapeGuan.Entities.Player
 
         public void Throw()
         {
-            WaterBottleBullet go = Instantiate(GameManager.Templates["water_bottle_bullet"], transform.position, Quaternion.identity).GetComponent<WaterBottleBullet>();
+            WaterBottleBullet b = Instantiate(GameManager.Templates["water_bottle_bullet"], transform.position, Quaternion.identity).GetComponent<WaterBottleBullet>();
 
-            go.InitialVelocity = ThrowCrosshair.GetComponent<Crosshair>().Velocity;
-            go.Base = QuickInventory.Slots[QuickInventory.Selection].Item;
-            go.CloneEntityAttribute(this);
+            b.InitialVelocity = ThrowCrosshair.GetComponent<Crosshair>().Velocity;
+            b.Base = QuickInventory.Slots[QuickInventory.Selection].Item;
+            b.CloneEntityAttribute(this);
+            b.Direction = ThrowCrosshair.GetComponent<Crosshair>().Angle;
             Inventory[QuickInventory.Selection] = null;
         }
     }

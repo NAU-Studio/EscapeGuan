@@ -20,6 +20,23 @@ namespace EscapeGuan.UI
             }
         }
 
+        public float Angle
+        {
+            get
+            {
+                if (transform.anchoredPosition.x > 0)
+                    return 90 - Mathf.Atan(transform.anchoredPosition.y / transform.anchoredPosition.x) * Mathf.Rad2Deg;
+                else if (transform.anchoredPosition.x < 0)
+                    return -90 - Mathf.Atan(transform.anchoredPosition.y / transform.anchoredPosition.x) * Mathf.Rad2Deg;
+                else if (transform.anchoredPosition.y > 0)
+                    return 0;
+                else if (transform.anchoredPosition.y < 0)
+                    return 180;
+                else
+                    return 0;
+            }
+        }
+
         private void Update()
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(Parent, Mouse.current.position.value, Camera.main, out Vector2 pos);
