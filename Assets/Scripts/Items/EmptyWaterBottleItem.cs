@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EscapeGuan.Items
 {
-    public class EmptyWaterBottleItem : Item
+    public class EmptyWaterBottleItem : Item, IThrowableItem
     {
         public override int MaxCount => 99;
 
@@ -14,9 +14,11 @@ namespace EscapeGuan.Items
         { }
 
         public override void Use(ItemStack i, Entity from)
+        { }
+
+        public void Throw(ItemStack i)
         {
-            base.Use(i, from);
-            GameManager.Main.WaterBottleManager.ThrowEmpty();
+            throw new System.NotImplementedException();
         }
     }
 }

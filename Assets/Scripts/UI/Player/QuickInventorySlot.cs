@@ -15,10 +15,8 @@ namespace EscapeGuan.UI.Player
         public ItemStack Item;
         public int Index;
 
-        private float cd = 0;
         private void Update()
         {
-            cd -= Time.deltaTime;
             if (Item != null)
             {
                 Image.sprite = Item.Base.Icon;
@@ -35,11 +33,7 @@ namespace EscapeGuan.UI.Player
 
         public void Use()
         {
-            if (cd <= 0)
-            {
-                Item?.Use(GameManager.Player);
-                cd = Item.CD;
-            }
+            Item?.Use(GameManager.Player);
         }
     }
 }

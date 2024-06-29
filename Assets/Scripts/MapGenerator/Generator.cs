@@ -161,7 +161,7 @@ namespace EscapeGuan.MapGenerator
                 Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
                 ItemStack ix = ItemRegistry.Main.CreateItemStack("water_bottle");
                 ix.Attributes[WaterBottleItem.Mass] = Random.Range(0, WaterBottleItem.MaxMass);
-                ix.CreateEntity(pos);
+                ix.CreateEntity(pos, new(0, 0, Random.Range(0f, 360)));
             }
 
             // Sticks
@@ -170,7 +170,7 @@ namespace EscapeGuan.MapGenerator
                 Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
                 ItemStack ix = ItemRegistry.Main.CreateItemStack("small_stick");
                 ix.Attributes[WaterBottleItem.Mass] = Random.Range(0, WaterBottleItem.MaxMass);
-                ix.CreateEntity(pos);
+                ix.CreateEntity(pos, new(0, 0, Random.Range(0f, 360)));
             }
             yield return null;
         }

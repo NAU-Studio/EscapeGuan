@@ -1,17 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 using EscapeGuan.Entities;
-using EscapeGuan.Entities.Items;
 using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
 using EscapeGuan.Registries;
+using EscapeGuan.UI;
 using EscapeGuan.UI.Item;
-using EscapeGuan.UI.Item.WaterBottle;
-
-using Unity.VisualScripting;
 
 using UnityEngine;
 
@@ -21,10 +17,11 @@ namespace EscapeGuan
     {
         public GameObject DamageText;
 
-        public WaterBottleManager WaterBottleManager;
         public ItemProfileShower ItemProfile;
 
         public AudioSource UIEffect;
+
+        public Crosshair Crosshair;
 
         public static GameManager Main = new();
 
@@ -32,10 +29,11 @@ namespace EscapeGuan
 
         public static Dictionary<string, GameObject> Templates = new();
 
-        public static int ControlledEntityId;
+        public static int ControlledId;
         public static Dictionary<int, Entity> EntityPool = new();
         public static HashSet<int> ItemEntities = new();
-        public static Player Player => (Player)EntityPool[ControlledEntityId];
+        public static Player Player => (Player)EntityPool[ControlledId];
+        public static PlayerAction Action;
 
         private void Start()
         {
@@ -55,6 +53,7 @@ namespace EscapeGuan
             #region Initialize Templates
             Templates.Add("item", Resources.Load<GameObject>("Prefabs/Item"));
             Templates.Add("rock", Resources.Load<GameObject>("Prefabs/Rock"));
+            Templates.Add("water_bottle_bullet", Resources.Load<GameObject>("Prefabs/Water Bottle Bullet"));
             #endregion
         }
 
