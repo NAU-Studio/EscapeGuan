@@ -50,10 +50,13 @@ namespace EscapeGuan.Entities.Bullet
                 Hit(e);
         }
 
-        private void OnCollisionExit2D(Collision2D other)
+        private void OnTriggerExit2D(Collider2D other)
         {
             if (!Hitable)
+            {
                 Hitable = true;
+                GetComponent<Collider2D>().isTrigger = false;
+            }
         }
 
         public virtual void Drop()
