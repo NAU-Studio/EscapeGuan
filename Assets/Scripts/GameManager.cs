@@ -45,15 +45,20 @@ namespace EscapeGuan
             #endregion
 
             #region Initialize Item Registry
-            ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL。能扔能喝，还能往里兑水，兑各种水！水越多砸人越疼，但攻击速度慢，距离短，适量的水可能是个更好的选择。", ImageResources["water_bottle"]));
-            ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("空的蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL。但是里面没有水，不过可以往里倒，或者「该罚」（砸人）或者扔出去！", ImageResources["water_bottle"]));
-            ItemRegistry.Main.RegisterObject("small_stick", new SmallStickItem("小树枝", "几乎没有伤害，但是好玩，对抗第二，友谊第一！", ImageResources["small_stick"]));
+            ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL。能扔能喝，还能往里兑水，水越多砸人越疼。", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("空的蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL。但是里面没有水，不过可以往里倒！", ImageResources["water_bottle"]));
+            ItemRegistry.Main.RegisterObject("small_stick", new SmallStickItem("小树枝", "伤害轻微提升，但是容易断", ImageResources["small_stick"]));
             #endregion
 
             #region Initialize Templates
             Templates.Add("item", Resources.Load<GameObject>("Prefabs/Item"));
             Templates.Add("rock", Resources.Load<GameObject>("Prefabs/Rock"));
             Templates.Add("water_bottle_bullet", Resources.Load<GameObject>("Prefabs/Water Bottle Bullet"));
+            Templates.Add("water_drop", Resources.Load<GameObject>("Prefabs/Water Drop"));
+
+            // Particles
+            Templates.Add("rock_destroy_particle", Resources.Load<GameObject>("Prefabs/Rock Destroy Particle"));
+            Templates.Add("water_drop_particle", Resources.Load<GameObject>("Prefabs/Water Drop Particle"));
             #endregion
         }
 
