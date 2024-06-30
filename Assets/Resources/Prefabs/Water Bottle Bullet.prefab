@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 226916867684999751}
   - component: {fileID: 4921017346172223525}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6613113128524955024}
   - component: {fileID: 4073864029912700339}
   - component: {fileID: 6225242974077544929}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Water Bottle Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 5805386477089995888}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.58, y: -2.23, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -199,6 +199,7 @@ MonoBehaviour:
   Highest: 2
   InitialVelocity: 4
   Direction: 45
+  Thrower: {fileID: 0}
   Shadow: {fileID: 226916867684999751}
 --- !u!50 &4073864029912700339
 Rigidbody2D:

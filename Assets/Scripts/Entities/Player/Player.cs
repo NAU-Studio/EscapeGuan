@@ -197,10 +197,11 @@ namespace EscapeGuan.Entities.Player
         {
             WaterBottleBullet b = Instantiate(GameManager.Templates["water_bottle_bullet"], transform.position, Quaternion.identity).GetComponent<WaterBottleBullet>();
 
-            b.InitialVelocity = ThrowCrosshair.GetComponent<Crosshair>().Velocity;
-            b.Base = QuickInventory.Slots[QuickInventory.Selection].Item;
-            b.CloneEntityAttribute(this);
-            b.Direction = ThrowCrosshair.GetComponent<Crosshair>().Angle;
+            b.Init(
+                this,
+                ThrowCrosshair.GetComponent<Crosshair>().Velocity,
+                ThrowCrosshair.GetComponent<Crosshair>().Angle,
+                QuickInventory.Slots[QuickInventory.Selection].Item);
             Inventory[QuickInventory.Selection] = null;
         }
     }

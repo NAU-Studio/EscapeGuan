@@ -7,14 +7,15 @@ using Random = UnityEngine.Random;
 namespace EscapeGuan.Entities.Bullet
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Bullet : Entity
+    public abstract class Bullet : Entity
     {
         public override bool GuanAttackable => false;
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
 
         public float Highest, InitialVelocity, Direction;
-
         public Vector2 DropPoint => new(Mathf.Sin(Mathf.Deg2Rad * Direction) * DropPointDistance, Mathf.Cos(Mathf.Deg2Rad * Direction) * DropPointDistance);
+        public Entity Thrower;
+        public Transform Shadow;
 
         public Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
 
@@ -24,16 +25,7 @@ namespace EscapeGuan.Entities.Bullet
 
         private float ElapsedDistance;
 
-        private bool Hitable = false;
-
         protected float ZCoord => -Gravity * Mathf.Pow(ElapsedDistance / InitialVelocity - Mathf.Sqrt(Highest / Gravity), 2) + Highest;
-
-        public override void Start()
-        {
-            base.Start();
-            transform.eulerAngles = new(0, 0, Random.Range(0f, 360));
-            Rigidbody.angularVelocity = Random.Range(45f, 135f);
-        }
 
         public override void FixedUpdate()
         {
@@ -42,41 +34,34 @@ namespace EscapeGuan.Entities.Bullet
             ElapsedDistance += Rigidbody.velocity.magnitude * Time.fixedDeltaTime;
             if (ElapsedDistance >= DropPointDistance)
                 Drop();
+
+            Shadow.transform.localScale = new(ZCoord / 2, ZCoord / 2, 1);
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.GetComponent<Entity>() is Entity e && Hitable)
+            if (other.gameObject.GetComponent<Entity>() is Entity e && e is not Bullet && e != Thrower)
                 Hit(e);
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (!Hitable)
-            {
-                Hitable = true;
-                GetComponent<Collider2D>().isTrigger = false;
-            }
         }
 
         public virtual void Drop()
         {
-            Destroy(gameObject);
+            Kill();
         }
 
         public virtual void Hit(Entity e)
         {
             Attack(e);
-            Destroy(gameObject);
+            Drop();
         }
 
-        public virtual void CloneEntityAttribute(Entity e)
+        public override float GetAttackAmount() => (Random.value < Thrower.CriticalRate ? Thrower.CriticalMultiplier : 1) * Thrower.AttackValue * Rigidbody.mass * Rigidbody.velocity.magnitude;
+
+        public void Init(Entity thrower, float initvel, float ang)
         {
-            AttackValue = e.AttackValue;
-            CriticalRate = e.CriticalRate;
-            CriticalMultiplier = e.CriticalMultiplier;
+            Thrower = thrower;
+            InitialVelocity = initvel;
+            Direction = ang;
         }
-
-        public override float GetAttackAmount() => (Random.value < CriticalRate ? CriticalMultiplier : 1) * AttackValue * Rigidbody.mass * Rigidbody.velocity.magnitude;
     }
 }

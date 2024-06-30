@@ -1,3 +1,4 @@
+using EscapeGuan;
 using EscapeGuan.Entities;
 
 using UnityEngine;
@@ -5,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class RockProp : PropEntity
 {
-    public GameObject ParticleTemplate;
-
     public override bool GuanAttackable => true;
 
     protected override void Damage(float amount)
@@ -22,8 +21,7 @@ public class RockProp : PropEntity
 
     public override void Kill()
     {
-        GameObject g = Instantiate(ParticleTemplate, transform.position, Quaternion.identity);
-        g.GetComponent<ParticleSystem>().Play();
+        Instantiate(GameManager.Templates["rock_destroy_particle"], transform.position, Quaternion.identity);
         base.Kill();
     }
 }

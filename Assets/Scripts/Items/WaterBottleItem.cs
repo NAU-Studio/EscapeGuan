@@ -27,9 +27,9 @@ namespace EscapeGuan.Items
 
         public void Drink(ItemStack sender)
         {
-            float amount = Mathf.Min((float)sender.Attributes[Mass], Random.Range(0.045f, 0.08f));
-            sender.Attributes[Mass] = (float)sender.Attributes[Mass] - amount;
-            if ((float)sender.Attributes[Mass] <= 0)
+            float amount = Mathf.Min(MassOf(sender), Random.Range(0.045f, 0.08f));
+            sender.Attributes[Mass] = MassOf(sender) - amount;
+            if (MassOf(sender) <= 0)
             {
                 sender.Delete();
                 GameManager.Player.AddItem(ItemRegistry.Main.CreateItemStack("empty_bottle"));
@@ -53,17 +53,21 @@ namespace EscapeGuan.Items
 
         public override float GetDurability(ItemStack i)
         {
-            return (float)i.Attributes[Mass] / MaxMass;
+            return MassOf(i) / MaxMass;
         }
 
         public override string GetDescription(ItemStack i)
         {
-            return $"{Description}剩余量：{(float)i.Attributes[Mass] * 1000:0.00} mL";
+            return $"{Description}剩余量：{MassOf(i) * 1000:0.00} mL";
         }
 
         public void Throw(ItemStack i)
         {
             throw new System.NotImplementedException();
         }
+
+
+
+        public float MassOf(ItemStack i) => (float)i.Attributes[Mass];
     }
 }
