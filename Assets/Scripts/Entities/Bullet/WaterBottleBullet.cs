@@ -29,14 +29,17 @@ namespace EscapeGuan.Entities.Bullet
 
         public override void Drop()
         {
-            Base.CreateEntity(transform.position, transform.rotation.eulerAngles);
+            Rigidbody2D rig = Base.CreateEntity(transform.position, transform.rotation.eulerAngles).GetComponent<Rigidbody2D>();
+            rig.velocity = -Rigidbody.velocity;
             base.Drop();
         }
 
-        public override void Hit(Entity e)
+        public void Init(float initialvel, ItemStack @base, Entity thrower, float angle)
         {
-            Base.CreateEntity(transform.position, transform.rotation.eulerAngles);
-            base.Hit(e);
+            InitialVelocity = initialvel;
+            Base = @base;
+            Thrower = thrower;
+            Direction = angle;
         }
     }
 }

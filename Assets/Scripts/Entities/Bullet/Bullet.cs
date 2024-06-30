@@ -13,8 +13,8 @@ namespace EscapeGuan.Entities.Bullet
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
 
         public float Highest, InitialVelocity, Direction;
-
         public Vector2 DropPoint => new(Mathf.Sin(Mathf.Deg2Rad * Direction) * DropPointDistance, Mathf.Cos(Mathf.Deg2Rad * Direction) * DropPointDistance);
+        public Entity Thrower;
 
         public Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
 
@@ -67,16 +67,9 @@ namespace EscapeGuan.Entities.Bullet
         public virtual void Hit(Entity e)
         {
             Attack(e);
-            Destroy(gameObject);
+            Drop();
         }
 
-        public virtual void CloneEntityAttribute(Entity e)
-        {
-            AttackValue = e.AttackValue;
-            CriticalRate = e.CriticalRate;
-            CriticalMultiplier = e.CriticalMultiplier;
-        }
-
-        public override float GetAttackAmount() => (Random.value < CriticalRate ? CriticalMultiplier : 1) * AttackValue * Rigidbody.mass * Rigidbody.velocity.magnitude;
+        public override float GetAttackAmount() => (Random.value < Thrower.CriticalRate ? Thrower.CriticalMultiplier : 1) * Thrower.AttackValue * Rigidbody.mass * Rigidbody.velocity.magnitude;
     }
 }
