@@ -12,21 +12,17 @@ namespace EscapeGuan.UI
 
         public OnClickEvent OnClick = new();
 
-        public AudioClip Hover, Click;
-
         public override void OnPointerEnter(PointerEventData eventData)
         {
             base.OnPointerEnter(eventData);
-            GameManager.Main.UIEffect.clip = Hover;
-            GameManager.Main.UIEffect.Play();
+            GameManager.Main.PlayAudio(AudioSources.UI, "ui.button.hover");
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);
             OnClick.Invoke();
-            GameManager.Main.UIEffect.clip = Click;
-            GameManager.Main.UIEffect.Play();
+            GameManager.Main.PlayAudio(AudioSources.UI, "ui.button.click");
         }
     }
 }

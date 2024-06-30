@@ -7,6 +7,7 @@ using EscapeGuan.Entities.Items;
 using Unity.VisualScripting;
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EscapeGuan.UI.Item
 {
@@ -22,25 +23,18 @@ namespace EscapeGuan.UI.Item
         {
             if (Options.Count > 1)
             {
-                float scr = Input.mouseScrollDelta.y;
-                if (scr < 0)
-                {
-                    Selection++;
-                    if (Selection >= Options.Count)
-                        Selection = 0;
-                }
-                if (scr > 0)
-                {
-                    Selection--;
-                    if (Selection < 0)
-                        Selection = Options.Count - 1;
-                }
+                int scr = (int)Mouse.current.scroll.value.y;
+                Selection -= scr;
+                if (Selection >= Options.Count)
+                    Selection = 0;
+                if (Selection < 0)
+                    Selection = Options.Count - 1;
                 if (scr != 0)
                     SelectionObject.DOAnchorPosY(-Selection * Template.transform.sizeDelta.y, .2f).SetEase(Ease.OutCubic);
             }
 
             if (Input.GetKeyDown(KeyCode.F) && Options.Count != 0)
-                Options[Selection].Pickup();
+                Pick();
         }
 
         public void Refresh()
@@ -90,18 +84,10 @@ namespace EscapeGuan.UI.Item
             }
         }
 
-        public void RemoveDestroyed()
+        public void Pick()
         {
-            foreach (ItemPickupOption opt in Options)
-            {
-                if (opt.Target.IsDestroyed())
-                    Remove(opt.Target);
-            }
-        }
-
-        public void Pick(int index)
-        {
-            Options[index].Pickup();
+            Options[Selection].Pickup();
+            GameManager.Main.PlayAudio(AudioSources.Player, "player.pickup", pitch: Random.Range(0.5f, 1.5f));
         }
     }
 }

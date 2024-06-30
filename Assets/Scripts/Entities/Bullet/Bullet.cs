@@ -21,6 +21,8 @@ namespace EscapeGuan.Entities.Bullet
 
         public const float Gravity = 9.8f;
 
+        public override bool BulletHitable => false;
+
         private float DropPointDistance => 2 * InitialVelocity * Mathf.Sqrt(Highest / Gravity);
 
         private float ElapsedDistance;
@@ -40,7 +42,7 @@ namespace EscapeGuan.Entities.Bullet
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.GetComponent<Entity>() is Entity e && e is not Bullet && e != Thrower)
+            if (other.gameObject.GetComponent<Entity>() is Entity e && e.BulletHitable && e != Thrower)
                 Hit(e);
         }
 

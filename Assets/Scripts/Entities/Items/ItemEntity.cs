@@ -12,6 +12,8 @@ namespace EscapeGuan.Entities.Items
         public override bool GuanAttackable => GuanPickable;
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
 
+        public override bool BulletHitable => false;
+
         public override void RegisterEntity()
         {
             base.RegisterEntity();
@@ -37,5 +39,11 @@ namespace EscapeGuan.Entities.Items
             if (Vector3.Distance(GameManager.Player.transform.position, transform.position) > GameManager.Player.ItemPickupRange && GameManager.Player.NearItems.Contains(Id))
                 GameManager.Player.RemoveNear(Id);
         }
+
+        public override float GetDamageAmount(float basev) => 0;
+
+        protected override void Damage(float amount) { }
+
+        public override void Damage(float amount, Entity sender) { }
     }
 }

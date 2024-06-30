@@ -19,15 +19,16 @@ namespace EscapeGuan
 
         public ItemProfileShower ItemProfile;
 
-        public AudioSource UIEffect;
-
         public Crosshair Crosshair;
+
+        public AudioSource UISource, PlayerSource, AmbientSource, PropSource;
 
         public static GameManager Main = new();
 
         public static Dictionary<string, Sprite> ImageResources = new();
 
         public static Dictionary<string, GameObject> Templates = new();
+        public static Dictionary<string, AudioClip> Audios = new();
 
         public static int ControlledId;
         public static Dictionary<int, Entity> EntityPool = new();
@@ -60,16 +61,36 @@ namespace EscapeGuan
             Templates.Add("rock_destroy_particle", Resources.Load<GameObject>("Prefabs/Rock Destroy Particle"));
             Templates.Add("water_drop_particle", Resources.Load<GameObject>("Prefabs/Water Drop Particle"));
             #endregion
+
+            #region Initialize Audios
+            Audios.Add("ui.button.hover", Resources.Load<AudioClip>("Audios/UI/Hover"));
+            Audios.Add("ui.button.click", Resources.Load<AudioClip>("Audios/UI/Click"));
+            Audios.Add("player.pickup", Resources.Load<AudioClip>("Audios/Player/pop"));
+            Audios.Add("se.rock_break", Resources.Load<AudioClip>("Audios/SE/Rock Break"));
+            Audios.Add("se.water.splash", Resources.Load<AudioClip>("Audios/SE/Water Splash"));
+            Audios.Add("se.water.bottle_hit", Resources.Load<AudioClip>("Audios/SE/Water Bottle Hit"));
+            Audios.Add("se.water.drip", Resources.Load<AudioClip>("Audios/SE/Water Drip"));
+            #endregion
         }
 
-        public static void Pause()
+        public void PlayAudio(AudioSources src, string name, float volume = 1, float pitch = 1)
         {
-            Time.timeScale = 0;
+            Play(src switch
+            {
+                AudioSources.UI => UISource,
+                AudioSources.Player => PlayerSource,
+                AudioSources.Ambient => AmbientSource,
+                AudioSources.Prop => PropSource,
+
+                _ => throw new ArgumentOutOfRangeException(nameof(src))
+            }, name, volume, pitch);
         }
 
-        public static void Continue()
+        private void Play(AudioSource src, string name, float volume, float pitch)
         {
-            Time.timeScale = 1;
+            src.volume = volume;
+            src.pitch = pitch;
+            src.PlayOneShot(Audios[name]);
         }
 
         public static void DelayAction(MonoBehaviour sender, Action act, float interval)
@@ -84,11 +105,6 @@ namespace EscapeGuan
         }
 
         public static void IntervalAction(MonoBehaviour sender, IntervalActionStatementGetter statement, Action act, float interval)
-        {
-            sender.StartCoroutine(IntervalActionP(sender, statement, act, interval));
-        }
-
-        public static void IntervalAction(MonoBehaviour sender, IntervalActionStatementGetter statement, CoroutineAction act, float interval)
         {
             sender.StartCoroutine(IntervalActionP(sender, statement, act, interval));
         }
@@ -120,4 +136,12 @@ namespace EscapeGuan
         public delegate bool IntervalActionStatementGetter();
         public delegate IEnumerator CoroutineAction();
     }
+}
+
+public enum AudioSources
+{
+    UI,
+    Player,
+    Ambient,
+    Prop,
 }

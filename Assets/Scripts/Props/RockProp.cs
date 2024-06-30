@@ -8,19 +8,9 @@ public class RockProp : PropEntity
 {
     public override bool GuanAttackable => true;
 
-    protected override void Damage(float amount)
-    {
-        // 自己死不了（
-    }
-
-    public override void Damage(float amount, Entity sender)
-    {
-        Kill();
-        Attack(sender);
-    }
-
     public override void Kill()
     {
+        GameManager.Main.PlayAudio(AudioSources.Prop, "se.rock_break");
         Instantiate(GameManager.Templates["rock_destroy_particle"], transform.position, Quaternion.identity);
         base.Kill();
     }

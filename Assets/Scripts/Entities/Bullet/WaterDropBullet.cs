@@ -19,6 +19,7 @@ namespace EscapeGuan.Entities.Bullet
         public override void Drop()
         {
             Instantiate(GameManager.Templates["water_drop_particle"], transform.position, Quaternion.identity);
+            GameManager.Main.PlayAudio(AudioSources.Prop, "se.water.drip");
             base.Drop();
         }
     }

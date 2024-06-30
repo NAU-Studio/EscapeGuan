@@ -45,6 +45,8 @@ namespace EscapeGuan.Entities
 
         public virtual bool GuanAttackable => true;
 
+        public virtual bool BulletHitable => true;
+
         public virtual void Start()
         {
             Id = Random.Range(int.MinValue, int.MaxValue);

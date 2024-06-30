@@ -19,8 +19,10 @@ namespace EscapeGuan.Entities.Bullet
 
         public override void Drop()
         {
-            if (Random.value < ItemRegistry.Main.GetObject<WaterBottleItem>("water_bottle").MassOf(Base) * Rigidbody.velocity.magnitude / (WaterBottleItem.MaxMass * 2))
+            GameManager.Main.PlayAudio(AudioSources.Prop, "se.water.bottle_hit");
+            if (Random.value < ItemRegistry.Main.GetObject<WaterBottleItem>("water_bottle").MassOf(Base) * (Rigidbody.velocity.magnitude / 4) / (WaterBottleItem.MaxMass * 2))
             {
+                GameManager.Main.PlayAudio(AudioSources.Prop, "se.water.splash");
                 for (int i = 0; i < ItemRegistry.Main.GetObject<WaterBottleItem>("water_bottle").MassOf(Base) * 100; i++)
                 {
                     WaterDropBullet b = Instantiate(GameManager.Templates["water_drop"], transform.position, Quaternion.identity).GetComponent<WaterDropBullet>();

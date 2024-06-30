@@ -171,9 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c20728ef3dd2254891621fe75eb5ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthPoint: 0
-  MaxHealthPoint: 0
-  AttackValue: 64
+  HealthPoint: 1500
+  MaxHealthPoint: 1500
+  AttackValue: 250
   CriticalMultiplier: 1.5
   CriticalRate: 0.5
   Knockback: 1
@@ -184,5 +184,4 @@ MonoBehaviour:
   Drag: 0.5
   Id: 0
   Breakable: 0
-  BreakForce: 64
-  ParticleTemplate: {fileID: 7286129427934840388, guid: 97ce61ad3c10a80478b092ce10d07346, type: 3}
+  BreakForce: 1500
