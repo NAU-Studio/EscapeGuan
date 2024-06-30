@@ -19,14 +19,19 @@ namespace EscapeGuan.Entities.Bullet
 
         public override void Drop()
         {
-            for (int i = 0; i < ItemRegistry.Main.GetObject<WaterBottleItem>("water_bottle").MassOf(Base) * 100; i++)
+            if (Random.value < ItemRegistry.Main.GetObject<WaterBottleItem>("water_bottle").MassOf(Base) * Rigidbody.velocity.magnitude / (WaterBottleItem.MaxMass * 2))
             {
-                WaterDropBullet b = Instantiate(GameManager.Templates["water_drop"], transform.position, Quaternion.identity).GetComponent<WaterDropBullet>();
-                b.Init(this, Random.Range(1, Rigidbody.velocity.magnitude / 2), Random.Range(0, 360f), Thrower.CriticalRate, Thrower.CriticalMultiplier, GetAttackAmount());
+                for (int i = 0; i < ItemRegistry.Main.GetObject<WaterBottleItem>("water_bottle").MassOf(Base) * 100; i++)
+                {
+                    WaterDropBullet b = Instantiate(GameManager.Templates["water_drop"], transform.position, Quaternion.identity).GetComponent<WaterDropBullet>();
+                    b.Init(this, Random.Range(1, Rigidbody.velocity.magnitude / 2), Random.Range(0, 360f), Thrower.CriticalRate, Thrower.CriticalMultiplier, GetAttackAmount());
+                }
+                base.Drop();
+                return;
             }
 
-            // Rigidbody2D rig = Base.CreateEntity(transform.position, transform.rotation.eulerAngles).GetComponent<Rigidbody2D>();
-            // rig.velocity = -Rigidbody.velocity;
+            Rigidbody2D rig = Base.CreateEntity(transform.position, transform.rotation.eulerAngles).GetComponent<Rigidbody2D>();
+            rig.velocity = -Rigidbody.velocity;
             base.Drop();
         }
 
