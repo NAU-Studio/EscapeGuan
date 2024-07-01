@@ -81,7 +81,6 @@ GameObject:
   - component: {fileID: 5983259969133830175}
   - component: {fileID: 8111773935012355264}
   - component: {fileID: 7190916065189878257}
-  - component: {fileID: 956366677157799449}
   m_Layer: 5
   m_Name: Value Text
   m_TagString: Untagged
@@ -205,22 +204,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &956366677157799449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519058375462688350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e1b85817df231344b47f2b3738a8ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Getters:
-  - Name: HealthPoint
-    KeyValue: value
-  Format: value
 --- !u!1 &3798117711159201854
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,7 +349,6 @@ GameObject:
   - component: {fileID: 2818970769482642990}
   - component: {fileID: 637782039573317035}
   - component: {fileID: 1755730283218372544}
-  - component: {fileID: 3054658796581782023}
   m_Layer: 5
   m_Name: Max Text
   m_TagString: Untagged
@@ -490,22 +472,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3054658796581782023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4237941445533164208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e1b85817df231344b47f2b3738a8ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Getters:
-  - Name: MaxHealthPoint
-    KeyValue: value
-  Format: value
 --- !u!1 &6685464218903578139
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,6 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
+  Offset: {x: 0, y: 0, z: 0}
 --- !u!225 &3548681278211815855
 CanvasGroup:
   m_ObjectHideFlags: 0
