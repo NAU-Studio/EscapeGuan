@@ -38,7 +38,9 @@ namespace EscapeGuan.Entities.Player
         public AttackState AttackState;
 
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
+
         public override int InventoryLength => 36;
+        public override bool ShowHealthBarAtTop => false;
 
         public override void Start()
         {
