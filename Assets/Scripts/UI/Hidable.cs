@@ -1,5 +1,6 @@
+using System.Collections;
 using DG.Tweening;
-
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace EscapeGuan.UI
@@ -11,32 +12,46 @@ namespace EscapeGuan.UI
         [Range(0, 1)]
         public float ShowAlpha = 1;
 
+        public CanvasGroup CanvasGroup => GetComponent<CanvasGroup>();
+
         public virtual void Show()
         {
-            GetComponent<CanvasGroup>().DOFade(ShowAlpha, Transition);
-            GetComponent<CanvasGroup>().blocksRaycasts = true;
-            GetComponent<CanvasGroup>().interactable = true;
+            CanvasGroup.DOFade(ShowAlpha, Transition);
+            CanvasGroup.blocksRaycasts = true;
+            CanvasGroup.interactable = true;
         }
 
         protected virtual void ShowNoTransition()
         {
-            GetComponent<CanvasGroup>().alpha = ShowAlpha;
-            GetComponent<CanvasGroup>().blocksRaycasts = true;
-            GetComponent<CanvasGroup>().interactable = true;
+            CanvasGroup.alpha = ShowAlpha;
+            CanvasGroup.blocksRaycasts = true;
+            CanvasGroup.interactable = true;
         }
 
         public virtual void Hide()
         {
-            GetComponent<CanvasGroup>().DOFade(0, Transition);
-            GetComponent<CanvasGroup>().blocksRaycasts = false;
-            GetComponent<CanvasGroup>().interactable = false;
+            CanvasGroup.DOFade(0, Transition);
+            CanvasGroup.blocksRaycasts = false;
+            CanvasGroup.interactable = false;
         }
 
         protected virtual void HideNoTransition()
         {
-            GetComponent<CanvasGroup>().alpha = 0;
-            GetComponent<CanvasGroup>().blocksRaycasts = true;
-            GetComponent<CanvasGroup>().interactable = true;
+            CanvasGroup.alpha = 0;
+            CanvasGroup.blocksRaycasts = true;
+            CanvasGroup.interactable = true;
+        }
+
+        public virtual void HideDestroy()
+        {
+            Hide();
+            StartCoroutine(DestroyAfterHide());
+        }
+
+        private IEnumerator DestroyAfterHide()
+        {
+            yield return new WaitForSeconds(Transition);
+            Destroy(gameObject);
         }
     }
 }

@@ -34,8 +34,8 @@ namespace EscapeGuan.Entities.Enemy
         public Status State = Status.Wander;
 
         public override bool GuanAttackable => false;
-
         public override int InventoryLength => 9;
+        public override bool ShowHealthBarAtTop => false;
 
         private AIDestinationSetter TargetDestinationSetter => GetComponent<AIDestinationSetter>();
         private AIPath TargetPath => GetComponent<AIPath>();
