@@ -119,7 +119,10 @@ namespace EscapeGuan.Entities.Player
             if (amount <= 0)
                 return true;
             if (Stamina + amount > MaxStamina)
-                return false;
+                if (Stamina < MaxStamina)
+                    Stamina = MaxStamina;
+                else
+                    return false;
             Stamina += amount;
             return true;
         }
