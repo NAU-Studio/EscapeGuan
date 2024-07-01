@@ -29,8 +29,6 @@ namespace EscapeGuan.Entities.Bullet
 
         protected float ZCoord => -Gravity * Mathf.Pow(ElapsedDistance / InitialVelocity - Mathf.Sqrt(Highest / Gravity), 2) + Highest;
 
-        public override bool ShowHealthBarAtTop => false;
-
         public override void FixedUpdate()
         {
             base.FixedUpdate();

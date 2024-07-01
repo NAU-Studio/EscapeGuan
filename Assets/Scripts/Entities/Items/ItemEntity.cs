@@ -13,7 +13,6 @@ namespace EscapeGuan.Entities.Items
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
 
         public override bool BulletHitable => false;
-        public override bool ShowHealthBarAtTop => false;
 
         public override void RegisterEntity()
         {

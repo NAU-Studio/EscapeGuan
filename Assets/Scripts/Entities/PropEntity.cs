@@ -13,7 +13,6 @@ namespace EscapeGuan.Entities
 
         public override bool GuanAttackable => false;
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
-        public override Vector3 HealthBarOffset => new(0, 0.75f, 0);
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
