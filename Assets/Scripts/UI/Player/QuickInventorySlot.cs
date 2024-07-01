@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace EscapeGuan.UI.Player
 {
-    public class QuickInventorySlot : MonoBehaviour
+    public class QuickInventorySlot : RectBehaviour
     {
         public Image Image;
         public TMP_Text Count;

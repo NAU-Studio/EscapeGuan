@@ -4,8 +4,6 @@ using DG.Tweening;
 
 using EscapeGuan.Entities.Items;
 
-using Unity.VisualScripting;
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 

@@ -42,7 +42,7 @@ namespace EscapeGuan.UI
             RectTransformUtility.ScreenPointToLocalPointInRectangle(Parent, Mouse.current.position.value, Camera.main, out Vector2 pos);
             float floating = -(1920 / (GameManager.Player.ThrowStability / 10)) * (1920 / (pos.magnitude - 1920) + 1);
             transform.anchoredPosition = pos + new Vector2(Random.Range(-floating / 2, floating / 2), Random.Range(-floating / 2, floating / 2));
-            VelocityText.text = $"速度：{pos.magnitude / (10 * Mathf.PI):0.00} m*s^(-1)";
+            VelocityText.text = $"{pos.magnitude / (10 * Mathf.PI):0.00} m/s";
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 
 using EscapeGuan.Entities.Items;
-using EscapeGuan.Items;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -64,7 +64,7 @@ namespace EscapeGuan.UI.Player
                     Selection = Slots.Count - 1;
             }
             if (scr != 0)
-                SelectionBox.DOAnchorPosX(Selection * 48, .1f).SetEase(Ease.OutCubic);
+                SelectionBox.DOAnchorPosX(Slots[Selection].transform.anchoredPosition.x, .1f).SetEase(Ease.OutCubic);
 
             if (prevItem != Slots[Selection].Item)
             {
