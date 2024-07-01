@@ -38,9 +38,7 @@ namespace EscapeGuan.Entities.Player
         public AttackState AttackState;
 
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
-
         public override int InventoryLength => 36;
-        public override bool ShowHealthBarAtTop => false;
 
         public override void Start()
         {
@@ -121,10 +119,7 @@ namespace EscapeGuan.Entities.Player
             if (amount <= 0)
                 return true;
             if (Stamina + amount > MaxStamina)
-                if (Stamina < MaxStamina)
-                    Stamina = MaxStamina;
-                else
-                    return false;
+                return false;
             Stamina += amount;
             return true;
         }

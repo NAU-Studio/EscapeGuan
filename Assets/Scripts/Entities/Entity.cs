@@ -42,10 +42,10 @@ namespace EscapeGuan.Entities
         public Action OnKill = () => { };
 
         public abstract int InventoryLength { get; }
+
         public virtual bool GuanAttackable => true;
+
         public virtual bool BulletHitable => true;
-        public virtual bool ShowHealthBarAtTop => true;
-        public virtual Vector3 HealthBarOffset => Vector3.zero;
 
         public virtual void Start()
         {
@@ -99,8 +99,6 @@ namespace EscapeGuan.Entities
             return 100 * basev / (DefenseValue + 100);
         }
 
-        private bool HealthBarCreated = false;
-        private HealthBar HealthBar;
         protected virtual void Damage(float amount)
         {
             HealthPoint -= GetDamageAmount(amount);
@@ -108,27 +106,24 @@ namespace EscapeGuan.Entities
             dtx.Value = GetDamageAmount(amount);
             dtx.gameObject.SetActive(true);
 
-            if (ShowHealthBarAtTop && !HealthBarCreated)
-            {
-                HealthBar = Instantiate(GameManager.Templates["health_bar"], GameManager.Main.ObjectHUDContainer).GetComponent<HealthBar>();
-                HealthBar.Initialize(this);
-                HealthBarCreated = true;
-            }
-
             if (HealthPoint <= 0)
                 Kill();
         }
 
         public virtual void Damage(float amount, Entity sender)
         {
-            Damage(amount);
+            HealthPoint -= GetDamageAmount(amount);
+            DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
+            dtx.Value = GetDamageAmount(amount);
+            dtx.gameObject.SetActive(true);
+
+            if (HealthPoint <= 0)
+                Kill();
         }
 
         public virtual void Kill()
         {
             GameManager.EntityPool.Remove(Id);
-            if (HealthBarCreated)
-                HealthBar.Hidable.HideDestroy();
             Destroy(gameObject);
             OnKill();
         }
