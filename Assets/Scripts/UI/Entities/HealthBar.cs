@@ -19,11 +19,11 @@ public class HealthBar : MonoBehaviour
         Hidable.Show();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         Value.fillAmount = Target.HealthPoint / Target.MaxHealthPoint;
         ValueText.text = Target.HealthPoint.ToString("0");
-        MaxText.text = Target.HealthPoint.ToString("0");
+        MaxText.text = Target.MaxHealthPoint.ToString("0");
     }
 
     public void Initialize(Entity target)
@@ -31,5 +31,10 @@ public class HealthBar : MonoBehaviour
         Target = target;
         ObjectFollower.Target = target.transform;
         ObjectFollower.Offset = target.HealthBarOffset;
+    }
+
+    private void OnValidate()
+    {
+        Update();
     }
 }

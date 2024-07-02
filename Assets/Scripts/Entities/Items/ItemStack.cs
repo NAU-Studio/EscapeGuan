@@ -2,7 +2,6 @@ using UnityEngine;
 
 using EscapeGuan.Registries;
 using System;
-using Random = UnityEngine.Random;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 
@@ -12,6 +11,8 @@ namespace EscapeGuan.Entities.Items
     {
         public Item Base;
         public Dictionary<string, object> Attributes = new();
+
+        public float Durability => Base.GetDurability(this);
 
         public Action<ItemStack> OnRemove = (x) => { };
 
