@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 namespace EscapeGuan.Entities.Enemy
 {
     [RequireComponent(typeof(AIDestinationSetter), typeof(AIPath), typeof(SpriteRenderer))]
-    public class Guan : Entity
+    public class Guan : Boss
     {
         [Header("Guan Attributes")]
         public GameObject Emotion;
@@ -36,6 +36,8 @@ namespace EscapeGuan.Entities.Enemy
         public override bool GuanAttackable => false;
         public override int InventoryLength => 9;
         public override bool ShowHealthBarAtTop => false;
+        public override string BossName => "管哥";
+        public override string BossDescription => "我勒个臭管啊";
 
         private AIDestinationSetter TargetDestinationSetter => GetComponent<AIDestinationSetter>();
         private AIPath TargetPath => GetComponent<AIPath>();
