@@ -23,7 +23,7 @@ public class HealthBar : MonoBehaviour
     {
         Value.fillAmount = Target.HealthPoint / Target.MaxHealthPoint;
         ValueText.text = Target.HealthPoint.ToString("0");
-        MaxText.text = Target.HealthPoint.ToString("0");
+        MaxText.text = Target.MaxHealthPoint.ToString("0");
     }
 
     public void Initialize(Entity target)
