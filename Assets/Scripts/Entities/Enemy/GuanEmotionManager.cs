@@ -11,10 +11,10 @@ namespace EscapeGuan.Entities.Enemy
     public class GuanEmotionManager : MonoBehaviour
     {
         public Sprite LoseTarget, FindTarget, Rest, Angry;
-    
+
         private readonly Color Transparent = new(1, 1, 1, 0);
         private Coroutine EmotionAnimationCoroutine;
-        
+
         private SpriteRenderer Sprite => GetComponent<SpriteRenderer>();
 
         public void ChangeEmotion(GuanEmotion e)
@@ -30,17 +30,14 @@ namespace EscapeGuan.Entities.Enemy
 
             if (EmotionAnimationCoroutine != null)
                 StopCoroutine(EmotionAnimationCoroutine);
-            
+
             EmotionAnimationCoroutine = StartCoroutine(EmotionAnimation());
         }
 
         private IEnumerator EmotionAnimation()
         {
-            Sprite.color = Color.white;
-            Sprite.transform.DOLocalMoveY(1, .2f).SetEase(Ease.OutCubic);
-            yield return new WaitForSecondsRealtime(.2f);
-            Sprite.transform.DOLocalMoveY(.75f, .2f).SetEase(Ease.InCubic);
-            yield return new WaitForSecondsRealtime(2.2f);
+            Sprite.DOColor(Color.white, 0.2f);
+            yield return new WaitForSecondsRealtime(1f);
             Sprite.DOColor(Transparent, 1);
         }
     }

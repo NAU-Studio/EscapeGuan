@@ -20,7 +20,6 @@ namespace EscapeGuan.UI.Item
         {
             NameUI.text = name;
             DescriptionUI.text = description;
-            transform.DOSizeDelta(new(transform.sizeDelta.x, DescriptionUI.preferredHeight + 38), Transition).SetEase(Ease.OutSine);
             Show();
         }
 
