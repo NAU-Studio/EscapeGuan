@@ -15,7 +15,7 @@ public class ControlledEntityAttributeImageSetter : MonoBehaviour
 
     public void Update()
     {
-        Image.fillAmount = GameManager.Player.GetAttribute<float>(AttributeName) / GameManager.Player.GetAttribute<float>(MaxAttributeName);
+        Image.SetFillAmount(GameManager.Player.GetAttribute<float>(AttributeName) / GameManager.Player.GetAttribute<float>(MaxAttributeName));
         if (HideOnFull && Shown && Image.fillAmount >= 1)
         {
             Shown = false;

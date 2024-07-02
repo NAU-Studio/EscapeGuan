@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using DG.Tweening;
+using DG.Tweening.Core;
 using EscapeGuan.Entities;
 using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
 using EscapeGuan.Registries;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Item;
-
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace EscapeGuan
@@ -140,6 +141,16 @@ namespace EscapeGuan
 
         public delegate bool IntervalActionStatementGetter();
         public delegate IEnumerator CoroutineAction();
+    }
+}
+
+public static class Extensions
+{
+    public static void SetFillAmount(this SlicedFilledImage img, float to)
+    {
+        if (img.fillAmount == to)
+            return;
+        DOTween.To(() => img.fillAmount, (x) => img.fillAmount = x, to, 0.2f).SetEase(Ease.OutCubic);
     }
 }
 
