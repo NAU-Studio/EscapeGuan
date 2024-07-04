@@ -4,7 +4,7 @@ using EscapeGuan.Entities.Items;
 
 using UnityEngine;
 
-namespace EscapeGuan.Entities
+namespace EscapeGuan.Entities.Props
 {
     public abstract class PropEntity : Entity
     {
@@ -17,12 +17,7 @@ namespace EscapeGuan.Entities
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.rigidbody.velocity.magnitude * collision.rigidbody.mass >= BreakForce)
-            {
-                Kill();
-                if (collision.gameObject.GetComponent<Entity>() != null)
-                    Attack(collision.gameObject.GetComponent<Entity>());
-            }
+            Damage(collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);
         }
 
         public override void PickItem(ItemEntity sender)
@@ -30,5 +25,4 @@ namespace EscapeGuan.Entities
             throw new EntityCannotPickupException(Id);
         }
     }
-
 }

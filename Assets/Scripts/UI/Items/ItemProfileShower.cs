@@ -6,7 +6,7 @@ using TMPro;
 
 using UnityEngine;
 
-namespace EscapeGuan.UI.Item
+namespace EscapeGuan.UI.Items
 {
     public class ItemProfileShower : Hidable
     {

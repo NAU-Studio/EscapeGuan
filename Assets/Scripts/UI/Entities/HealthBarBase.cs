@@ -1,7 +1,8 @@
 using EscapeGuan.Entities;
 using EscapeGuan.UI;
+
 using TMPro;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public abstract class HealthBarBase : MonoBehaviour

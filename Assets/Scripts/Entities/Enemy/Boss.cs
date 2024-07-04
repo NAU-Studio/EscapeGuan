@@ -1,11 +1,8 @@
-using System;
-
-using EscapeGuan.Entities;
-
-public abstract class Boss : Entity
+namespace EscapeGuan.Entities.Enemy
 {
-    public abstract string BossName { get; }
-    public abstract string BossDescription { get; }
-
-    public override int InventoryLength => throw new NotImplementedException();
+    public interface IBoss
+    {
+        public abstract string BossName { get; }
+        public abstract string BossDescription { get; }
+    }
 }

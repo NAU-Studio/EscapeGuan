@@ -1,4 +1,7 @@
 using System;
+
+using EscapeGuan.Items;
+
 using UnityEngine;
 
 namespace EscapeGuan.Entities.Items

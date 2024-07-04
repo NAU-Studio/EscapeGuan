@@ -1,15 +1,18 @@
 using UnityEngine;
 
-public class SmoothFollower : MonoBehaviour
+namespace EscapeGuan
 {
-    public float FollowSpeed;
-
-    public Transform Target;
-
-    public Vector3 Offset;
-
-    private void Update()
+    public class SmoothFollower : MonoBehaviour
     {
-        transform.position = Vector3.Lerp(transform.position, Target.position + Offset, FollowSpeed * Time.deltaTime);
+        public float FollowSpeed;
+
+        public Transform Target;
+
+        public Vector3 Offset;
+
+        private void Update()
+        {
+            transform.position = Vector3.Lerp(transform.position, Target.position + Offset, FollowSpeed * Time.deltaTime);
+        }
     }
 }

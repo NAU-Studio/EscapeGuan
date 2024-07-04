@@ -1,10 +1,10 @@
-using EscapeGuan.Entities.Items;
+using EscapeGuan.Items;
 
 using TMPro;
 
 using UnityEngine.UI;
 
-namespace EscapeGuan.UI.Player
+namespace EscapeGuan.UI.Items
 {
     public class QuickInventorySlot : RectBehaviour
     {

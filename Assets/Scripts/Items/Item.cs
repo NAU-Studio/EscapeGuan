@@ -1,9 +1,8 @@
 ﻿using EscapeGuan.Entities;
-using EscapeGuan.Entities.Items;
 
 using UnityEngine;
 
-namespace EscapeGuan.Registries
+namespace EscapeGuan.Items
 {
     public class Item
     {

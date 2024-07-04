@@ -1,5 +1,6 @@
 using EscapeGuan.Entities;
 using EscapeGuan.UI;
+
 using UnityEngine;
 
 [RequireComponent(typeof(ObjectFollower), typeof(Hidable))]

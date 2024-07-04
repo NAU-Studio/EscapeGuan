@@ -1,11 +1,14 @@
-using UnityEngine;
-
-using EscapeGuan.Registries;
 using System;
-using Object = UnityEngine.Object;
 using System.Collections.Generic;
 
-namespace EscapeGuan.Entities.Items
+using EscapeGuan.Entities;
+using EscapeGuan.Entities.Items;
+
+using UnityEngine;
+
+using Object = UnityEngine.Object;
+
+namespace EscapeGuan.Items
 {
     public class ItemStack
     {

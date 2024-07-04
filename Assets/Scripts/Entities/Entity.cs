@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 using EscapeGuan.Entities.Items;
+using EscapeGuan.Items;
 using EscapeGuan.UI;
+
 using UnityEngine;
 
 using Random = UnityEngine.Random;

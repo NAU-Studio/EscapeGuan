@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using EscapeGuan.Entities.Items;
 using EscapeGuan.Items;
-using EscapeGuan.Registries;
 
 using Pathfinding;
 

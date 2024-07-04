@@ -1,6 +1,4 @@
-using EscapeGuan.Entities.Items;
 using EscapeGuan.Entities;
-using EscapeGuan.Registries;
 
 using UnityEngine;
 

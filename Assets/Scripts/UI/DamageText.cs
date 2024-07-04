@@ -34,12 +34,13 @@ namespace EscapeGuan.UI
             Text.text = Value.ToString("0");
             IEnumerator MoveAnimation()
             {
-                transform.DOMoveY(transform.position.y + 3, 4).SetEase(Ease.Linear);
+                transform.DOMoveY(transform.position.y + 3, 2).SetEase(Ease.Linear);
                 transform.DOScale(2, .1f).SetEase(Ease.OutCubic);
                 yield return new WaitForSecondsRealtime(.1f);
                 transform.DOScale(1, .4f).SetEase(Ease.OutCubic);
                 yield return new WaitForSecondsRealtime(1.6f);
                 Text.DOFade(0, .3f);
+                yield return new WaitForSecondsRealtime(.3f);
                 Destroy(gameObject, 1);
             }
             StartCoroutine(MoveAnimation());

@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using EscapeGuan.Entities.Bullet;
 using EscapeGuan.Entities.Items;
-using EscapeGuan.UI.Item;
+using EscapeGuan.Items;
+using EscapeGuan.UI;
+using EscapeGuan.UI.Items;
 
 using static UnityEngine.Mathf;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using EscapeGuan.UI.Player;
-using EscapeGuan.Items;
-using EscapeGuan.Entities.Bullet;
-using EscapeGuan.UI;
 
 namespace EscapeGuan.Entities.Player
 {

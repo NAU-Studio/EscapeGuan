@@ -7,7 +7,7 @@ using EscapeGuan.Entities.Items;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace EscapeGuan.UI.Item
+namespace EscapeGuan.UI.Items
 {
     public class ItemPickupList : RectBehaviour
     {

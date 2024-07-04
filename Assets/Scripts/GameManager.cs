@@ -1,15 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using DG.Tweening;
-using DG.Tweening.Core;
+
 using EscapeGuan.Entities;
 using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
-using EscapeGuan.Registries;
 using EscapeGuan.UI;
-using EscapeGuan.UI.Item;
-using Unity.VisualScripting;
+using EscapeGuan.UI.Items;
+
 using UnityEngine;
 
 namespace EscapeGuan
