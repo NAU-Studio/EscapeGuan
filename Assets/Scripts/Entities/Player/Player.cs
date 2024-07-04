@@ -11,6 +11,7 @@ using static UnityEngine.Mathf;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 namespace EscapeGuan.Entities.Player
 {
@@ -23,6 +24,8 @@ namespace EscapeGuan.Entities.Player
         public float Stamina;
         public float MaxStamina;
         public float StaminaRestoreDelay;
+
+        public float SweepDistance;
 
         [Header("Other settings")]
         public Tilemap Map;
@@ -40,6 +43,8 @@ namespace EscapeGuan.Entities.Player
 
         public override int InventoryLength => 36;
         public override bool ShowHealthBarAtTop => false;
+
+        public float SweepDistanceMultiplier = 1;
 
         public override void Start()
         {
@@ -179,7 +184,7 @@ namespace EscapeGuan.Entities.Player
             }
 
         def:
-            AttackState = AttackState.Normal;
+            AttackState = AttackState.Sweep;
         }
 
         public void AddNear(int i)
@@ -192,7 +197,7 @@ namespace EscapeGuan.Entities.Player
         {
             switch (AttackState)
             {
-                case AttackState.Normal: return;
+                case AttackState.Sweep: Sweep(); return;
                 case AttackState.Throw: Throw(); return;
             }
         }
@@ -208,11 +213,17 @@ namespace EscapeGuan.Entities.Player
                 QuickInventory.Slots[QuickInventory.Selection].Item);
             Inventory[QuickInventory.Selection] = null;
         }
+
+        public void Sweep()
+        {
+            foreach (KeyValuePair<int, Entity> e in GameManager.EntityPool.Where((x) => Vector3.Distance(transform.position, x.Value.transform.position) <= SweepDistance * SweepDistanceMultiplier && x.Value != this))
+                Attack(e.Value);
+        }
     }
 
     public enum AttackState
     {
-        Normal,
+        Sweep,
         Throw,
         Shot
     }
