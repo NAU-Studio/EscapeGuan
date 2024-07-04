@@ -1,5 +1,7 @@
 using EscapeGuan.UI;
+
 using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class ObjectFollower : RectBehaviour

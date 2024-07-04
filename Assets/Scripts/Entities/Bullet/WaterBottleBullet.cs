@@ -1,8 +1,6 @@
 using System;
 
-using EscapeGuan.Entities.Items;
 using EscapeGuan.Items;
-using EscapeGuan.Registries;
 
 using UnityEngine;
 

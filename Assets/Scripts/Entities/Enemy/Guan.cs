@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using EscapeGuan.Entities.Items;
-
+using EscapeGuan.Items;
 using Pathfinding;
 
 using UnityEngine;
@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 namespace EscapeGuan.Entities.Enemy
 {
     [RequireComponent(typeof(AIDestinationSetter), typeof(AIPath), typeof(SpriteRenderer))]
-    public class Guan : Boss
+    public class Guan : Entity, IBoss
     {
         [Header("Guan Attributes")]
         public GameObject Emotion;
@@ -36,8 +36,8 @@ namespace EscapeGuan.Entities.Enemy
         public override bool GuanAttackable => false;
         public override int InventoryLength => 9;
         public override bool ShowHealthBarAtTop => false;
-        public override string BossName => "管哥";
-        public override string BossDescription => "我勒个臭管啊";
+        public string BossName => "管哥";
+        public string BossDescription => "我勒个臭管啊";
 
         private AIDestinationSetter TargetDestinationSetter => GetComponent<AIDestinationSetter>();
         private AIPath TargetPath => GetComponent<AIPath>();

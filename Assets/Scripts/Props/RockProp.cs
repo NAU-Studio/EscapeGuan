@@ -1,5 +1,5 @@
 using EscapeGuan;
-using EscapeGuan.Entities;
+using EscapeGuan.Entities.Props;
 
 using UnityEngine;
 

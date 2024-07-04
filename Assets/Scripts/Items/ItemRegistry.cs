@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using EscapeGuan.Entities.Items;
-
-namespace EscapeGuan.Registries
+namespace EscapeGuan.Items
 {
     public class ItemRegistry
     {

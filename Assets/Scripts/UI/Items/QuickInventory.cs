@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 using DG.Tweening;
 
-using EscapeGuan.Entities.Items;
+using EscapeGuan.Items;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace EscapeGuan.UI.Player
+namespace EscapeGuan.UI.Items
 {
     public class QuickInventory : MonoBehaviour
     {

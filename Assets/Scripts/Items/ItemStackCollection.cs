@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EscapeGuan.Entities.Items
+namespace EscapeGuan.Items
 {
 	public class ItemStackCollection : List<ItemStack>
 	{
@@ -14,9 +14,9 @@ namespace EscapeGuan.Entities.Items
 		public void Set(int index, ItemStack i)
 		{
 			this[index] = i;
-            if (i != null)
-                i.OnRemove += Remove;
-        }
+			if (i != null)
+				i.OnRemove += Remove;
+		}
 
 		public new void Remove(ItemStack i)
 		{

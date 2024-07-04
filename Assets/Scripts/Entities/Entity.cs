@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 using EscapeGuan.Entities.Items;
+using EscapeGuan.Items;
 using EscapeGuan.UI;
+
 using UnityEngine;
 
 using Random = UnityEngine.Random;
@@ -76,7 +78,13 @@ namespace EscapeGuan.Entities
 
         public virtual void Attack(Entity target)
         {
-            target.Damage(GetAttackAmount(), this);
+            target.Damage(GetAttackAmount());
+            target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
+        }
+
+        public virtual void Attack(Entity target, float amount)
+        {
+            target.Damage(amount);
             target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
         }
 
@@ -103,6 +111,9 @@ namespace EscapeGuan.Entities
         private HealthBar HealthBar;
         protected virtual void Damage(float amount)
         {
+            if (amount <= 0.1f)
+                return;
+
             HealthPoint -= GetDamageAmount(amount);
             DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
             dtx.Value = GetDamageAmount(amount);
@@ -117,11 +128,6 @@ namespace EscapeGuan.Entities
 
             if (HealthPoint <= 0)
                 Kill();
-        }
-
-        public virtual void Damage(float amount, Entity sender)
-        {
-            Damage(amount);
         }
 
         public virtual void Kill()

@@ -4,7 +4,7 @@ using TMPro;
 
 using UnityEngine.UI;
 
-namespace EscapeGuan.UI.Item
+namespace EscapeGuan.UI.Items
 {
     public class ItemPickupOption : RectBehaviour
     {
