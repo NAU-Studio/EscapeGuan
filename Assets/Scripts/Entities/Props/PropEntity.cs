@@ -26,6 +26,8 @@ namespace EscapeGuan.Entities.Props
 
         protected virtual void OnCollisionStay2D(Collision2D collision)
         {
+            if (collision.gameObject.GetComponent<Entity>() is Entity e)
+                Attack(e, collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);
             if (CollisionRemaining <= 0)
             {
                 Damage(collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);

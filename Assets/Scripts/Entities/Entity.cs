@@ -82,6 +82,12 @@ namespace EscapeGuan.Entities
             target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
         }
 
+        public virtual void Attack(Entity target, float amount)
+        {
+            target.Damage(amount);
+            target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
+        }
+
         public virtual void FixedUpdate()
         {
             if (KnockbackVelocity != Vector2.zero)
