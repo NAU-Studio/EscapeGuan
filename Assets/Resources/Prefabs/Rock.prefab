@@ -145,7 +145,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 60
-  m_LinearDrag: 1
+  m_LinearDrag: 2
   m_AngularDrag: 1
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -183,5 +183,4 @@ MonoBehaviour:
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
-  Breakable: 0
-  BreakForce: 1500
+  CollisionCD: 0.4

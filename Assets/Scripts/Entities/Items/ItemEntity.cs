@@ -47,7 +47,5 @@ namespace EscapeGuan.Entities.Items
         public override float GetDamageAmount(float basev) => 0;
 
         protected override void Damage(float amount) { }
-
-        public override void Damage(float amount, Entity sender) { }
     }
 }

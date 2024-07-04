@@ -8,16 +8,29 @@ namespace EscapeGuan.Entities.Props
 {
     public abstract class PropEntity : Entity
     {
-        public bool Breakable;
-        public float BreakForce;
+        // Unit: second
+        public float CollisionCD;
 
         public override bool GuanAttackable => false;
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
         public override Vector3 HealthBarOffset => new(0, 0.75f, 0);
 
-        protected virtual void OnCollisionEnter2D(Collision2D collision)
+
+        private float CollisionRemaining = 0;
+
+        private void Update()
         {
-            Damage(collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);
+            if (CollisionRemaining > 0)
+                CollisionRemaining -= Time.deltaTime;
+        }
+
+        protected virtual void OnCollisionStay2D(Collision2D collision)
+        {
+            if (CollisionRemaining <= 0)
+            {
+                Damage(collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);
+                CollisionRemaining = CollisionCD;
+            }
         }
 
         public override void PickItem(ItemEntity sender)
