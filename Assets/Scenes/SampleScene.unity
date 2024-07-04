@@ -2614,7 +2614,7 @@ MonoBehaviour:
   Stamina: 100
   MaxStamina: 100
   StaminaRestoreDelay: 1
-  SweepDistance: 1.5
+  SweepDistance: 2.5
   Map: {fileID: 587148108}
   SlowdownTiles:
   - {fileID: 11400000, guid: b3702f95e475afb4fbf1665bd4428b28, type: 2}
@@ -2624,7 +2624,7 @@ MonoBehaviour:
   ThrowCrosshairVelocity: {fileID: 306356255}
   ThrowStability: 100
   AttackState: 0
-  SweepDistanceMultiplier: 0
+  SweepDistanceMultiplier: 1
   ItemPickupRange: 1
   NearItems: 
   List: {fileID: 1151086893}
@@ -4640,7 +4640,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99693775
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7239,7 +7239,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00011634082}
+  m_AnchoredPosition: {x: 0, y: 0.00009987736}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
