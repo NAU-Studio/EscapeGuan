@@ -68,6 +68,7 @@ namespace EscapeGuan
             // Particles
             Templates.Add("rock_destroy_particle", Resources.Load<GameObject>("Prefabs/Rock Destroy Particle"));
             Templates.Add("water_drop_particle", Resources.Load<GameObject>("Prefabs/Water Drop Particle"));
+            Templates.Add("blood_drop_particle", Resources.Load<GameObject>("Prefabs/Blood Drop Particle"));
 
             // HUD
             Templates.Add("health_bar", Resources.Load<GameObject>("Prefabs/Health Bar"));

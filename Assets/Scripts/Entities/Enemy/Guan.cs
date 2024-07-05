@@ -190,6 +190,13 @@ namespace EscapeGuan.Entities.Enemy
             Gizmos.color = rc;
         }
 
+        protected override void Damage(float amount)
+        {
+            base.Damage(amount);
+            ParticleSystem ps = Instantiate(GameManager.Templates["blood_drop_particle"], transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit((int)(amount / 10));
+        }
+
         public override float GetAttackAmount()
         {
             return (Random.value < CriticalRate ? CriticalMultiplier : 1) * AttackValue * DamageMultiplier;
