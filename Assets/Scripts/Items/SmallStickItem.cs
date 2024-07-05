@@ -10,9 +10,16 @@ namespace EscapeGuan.Items
         { }
 
         public override void Use(ItemStack i, Entity from)
+        { }
+
+        public override void OnHoldUp(ItemStack i)
         {
-            base.Use(i, from);
-            Debug.Log("目前仅用来测试UI");
+            GameManager.Player.AttackDistanceGains.Add("small_stick.attack_distance_gain", .5f);
+        }
+
+        public override void OnPutDown(ItemStack i)
+        {
+            GameManager.Player.AttackDistanceGains.Remove("small_stick.attack_distance_gain");
         }
     }
 }

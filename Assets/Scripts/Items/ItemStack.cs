@@ -69,6 +69,9 @@ namespace EscapeGuan.Items
             OnRemove(this);
         }
 
+        public void OnHoldUp() => Base.OnHoldUp(this);
+        public void OnPutDown() => Base.OnPutDown(this);
+
         internal ItemStack(Item b, int c = 1)
         {
             Base = b;

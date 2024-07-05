@@ -78,7 +78,7 @@ namespace EscapeGuan.Entities.Enemy
         {
             Transform nearest = null;
             float nd = float.MaxValue;
-            foreach (KeyValuePair<int, Entity> e in GameManager.EntityPool.Where((x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) <= NoticeDistance))
+            foreach (KeyValuePair<int, Entity> e in GameManager.EntityPool.Where((x) => x.Value.EverythingAttackable && x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) <= NoticeDistance))
             {
                 if (Vector3.Distance(transform.position, e.Value.transform.position) < nd)
                 {
@@ -188,6 +188,13 @@ namespace EscapeGuan.Entities.Enemy
             }
             Gizmos.DrawWireSphere(Destinator.position, .25f);
             Gizmos.color = rc;
+        }
+
+        protected override void Damage(float amount)
+        {
+            base.Damage(amount);
+            ParticleSystem ps = Instantiate(GameManager.Templates["blood_drop_particle"], transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit((int)(amount / 10));
         }
 
         public override float GetAttackAmount()

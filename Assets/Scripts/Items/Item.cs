@@ -39,5 +39,8 @@ namespace EscapeGuan.Items
         {
             return Description;
         }
+
+        public virtual void OnHoldUp(ItemStack i) { }
+        public virtual void OnPutDown(ItemStack i) { }
     }
 }

@@ -9,8 +9,9 @@ using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Items;
-
+using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace EscapeGuan
 {
@@ -26,6 +27,8 @@ namespace EscapeGuan
 
         public Transform ObjectHUDContainer;
 
+        public RectTransform MainCanvas;
+
         public static GameManager Main = new();
 
         public static Dictionary<string, Sprite> ImageResources = new();
@@ -38,6 +41,8 @@ namespace EscapeGuan
         public static HashSet<int> ItemEntities = new();
         public static Player Player => (Player)EntityPool[ControlledId];
         public static PlayerAction Action;
+
+        public static Vector2 CursorPosition { get { RectTransformUtility.ScreenPointToWorldPointInRectangle(Main.MainCanvas, Mouse.current.position.value, Camera.main, out Vector3 v); return v; } }
 
         private void Start()
         {
@@ -63,9 +68,13 @@ namespace EscapeGuan
             // Particles
             Templates.Add("rock_destroy_particle", Resources.Load<GameObject>("Prefabs/Rock Destroy Particle"));
             Templates.Add("water_drop_particle", Resources.Load<GameObject>("Prefabs/Water Drop Particle"));
+            Templates.Add("blood_drop_particle", Resources.Load<GameObject>("Prefabs/Blood Drop Particle"));
 
             // HUD
             Templates.Add("health_bar", Resources.Load<GameObject>("Prefabs/Health Bar"));
+
+            // VFX
+            VfxManager.VfxTemplates.Add("vfx_attack_trail_glow_0", Resources.Load<GameObject>("Prefabs/VFX Attack Trail Glow"));
             #endregion
 
             #region Initialize Audios

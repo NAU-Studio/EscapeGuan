@@ -1789,7 +1789,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &306356256
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2599,7 +2599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthPoint: 2000
   MaxHealthPoint: 2000
-  AttackValue: 110
+  AttackValue: 140
   CriticalMultiplier: 1.3
   CriticalRate: 0.2
   Knockback: 1
@@ -2609,11 +2609,13 @@ MonoBehaviour:
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
+  Pointed: 0
   Speed: 2
   RunSpeedMultiplier: 2
   Stamina: 100
   MaxStamina: 100
   StaminaRestoreDelay: 1
+  AttackDistance: 2
   Map: {fileID: 587148108}
   SlowdownTiles:
   - {fileID: 11400000, guid: b3702f95e475afb4fbf1665bd4428b28, type: 2}
@@ -2623,6 +2625,7 @@ MonoBehaviour:
   ThrowCrosshairVelocity: {fileID: 306356255}
   ThrowStability: 100
   AttackState: 0
+  AttackDistanceMultiplier: 1
   ItemPickupRange: 1
   NearItems: 
   List: {fileID: 1151086893}
@@ -3624,8 +3627,8 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -3655,7 +3658,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4377,7 +4380,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 000000000b986eaf
+  m_ApplyToSortingLayers: 000000000b986eafdbe84715
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -4638,7 +4641,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999076
+  m_Size: 0.9999693
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5211,7 +5214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &729709695
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5586,12 +5589,13 @@ MonoBehaviour:
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
+  Pointed: 0
   Emotion: {fileID: 2105235914}
   Destinator: {fileID: 1199027329}
   NoticeDistance: 5
   LoseDistance: 15
   MaxWanderDistance: 2
-  AttackRange: 2
+  AttackRange: 1.5
   WanderInterval: 5
   AttackInterval: 0.5
   WanderSpeed: 1
@@ -5665,7 +5669,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.25}
+  m_Offset: {x: 0, y: -0.625}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -5676,7 +5680,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 1, y: 0.75}
   m_EdgeRadius: 0
 --- !u!95 &804682826
 Animator:
@@ -7237,7 +7241,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00017114256}
+  m_AnchoredPosition: {x: 0, y: 0.00024111029}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -11503,6 +11507,7 @@ MonoBehaviour:
   AmbientSource: {fileID: 2019311508}
   PropSource: {fileID: 436375348}
   ObjectHUDContainer: {fileID: 136997064}
+  MainCanvas: {fileID: 136997064}
 --- !u!4 &1785148468
 Transform:
   m_ObjectHideFlags: 0
@@ -11689,6 +11694,55 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!1 &1830726924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1830726926}
+  - component: {fileID: 1830726925}
+  m_Layer: 0
+  m_Name: Post Processing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1830726925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830726924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 1ab62dd1f8ccae947bbcb6486fe729b0, type: 2}
+--- !u!4 &1830726926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830726924}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1844848819
 GameObject:
   m_ObjectHideFlags: 0
@@ -13859,3 +13913,4 @@ SceneRoots:
   - {fileID: 1687863416}
   - {fileID: 436375349}
   - {fileID: 136997064}
+  - {fileID: 1830726926}

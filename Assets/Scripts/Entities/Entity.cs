@@ -44,10 +44,13 @@ namespace EscapeGuan.Entities
         public Action OnKill = () => { };
 
         public abstract int InventoryLength { get; }
+        public virtual bool EverythingAttackable => true;
         public virtual bool GuanAttackable => true;
         public virtual bool BulletHitable => true;
         public virtual bool ShowHealthBarAtTop => true;
         public virtual Vector3 HealthBarOffset => Vector3.zero;
+
+        public bool Pointed = false;
 
         public virtual void Start()
         {
@@ -78,13 +81,14 @@ namespace EscapeGuan.Entities
 
         public virtual void Attack(Entity target)
         {
-            target.Damage(GetAttackAmount());
-            target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
+            Attack(target, GetAttackAmount());
         }
 
         public virtual void Attack(Entity target, float amount)
         {
-            target.Damage(amount);
+            if (!target.EverythingAttackable)
+                return;
+            target.Damage(amount, this);
             target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
         }
 
@@ -128,6 +132,11 @@ namespace EscapeGuan.Entities
 
             if (HealthPoint <= 0)
                 Kill();
+        }
+
+        protected virtual void Damage(float amount, Entity sender)
+        {
+            Damage(amount);
         }
 
         public virtual void Kill()
@@ -174,6 +183,16 @@ namespace EscapeGuan.Entities
 
         public virtual void PickItem(ItemEntity sender) { }
         public virtual void AddItem(ItemStack sender) { }
+
+        protected virtual void OnMouseEnter()
+        {
+            Pointed = true;
+        }
+
+        private void OnMouseExit()
+        {
+            Pointed = false;
+        }
     }
 
     public abstract class Attribute

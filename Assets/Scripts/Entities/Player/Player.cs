@@ -11,6 +11,9 @@ using static UnityEngine.Mathf;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
+using DG.Tweening;
+using UnityEngine.InputSystem;
 
 namespace EscapeGuan.Entities.Player
 {
@@ -23,6 +26,8 @@ namespace EscapeGuan.Entities.Player
         public float Stamina;
         public float MaxStamina;
         public float StaminaRestoreDelay;
+
+        public float AttackDistance;
 
         [Header("Other settings")]
         public Tilemap Map;
@@ -41,22 +46,26 @@ namespace EscapeGuan.Entities.Player
         public override int InventoryLength => 36;
         public override bool ShowHealthBarAtTop => false;
 
+        public Dictionary<string, float> AttackDistanceGains = new();
+
+        private float TotalGain => AttackDistanceGains.Sum(x => x.Value) + 1;
+
         public override void Start()
         {
             base.Start();
 
             GameManager.Action = new();
-            GameManager.Action.Player.Movement.performed += (x) => movement = x.ReadValue<Vector2>();
-            GameManager.Action.Player.RunningToggle.performed += (x) => Running = true;
-            GameManager.Action.Player.Attack.performed += (x) => AttackSelector();
+            GameManager.Action.Player.Movement.performed += x => movement = x.ReadValue<Vector2>();
+            GameManager.Action.Player.RunningToggle.performed += x => Running = true;
+            GameManager.Action.Player.Attack.performed += x => AttackSelector();
             GameManager.Action.Enable();
 
             QuickInventory.OnChangeSelection += UpdateAttackState;
 
-            Attributes.Add(new Attribute<float>("Speed", () => Speed, (x) => Speed = x));
-            Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, (x) => RunSpeedMultiplier = x));
-            Attributes.Add(new Attribute<float>("Stamina", () => Stamina, (x) => Stamina = x));
-            Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, (x) => MaxStamina = x));
+            Attributes.Add(new Attribute<float>("Speed", () => Speed, x => Speed = x));
+            Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, x => RunSpeedMultiplier = x));
+            Attributes.Add(new Attribute<float>("Stamina", () => Stamina, x => Stamina = x));
+            Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, x => MaxStamina = x));
             GameManager.ControlledId = Id;
 
             StartCoroutine(SetRestorable());
@@ -192,7 +201,7 @@ namespace EscapeGuan.Entities.Player
         {
             switch (AttackState)
             {
-                case AttackState.Normal: return;
+                case AttackState.Normal: Attack(); return;
                 case AttackState.Throw: Throw(); return;
             }
         }
@@ -207,6 +216,16 @@ namespace EscapeGuan.Entities.Player
                 ThrowCrosshair.GetComponent<Crosshair>().Angle,
                 QuickInventory.Slots[QuickInventory.Selection].Item);
             Inventory[QuickInventory.Selection] = null;
+        }
+
+        public void Attack()
+        {
+            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * TotalGain), this, .1f, Ease.OutSine);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, AttackDistance * TotalGain);
         }
     }
 

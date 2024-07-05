@@ -9,7 +9,7 @@ namespace EscapeGuan.Entities.Bullet
     [RequireComponent(typeof(Rigidbody2D))]
     public abstract class Bullet : Entity
     {
-        public override bool GuanAttackable => false;
+        public override bool EverythingAttackable => false;
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
 
         public float Highest, InitialVelocity, Direction;
