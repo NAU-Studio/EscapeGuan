@@ -12,6 +12,8 @@ using static UnityEngine.Mathf;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
+using DG.Tweening;
+using UnityEngine.InputSystem;
 
 namespace EscapeGuan.Entities.Player
 {
@@ -25,7 +27,7 @@ namespace EscapeGuan.Entities.Player
         public float MaxStamina;
         public float StaminaRestoreDelay;
 
-        public float SweepDistance;
+        public float AttackDistance;
 
         [Header("Other settings")]
         public Tilemap Map;
@@ -44,7 +46,7 @@ namespace EscapeGuan.Entities.Player
         public override int InventoryLength => 36;
         public override bool ShowHealthBarAtTop => false;
 
-        public float SweepDistanceMultiplier = 1;
+        public float AttackDistanceMultiplier = 1;
 
         public override void Start()
         {
@@ -184,7 +186,7 @@ namespace EscapeGuan.Entities.Player
             }
 
         def:
-            AttackState = AttackState.Sweep;
+            AttackState = AttackState.Normal;
         }
 
         public void AddNear(int i)
@@ -197,7 +199,7 @@ namespace EscapeGuan.Entities.Player
         {
             switch (AttackState)
             {
-                case AttackState.Sweep: Sweep(); return;
+                case AttackState.Normal: Attack(); return;
                 case AttackState.Throw: Throw(); return;
             }
         }
@@ -214,16 +216,20 @@ namespace EscapeGuan.Entities.Player
             Inventory[QuickInventory.Selection] = null;
         }
 
-        public void Sweep()
+        public void Attack()
         {
-            foreach (KeyValuePair<int, Entity> e in GameManager.EntityPool.Where((x) => Vector3.Distance(transform.position, x.Value.transform.position) <= SweepDistance * SweepDistanceMultiplier && x.Value != this))
-                Attack(e.Value);
+            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * AttackDistanceMultiplier), this, .1f, Ease.OutSine);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, AttackDistance * AttackDistanceMultiplier);
         }
     }
 
     public enum AttackState
     {
-        Sweep,
+        Normal,
         Throw,
         Shot
     }

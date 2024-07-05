@@ -11,8 +11,7 @@ namespace EscapeGuan.Entities.Items
         public ItemStack item;
 
         public bool GuanPickable;
-
-        public override bool GuanAttackable => GuanPickable;
+        public override bool EverythingAttackable => false;
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
 
         public override bool BulletHitable => false;

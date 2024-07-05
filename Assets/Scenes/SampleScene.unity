@@ -2599,7 +2599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthPoint: 2000
   MaxHealthPoint: 2000
-  AttackValue: 110
+  AttackValue: 140
   CriticalMultiplier: 1.3
   CriticalRate: 0.2
   Knockback: 1
@@ -2609,12 +2609,13 @@ MonoBehaviour:
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
+  Pointed: 0
   Speed: 2
   RunSpeedMultiplier: 2
   Stamina: 100
   MaxStamina: 100
   StaminaRestoreDelay: 1
-  SweepDistance: 2.5
+  AttackDistance: 2
   Map: {fileID: 587148108}
   SlowdownTiles:
   - {fileID: 11400000, guid: b3702f95e475afb4fbf1665bd4428b28, type: 2}
@@ -2624,7 +2625,7 @@ MonoBehaviour:
   ThrowCrosshairVelocity: {fileID: 306356255}
   ThrowStability: 100
   AttackState: 0
-  SweepDistanceMultiplier: 1
+  AttackDistanceMultiplier: 1
   ItemPickupRange: 1
   NearItems: 
   List: {fileID: 1151086893}
@@ -4640,7 +4641,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99693775
+  m_Size: 0.9999693
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5588,12 +5589,13 @@ MonoBehaviour:
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
+  Pointed: 0
   Emotion: {fileID: 2105235914}
   Destinator: {fileID: 1199027329}
   NoticeDistance: 5
   LoseDistance: 15
   MaxWanderDistance: 2
-  AttackRange: 2
+  AttackRange: 1.5
   WanderInterval: 5
   AttackInterval: 0.5
   WanderSpeed: 1
@@ -5667,7 +5669,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.25}
+  m_Offset: {x: 0, y: -0.625}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -5678,7 +5680,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 1, y: 0.75}
   m_EdgeRadius: 0
 --- !u!95 &804682826
 Animator:
@@ -7239,7 +7241,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00009987736}
+  m_AnchoredPosition: {x: 0, y: 0.00024111029}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -11505,6 +11507,7 @@ MonoBehaviour:
   AmbientSource: {fileID: 2019311508}
   PropSource: {fileID: 436375348}
   ObjectHUDContainer: {fileID: 136997064}
+  MainCanvas: {fileID: 136997064}
 --- !u!4 &1785148468
 Transform:
   m_ObjectHideFlags: 0
