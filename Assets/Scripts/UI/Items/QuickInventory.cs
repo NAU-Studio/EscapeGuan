@@ -68,10 +68,17 @@ namespace EscapeGuan.UI.Items
 
             if (prevItem != Slots[Selection].Item)
             {
+                prevItem?.OnPutDown();
                 prevItem = Slots[Selection].Item;
-                OnChangeSelection(Selection, Slots[Selection].Item);
+
+                OnChangeSelection(Selection, prevItem);
                 if (!CurrentEmpty)
-                    GameManager.Main.ItemProfile.SetText(Slots[Selection].Item.Base.Name, Slots[Selection].Item.Base.GetDescription(Slots[Selection].Item));
+                {
+                    GameManager.Main.ItemProfile.SetText(prevItem.Base.Name, prevItem.Base.GetDescription(prevItem));
+                    prevItem.OnHoldUp();
+                }
+                else
+                    GameManager.Main.ItemProfile.Hide();
             }
         }
 

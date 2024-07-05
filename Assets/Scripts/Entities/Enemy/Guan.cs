@@ -78,7 +78,7 @@ namespace EscapeGuan.Entities.Enemy
         {
             Transform nearest = null;
             float nd = float.MaxValue;
-            foreach (KeyValuePair<int, Entity> e in GameManager.EntityPool.Where((x) => x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) <= NoticeDistance))
+            foreach (KeyValuePair<int, Entity> e in GameManager.EntityPool.Where((x) => x.Value.EverythingAttackable && x.Value.GuanAttackable && Vector3.Distance(transform.position, x.Value.transform.position) <= NoticeDistance))
             {
                 if (Vector3.Distance(transform.position, e.Value.transform.position) < nd)
                 {

@@ -46,24 +46,26 @@ namespace EscapeGuan.Entities.Player
         public override int InventoryLength => 36;
         public override bool ShowHealthBarAtTop => false;
 
-        public float AttackDistanceMultiplier = 1;
+        public Dictionary<string, float> AttackDistanceGains = new();
+
+        private float TotalGain => AttackDistanceGains.Sum(x => x.Value) + 1;
 
         public override void Start()
         {
             base.Start();
 
             GameManager.Action = new();
-            GameManager.Action.Player.Movement.performed += (x) => movement = x.ReadValue<Vector2>();
-            GameManager.Action.Player.RunningToggle.performed += (x) => Running = true;
-            GameManager.Action.Player.Attack.performed += (x) => AttackSelector();
+            GameManager.Action.Player.Movement.performed += x => movement = x.ReadValue<Vector2>();
+            GameManager.Action.Player.RunningToggle.performed += x => Running = true;
+            GameManager.Action.Player.Attack.performed += x => AttackSelector();
             GameManager.Action.Enable();
 
             QuickInventory.OnChangeSelection += UpdateAttackState;
 
-            Attributes.Add(new Attribute<float>("Speed", () => Speed, (x) => Speed = x));
-            Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, (x) => RunSpeedMultiplier = x));
-            Attributes.Add(new Attribute<float>("Stamina", () => Stamina, (x) => Stamina = x));
-            Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, (x) => MaxStamina = x));
+            Attributes.Add(new Attribute<float>("Speed", () => Speed, x => Speed = x));
+            Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, x => RunSpeedMultiplier = x));
+            Attributes.Add(new Attribute<float>("Stamina", () => Stamina, x => Stamina = x));
+            Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, x => MaxStamina = x));
             GameManager.ControlledId = Id;
 
             StartCoroutine(SetRestorable());
@@ -218,12 +220,12 @@ namespace EscapeGuan.Entities.Player
 
         public void Attack()
         {
-            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * AttackDistanceMultiplier), this, .1f, Ease.OutSine);
+            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * TotalGain), this, .1f, Ease.OutSine);
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireSphere(transform.position, AttackDistance * AttackDistanceMultiplier);
+            Gizmos.DrawWireSphere(transform.position, AttackDistance * TotalGain);
         }
     }
 
