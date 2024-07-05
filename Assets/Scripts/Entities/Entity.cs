@@ -88,7 +88,7 @@ namespace EscapeGuan.Entities
         {
             if (!target.EverythingAttackable)
                 return;
-            target.Damage(amount);
+            target.Damage(amount, this);
             target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
         }
 
@@ -132,6 +132,11 @@ namespace EscapeGuan.Entities
 
             if (HealthPoint <= 0)
                 Kill();
+        }
+
+        protected virtual void Damage(float amount, Entity sender)
+        {
+            Damage(amount);
         }
 
         public virtual void Kill()
