@@ -118,6 +118,8 @@ namespace EscapeGuan.Entities
             if (amount <= 0.1f)
                 return;
 
+            GameManager.Main.PlayRandomAudio(AudioSources.Player, 1, Random.Range(.8f, 1.2f), GetDamageSE());
+
             HealthPoint -= GetDamageAmount(amount);
             DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
             dtx.Value = GetDamageAmount(amount);
@@ -133,6 +135,8 @@ namespace EscapeGuan.Entities
             if (HealthPoint <= 0)
                 Kill();
         }
+
+        protected virtual string[] GetDamageSE() => new string[] { "entity.damage_1", "entity.damage_2", "entity.damage_3" };
 
         protected virtual void Damage(float amount, Entity sender)
         {

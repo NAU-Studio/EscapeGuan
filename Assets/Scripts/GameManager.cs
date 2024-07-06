@@ -9,9 +9,11 @@ using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Items;
-using Unity.Burst.Intrinsics;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+using Random = UnityEngine.Random;
 
 namespace EscapeGuan
 {
@@ -85,12 +87,19 @@ namespace EscapeGuan
             Audios.Add("se.water.splash", Resources.Load<AudioClip>("Audios/SE/Water Splash"));
             Audios.Add("se.water.bottle_hit", Resources.Load<AudioClip>("Audios/SE/Water Bottle Hit"));
             Audios.Add("se.water.drip", Resources.Load<AudioClip>("Audios/SE/Water Drip"));
+            Audios.Add("entity.damage_1", Resources.Load<AudioClip>("Audios/Damage/hit1"));
+            Audios.Add("entity.damage_2", Resources.Load<AudioClip>("Audios/Damage/hit2"));
+            Audios.Add("entity.damage_3", Resources.Load<AudioClip>("Audios/Damage/hit3"));
+            Audios.Add("entity.stone_1", Resources.Load<AudioClip>("Audios/Damage/stone1"));
+            Audios.Add("entity.stone_2", Resources.Load<AudioClip>("Audios/Damage/stone2"));
+            Audios.Add("entity.stone_3", Resources.Load<AudioClip>("Audios/Damage/stone3"));
+            Audios.Add("entity.stone_4", Resources.Load<AudioClip>("Audios/Damage/stone4"));
             #endregion
         }
 
         public void PlayAudio(AudioSources src, string name, float volume = 1, float pitch = 1)
         {
-            Play(src switch
+            PlayAudio_(src switch
             {
                 AudioSources.UI => UISource,
                 AudioSources.Player => PlayerSource,
@@ -101,7 +110,12 @@ namespace EscapeGuan
             }, name, volume, pitch);
         }
 
-        private void Play(AudioSource src, string name, float volume, float pitch)
+        public void PlayRandomAudio(AudioSources src, float volume = 1, float pitch = 1, params string[] name)
+        {
+            PlayAudio(src, name[Random.Range(0, name.Length)], volume, pitch);
+        }
+
+        private void PlayAudio_(AudioSource src, string name, float volume, float pitch)
         {
             src.volume = volume;
             src.pitch = pitch;
