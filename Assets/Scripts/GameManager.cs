@@ -31,6 +31,8 @@ namespace EscapeGuan
 
         public RectTransform MainCanvas;
 
+        public static float DamageInterval = 0.3f;
+
         public static GameManager Main = new();
 
         public static Dictionary<string, Sprite> ImageResources = new();
