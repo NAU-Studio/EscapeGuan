@@ -18,7 +18,6 @@ namespace EscapeGuan.Items
 
         public override void Use(ItemStack sender, Entity from)
         {
-            // sender.Count--;
             if (from.Id == GameManager.ControlledId)
                 Drink(sender);
         }
@@ -37,7 +36,7 @@ namespace EscapeGuan.Items
 
         public override ItemStack CreateItemStack(int count = 1)
         {
-            ItemStack i = new(this, count);
+            ItemStack i = base.CreateItemStack(count);
             i.Attributes.Add(Mass, MaxMass);
             return i;
         }
@@ -63,8 +62,6 @@ namespace EscapeGuan.Items
         {
             throw new System.NotImplementedException();
         }
-
-
 
         public float MassOf(ItemStack i) => (float)i.Attributes[Mass];
     }

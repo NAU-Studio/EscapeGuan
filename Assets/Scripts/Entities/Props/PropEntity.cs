@@ -18,8 +18,9 @@ namespace EscapeGuan.Entities.Props
 
         private float CollisionRemaining = 0;
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             if (CollisionRemaining > 0)
                 CollisionRemaining -= Time.deltaTime;
         }
@@ -27,11 +28,13 @@ namespace EscapeGuan.Entities.Props
         protected virtual void OnCollisionStay2D(Collision2D collision)
         {
             if (collision.gameObject.GetComponent<Entity>() is Entity e)
-                Attack(e, collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);
-            if (CollisionRemaining <= 0)
             {
-                Damage(collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);
-                CollisionRemaining = CollisionCD;
+                Attack(e, collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);
+                if (CollisionRemaining <= 0)
+                {
+                    e.Attack(this, collision.rigidbody.velocity.magnitude * collision.rigidbody.mass);
+                    CollisionRemaining = CollisionCD;
+                }
             }
         }
 

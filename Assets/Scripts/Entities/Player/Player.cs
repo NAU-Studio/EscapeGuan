@@ -41,14 +41,18 @@ namespace EscapeGuan.Entities.Player
 
         public AttackState AttackState;
 
+        public BloodAmountEffect BloodEffectA, BloodEffectB;
+
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
 
         public override int InventoryLength => 36;
         public override bool ShowHealthBarAtTop => false;
 
         public Dictionary<string, float> AttackDistanceGains = new();
+        public Dictionary<string, float> AttackDamageGains = new();
 
-        private float TotalGain => AttackDistanceGains.Sum(x => x.Value) + 1;
+        private float TotalAttackDistanceGain => AttackDistanceGains.Sum(x => x.Value) + 1;
+        private float TotalAttackDamageGain => AttackDamageGains.Sum(x => x.Value) + 1;
 
         public override void Start()
         {
@@ -220,12 +224,30 @@ namespace EscapeGuan.Entities.Player
 
         public void Attack()
         {
-            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * TotalGain), this, .1f, Ease.OutSine);
+            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * TotalAttackDistanceGain), this, .1f, Ease.OutSine);
+
+            if (!QuickInventory.CurrentEmpty && QuickInventory.Current.Base is IPlayerGainItem && QuickInventory.Current.Base is DurabilityItem)
+                QuickInventory.Current.Use(this);
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireSphere(transform.position, AttackDistance * TotalGain);
+            Gizmos.DrawWireSphere(transform.position, AttackDistance * TotalAttackDistanceGain);
+        }
+
+        protected override void Damage(float amount)
+        {
+            base.Damage(amount);
+            Camera.main.GetComponent<SmoothFollower>().Shake(.1f);
+            Camera.main.GetComponent<SmoothFollower>().ShakeDrag = (HealthPoint / MaxHealthPoint + 0.01f) * 0.75f;
+
+            BloodEffectA.SetAmount(0.2f - HealthPoint / MaxHealthPoint);
+            BloodEffectB.SetAmount(1 - HealthPoint / MaxHealthPoint);
+        }
+
+        public override float GetAttackAmount()
+        {
+            return base.GetAttackAmount() * TotalAttackDamageGain;
         }
     }
 

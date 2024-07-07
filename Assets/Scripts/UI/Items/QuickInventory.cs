@@ -22,8 +22,8 @@ namespace EscapeGuan.UI.Items
 
         public delegate void ChangeSelectionEventHandler(int id, ItemStack item);
 
-
-        public bool CurrentEmpty => Slots[Selection].Item == null;
+        public ItemStack Current => Slots[Selection].Item;
+        public bool CurrentEmpty => Current == null;
 
         public void Set(int index, ItemStack item)
         {

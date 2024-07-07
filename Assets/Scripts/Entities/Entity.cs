@@ -52,6 +52,8 @@ namespace EscapeGuan.Entities
 
         public bool Pointed = false;
 
+        [HideInInspector] public float IntervalRemaining = 0;
+
         public virtual void Start()
         {
             Id = Random.Range(int.MinValue, int.MaxValue);
@@ -88,6 +90,10 @@ namespace EscapeGuan.Entities
         {
             if (!target.EverythingAttackable)
                 return;
+            if (amount <= 0.1f)
+                return;
+            if (target.IntervalRemaining > 0)
+                return;
             target.Damage(amount, this);
             target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
         }
@@ -99,6 +105,12 @@ namespace EscapeGuan.Entities
                 KnockbackVelocity -= KnockbackVelocity * Drag;
                 transform.Translate(KnockbackVelocity);
             }
+        }
+
+        protected virtual void Update()
+        {
+            if (IntervalRemaining > 0)
+                IntervalRemaining -= Time.deltaTime;
         }
 
         public virtual float GetAttackAmount()
@@ -115,8 +127,9 @@ namespace EscapeGuan.Entities
         private HealthBar HealthBar;
         protected virtual void Damage(float amount)
         {
-            if (amount <= 0.1f)
-                return;
+            IntervalRemaining = GameManager.DamageInterval;
+
+            GameManager.Main.PlayRandomAudio(AudioSources.Player, 1, Random.Range(.8f, 1.2f), GetDamageSE());
 
             HealthPoint -= GetDamageAmount(amount);
             DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
@@ -133,6 +146,8 @@ namespace EscapeGuan.Entities
             if (HealthPoint <= 0)
                 Kill();
         }
+
+        protected virtual string[] GetDamageSE() => new string[] { "entity.damage_1", "entity.damage_2", "entity.damage_3" };
 
         protected virtual void Damage(float amount, Entity sender)
         {

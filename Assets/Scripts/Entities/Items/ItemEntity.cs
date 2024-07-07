@@ -35,7 +35,7 @@ namespace EscapeGuan.Entities.Items
             throw new EntityCannotPickupException(Id);
         }
 
-        public void Update()
+        protected override void Update()
         {
             if (Vector3.Distance(GameManager.Player.transform.position, transform.position) <= GameManager.Player.ItemPickupRange && !GameManager.Player.NearItems.Contains(Id))
                 GameManager.Player.AddNear(Id);
