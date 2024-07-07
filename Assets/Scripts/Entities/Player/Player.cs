@@ -41,6 +41,8 @@ namespace EscapeGuan.Entities.Player
 
         public AttackState AttackState;
 
+        public BloodAmountEffect BloodEffectA, BloodEffectB;
+
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
 
         public override int InventoryLength => 36;
@@ -226,6 +228,16 @@ namespace EscapeGuan.Entities.Player
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(transform.position, AttackDistance * TotalGain);
+        }
+
+        protected override void Damage(float amount)
+        {
+            base.Damage(amount);
+            Camera.main.GetComponent<SmoothFollower>().Shake(.1f);
+            Camera.main.GetComponent<SmoothFollower>().ShakeDrag = (HealthPoint / MaxHealthPoint + 0.01f) * 0.75f;
+
+            BloodEffectA.SetAmount(0.2f - HealthPoint / MaxHealthPoint);
+            BloodEffectB.SetAmount(1 - HealthPoint / MaxHealthPoint);
         }
     }
 
