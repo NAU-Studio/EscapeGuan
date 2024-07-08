@@ -59,9 +59,7 @@ namespace EscapeGuan.Entities.Player
             base.Start();
 
             GameManager.Action = new();
-            GameManager.Action.Player.Movement.performed += x => movement = x.ReadValue<Vector2>();
-            GameManager.Action.Player.RunningToggle.performed += x => Running = true;
-            GameManager.Action.Player.Attack.performed += x => AttackSelector();
+            InControl();
             GameManager.Action.Enable();
 
             QuickInventory.OnChangeSelection += UpdateAttackState;
@@ -174,6 +172,24 @@ namespace EscapeGuan.Entities.Player
             Rigidbody.velocity = final * movement;
             #endregion
         }
+
+        public void OutControl()
+        {
+            GameManager.Action.Player.Movement.performed -= PerformMovement;
+            GameManager.Action.Player.RunningToggle.performed -= PerformRunningToggle;
+            GameManager.Action.Player.Attack.performed -= PerformAttack;
+        }
+
+        public void InControl()
+        {
+            GameManager.Action.Player.Movement.performed += PerformMovement;
+            GameManager.Action.Player.RunningToggle.performed += PerformRunningToggle;
+            GameManager.Action.Player.Attack.performed += PerformAttack;
+        }
+
+        private void PerformMovement(InputAction.CallbackContext x) => movement = x.ReadValue<Vector2>();
+        private void PerformRunningToggle(InputAction.CallbackContext x) => Running = true;
+        private void PerformAttack(InputAction.CallbackContext x) => AttackSelector();
 
         public void UpdateAttackState(int id, ItemStack item)
         {
