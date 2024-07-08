@@ -6,13 +6,15 @@ using UnityEngine.UI;
 
 namespace EscapeGuan.UI.Items
 {
-    public class QuickInventorySlot : RectBehaviour
+    public class InventorySlot : RectBehaviour
     {
         public Image Image;
         public TMP_Text Count;
-        public ItemStack Item;
         public SlicedFilledImage Durability;
         public Hidable DurabilityHidable;
+
+        public ItemStack Item => GameManager.Player.Inventory[Index];
+        public bool IsNull => Item == null;
 
         public int Index;
 
@@ -30,7 +32,7 @@ namespace EscapeGuan.UI.Items
                 Image.color = new(1, 1, 1, 0);
                 Count.text = "";
             }
-            if (Item != null)
+            if (!IsNull)
             {
                 float du = Item.Durability;
                 if (du >= 1 && DurabilityShown)

@@ -19,19 +19,17 @@ namespace EscapeGuan.UI.Items
 
         private void Update()
         {
-            if (Options.Count > 1)
+            int scr = (int)Mouse.current.scroll.value.y;
+            if (Options.Count > 1 && scr != 0)
             {
-                int scr = (int)Mouse.current.scroll.value.y;
                 Selection -= scr;
                 if (Selection >= Options.Count)
                     Selection = 0;
                 if (Selection < 0)
                     Selection = Options.Count - 1;
-                if (scr != 0)
-                    SelectionObject.DOAnchorPosY(-Selection * Template.transform.sizeDelta.y, .2f).SetEase(Ease.OutCubic);
+                SelectionObject.DOAnchorPosY(-Selection * Template.transform.sizeDelta.y, .2f).SetEase(Ease.OutCubic);
             }
-
-            if (Input.GetKeyDown(KeyCode.F) && Options.Count != 0)
+            if (Keyboard.current.fKey.wasReleasedThisFrame && Options.Count != 0)
                 Pick();
         }
 
