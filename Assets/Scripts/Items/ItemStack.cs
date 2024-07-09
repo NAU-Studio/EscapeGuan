@@ -49,12 +49,10 @@ namespace EscapeGuan.Items
 
         public void Use(Entity i) => Base.Use(this, i);
 
-        public bool Combine(ItemStack i)
+        public bool Merge(ItemStack i)
         {
-            if (i.Base == Base && i.Base.GetDurability(i) == Base.GetDurability(this))
+            if (i.Base == Base && i.Count + Count <= i.Base.MaxCount)
             {
-                if (i.Count + Count > i.Base.MaxCount)
-                    return false;
                 Count += i.Count;
                 return true;
             }

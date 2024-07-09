@@ -170,6 +170,14 @@ namespace EscapeGuan.MapGenerator
                 ix.Attributes[WaterBottleItem.Mass] = Random.Range(0, WaterBottleItem.MaxMass);
                 ix.CreateEntity(pos, new(0, 0, Random.Range(0f, 360)));
             }
+
+            for (int _ = 0; _ < Random.Range(MinSticksCount / 4, MaxSticksCount / 4 + 1); _++)
+            {
+                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
+                ItemStack ix = ItemRegistry.Main.CreateItemStack("refined_stick");
+                ix.Attributes[WaterBottleItem.Mass] = Random.Range(0, WaterBottleItem.MaxMass);
+                ix.CreateEntity(pos, new(0, 0, Random.Range(0f, 360)));
+            }
             yield return null;
         }
 

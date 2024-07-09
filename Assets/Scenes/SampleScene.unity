@@ -2984,7 +2984,7 @@ MonoBehaviour:
   - {fileID: 1681355995}
   - {fileID: 417244061}
   Selection: {fileID: 1728146713}
-  CursorSlot: {fileID: 0}
+  CursorSlot: {fileID: 1682095137317573017}
 --- !u!114 &307846500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7038,7 +7038,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999682
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10341,7 +10341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0000040482596}
+  m_AnchoredPosition: {x: 0, y: 0.00024246037}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -18768,11 +18768,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4811119343316804676, guid: cce92502e435ccb4fae28f458ea25134, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4811119343316804676, guid: cce92502e435ccb4fae28f458ea25134, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4811119343316804676, guid: cce92502e435ccb4fae28f458ea25134, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -18800,6 +18800,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4811119343316804676, guid: cce92502e435ccb4fae28f458ea25134, type: 3}
   m_PrefabInstance: {fileID: 1682095137317573015}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1682095137317573017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3217490965762043870, guid: cce92502e435ccb4fae28f458ea25134, type: 3}
+  m_PrefabInstance: {fileID: 1682095137317573015}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0a1b6203e275d4d8baf1c98a84cc21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5270559725010951357
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -100,7 +100,7 @@ namespace EscapeGuan.Entities.Player
                     Inventory.Set(i, sender);
                     break;
                 }
-                if (Inventory[i].Combine(sender))
+                if (Inventory[i].Merge(sender))
                     break;
             }
         }

@@ -1,6 +1,7 @@
 using DG.Tweening;
 
 using EscapeGuan;
+using EscapeGuan.Items;
 using EscapeGuan.UI;
 
 using UnityEngine;
@@ -49,7 +50,7 @@ public class Inventory : MonoBehaviour
     {
         if (CursorSlot.IsNull)
         {
-            if (CurrentSlot != null && CurrentSlot.IsNull)
+            if (CurrentSlot != null && !CurrentSlot.IsNull)
             {
                 CursorSlot.SetItem(CurrentSlot.Item);
                 CurrentSlot.SetItem();
@@ -64,7 +65,15 @@ public class Inventory : MonoBehaviour
             }
             else
             {
-                // TODO: Item merging
+                bool merged = CurrentSlot.Item.Merge(CursorSlot.Item);
+                if (merged)
+                    CursorSlot.SetItem();
+                else
+                {
+                    ItemStack mediation = CurrentSlot.Item;
+                    CurrentSlot.SetItem(CursorSlot.Item);
+                    CursorSlot.SetItem(mediation);
+                }
             }
         }
     }
