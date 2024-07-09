@@ -13,34 +13,44 @@ namespace EscapeGuan.UI
         [Range(0, 1)]
         public float ShowAlpha = 1;
 
+        public bool ToggleBlockRaycasts = true, ToggleInteractable = true;
+
         public CanvasGroup CanvasGroup => GetComponent<CanvasGroup>();
 
         public virtual void Show()
         {
             CanvasGroup.DOFade(ShowAlpha, Transition);
-            CanvasGroup.blocksRaycasts = true;
-            CanvasGroup.interactable = true;
+            if (ToggleBlockRaycasts)
+                CanvasGroup.blocksRaycasts = true;
+            if (ToggleInteractable)
+                CanvasGroup.interactable = true;
         }
 
         protected virtual void ShowNoTransition()
         {
             CanvasGroup.alpha = ShowAlpha;
-            CanvasGroup.blocksRaycasts = true;
-            CanvasGroup.interactable = true;
+            if (ToggleBlockRaycasts)
+                CanvasGroup.blocksRaycasts = true;
+            if (ToggleInteractable)
+                CanvasGroup.interactable = true;
         }
 
         public virtual void Hide()
         {
             CanvasGroup.DOFade(0, Transition);
-            CanvasGroup.blocksRaycasts = false;
-            CanvasGroup.interactable = false;
+            if (ToggleBlockRaycasts)
+                CanvasGroup.blocksRaycasts = false;
+            if (ToggleInteractable)
+                CanvasGroup.interactable = false;
         }
 
         protected virtual void HideNoTransition()
         {
             CanvasGroup.alpha = 0;
-            CanvasGroup.blocksRaycasts = true;
-            CanvasGroup.interactable = true;
+            if (ToggleBlockRaycasts)
+                CanvasGroup.blocksRaycasts = false;
+            if (ToggleInteractable)
+                CanvasGroup.interactable = false;
         }
 
         public virtual void HideDestroy()
