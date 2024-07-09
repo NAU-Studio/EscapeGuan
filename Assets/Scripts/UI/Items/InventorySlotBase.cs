@@ -50,6 +50,9 @@ public abstract class InventorySlotBase : RectBehaviour, IPointerEnterHandler, I
             }
         }
     }
+
+    public abstract void SetItem(ItemStack i = null);
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         MouseEvent(this);

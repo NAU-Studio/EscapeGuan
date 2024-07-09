@@ -11,5 +11,10 @@ namespace EscapeGuan.UI.Items
         {
             Item?.Use(GameManager.Player);
         }
+
+        public override void SetItem(ItemStack i = null)
+        {
+            GameManager.Player.Inventory[Index] = i;
+        }
     }
 }

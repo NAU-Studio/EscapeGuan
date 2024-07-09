@@ -1,8 +1,9 @@
 using DG.Tweening;
 
 using EscapeGuan;
+using EscapeGuan.Items;
 using EscapeGuan.UI;
-
+using EscapeGuan.UI.Items;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,8 @@ public class Inventory : MonoBehaviour
     public Hidable SelectionHidable => Selection.GetComponent<Hidable>();
 
     private bool Selected;
+    private InventorySlotBase CurrentSlot;
+    private ItemStack CurrentMouseHolding;
 
     private void Start()
     {
@@ -31,18 +34,45 @@ public class Inventory : MonoBehaviour
         if (Showed)
         {
             GameManager.Player.InControl();
+            GameManager.Action.Player.Attack.performed -= Select;
             Hidable.Hide();
         }
         else
         {
             GameManager.Player.OutControl();
+            GameManager.Action.Player.Attack.performed += Select;
             Hidable.Show();
         }
         Showed = !Showed;
     }
 
+    private void Select(InputAction.CallbackContext x)
+    {
+        if (CurrentMouseHolding == null)
+        {
+            if (!CurrentSlot.IsNull)
+            {
+                CurrentMouseHolding = CurrentSlot.Item;
+                CurrentSlot.SetItem();
+            }
+        }
+        else
+        {
+            if (CurrentSlot.IsNull)
+            {
+                CurrentSlot.SetItem(CurrentMouseHolding);
+                CurrentMouseHolding = null;
+            }
+            else
+            {
+                // TODO: Item merging
+            }
+        }
+    }
+
     private void UpdateSelection(InventorySlotBase sender)
     {
+        CurrentSlot = sender;
         if (sender != null)
         {
             Selection.DOAnchorPos(GetCanvasPosition(sender.transform), .2f).SetEase(Ease.OutCubic);

@@ -7,7 +7,7 @@ public class InventoryOperationSlot : InventorySlotBase
 
     private ItemStack item;
 
-    public void Set(ItemStack i = null)
+    public override void SetItem(ItemStack i = null)
     {
         item = i;
     }
