@@ -94,7 +94,6 @@ MonoBehaviour:
   Image: {fileID: 2949973937833800373}
   Count: {fileID: 9143914812799310514}
   Durability: {fileID: 7837944060890710300}
-  DurabilityHidable: {fileID: 597464606567923657}
   Index: 0
 --- !u!1 &1680105657978371516
 GameObject:
@@ -200,6 +199,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transition: 0.2
   ShowAlpha: 1
+  ToggleBlockRaycasts: 1
+  ToggleInteractable: 1
 --- !u!1 &2429977099407933759
 GameObject:
   m_ObjectHideFlags: 0

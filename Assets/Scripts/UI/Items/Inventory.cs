@@ -1,9 +1,8 @@
 using DG.Tweening;
 
 using EscapeGuan;
-using EscapeGuan.Items;
 using EscapeGuan.UI;
-using EscapeGuan.UI.Items;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,11 +11,11 @@ public class Inventory : MonoBehaviour
     public InventorySlotBase[] Slots;
 
     public RectTransform Selection;
+    public CursorInventorySlot CursorSlot;
     public Hidable SelectionHidable => Selection.GetComponent<Hidable>();
 
     private bool Selected;
     private InventorySlotBase CurrentSlot;
-    private ItemStack CurrentMouseHolding;
 
     private void Start()
     {
@@ -48,20 +47,20 @@ public class Inventory : MonoBehaviour
 
     private void Select(InputAction.CallbackContext x)
     {
-        if (CurrentMouseHolding == null)
+        if (CursorSlot.IsNull)
         {
-            if (!CurrentSlot.IsNull)
+            if (CurrentSlot != null && CurrentSlot.IsNull)
             {
-                CurrentMouseHolding = CurrentSlot.Item;
+                CursorSlot.SetItem(CurrentSlot.Item);
                 CurrentSlot.SetItem();
             }
         }
-        else
+        else if (CurrentSlot != null)
         {
             if (CurrentSlot.IsNull)
             {
-                CurrentSlot.SetItem(CurrentMouseHolding);
-                CurrentMouseHolding = null;
+                CurrentSlot.SetItem(CursorSlot.Item);
+                CursorSlot.SetItem();
             }
             else
             {
