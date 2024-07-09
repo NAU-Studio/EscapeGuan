@@ -63,7 +63,7 @@ public abstract class InventorySlotBase : RectBehaviour, IPointerEnterHandler, I
         MouseEvent(null);
     }
 
-    public MouseEventHandler MouseEvent;
+    public MouseEventHandler MouseEvent = x => { };
 
     public delegate void MouseEventHandler(InventorySlotBase sender);
 }
