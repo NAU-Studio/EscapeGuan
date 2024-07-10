@@ -59,12 +59,7 @@ namespace EscapeGuan.UI.Items
             }
         }
 
-        private void Start()
-        {
-            GameManager.Action.Player.Use.performed += Use;
-        }
-
-        public void Use(InputAction.CallbackContext cbc)
+        public void Use(InputAction.CallbackContext x)
         {
             Slots[Selection].Use();
         }

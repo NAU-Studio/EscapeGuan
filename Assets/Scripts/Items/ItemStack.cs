@@ -31,6 +31,8 @@ namespace EscapeGuan.Items
 
         private int count;
 
+        public T GetBase<T>() where T : Item => (T)Base;
+
         public ItemEntity CreateEntity(GameObject itemTemplate)
         {
             GameObject go = Object.Instantiate(itemTemplate);
@@ -69,6 +71,9 @@ namespace EscapeGuan.Items
 
         public void OnHoldUp() => Base.OnHoldUp(this);
         public void OnPutDown() => Base.OnPutDown(this);
+
+        public ItemStack Duplicate(int count) => Base.CreateItemStack(count);
+
 
         internal ItemStack(Item b, int c = 1)
         {

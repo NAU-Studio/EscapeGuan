@@ -35,12 +35,14 @@ public class Inventory : MonoBehaviour
         {
             GameManager.Player.InControl();
             GameManager.Action.Player.Attack.performed -= Select;
+            GameManager.Action.Player.Use.performed -= Tweak;
             Hidable.Hide();
         }
         else
         {
             GameManager.Player.OutControl();
             GameManager.Action.Player.Attack.performed += Select;
+            GameManager.Action.Player.Use.performed += Tweak;
             Hidable.Show();
         }
         Showed = !Showed;
@@ -65,9 +67,46 @@ public class Inventory : MonoBehaviour
             }
             else
             {
-                bool merged = CurrentSlot.Item.Merge(CursorSlot.Item);
-                if (merged)
+                if (CurrentSlot.Item.Merge(CursorSlot.Item))
                     CursorSlot.SetItem();
+                else
+                {
+                    ItemStack mediation = CurrentSlot.Item;
+                    CurrentSlot.SetItem(CursorSlot.Item);
+                    CursorSlot.SetItem(mediation);
+                }
+            }
+        }
+    }
+
+    private void Tweak(InputAction.CallbackContext x)
+    {
+        if (CursorSlot.IsNull)
+        {
+            if (CurrentSlot != null && !CurrentSlot.IsNull)
+            {
+                int pickCount = Mathf.FloorToInt((float)CurrentSlot.Item.Count / 2);
+                if (pickCount <= 0)
+                    return;
+                CursorSlot.SetItem(CurrentSlot.Item.Duplicate(pickCount));
+                CurrentSlot.Item.Count -= pickCount;
+            }
+        }
+        else if (CurrentSlot != null)
+        {
+            if (CurrentSlot.IsNull)
+            {
+                CurrentSlot.SetItem(CursorSlot.Item.Duplicate(1));
+                CursorSlot.Item.Count--;
+            }
+            else
+            {
+                if (CurrentSlot.Item.Merge(CursorSlot.Item.Duplicate(1)))
+                {
+                    CursorSlot.Item.Count--;
+                    if (CursorSlot.Item.Count <= 0)
+                        CursorSlot.SetItem();
+                }
                 else
                 {
                     ItemStack mediation = CurrentSlot.Item;

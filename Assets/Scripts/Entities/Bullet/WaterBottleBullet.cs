@@ -18,10 +18,10 @@ namespace EscapeGuan.Entities.Bullet
         public override void Drop()
         {
             GameManager.Main.PlayAudio(AudioSources.Prop, "se.water.bottle_hit");
-            if (Random.value < ItemRegistry.Main.GetObject<WaterBottleItem>("water_bottle").MassOf(Base) * (Rigidbody.velocity.magnitude / 4) / (WaterBottleItem.MaxMass * 2))
+            if (Random.value < Base.GetBase<DurabilityItem>().DurabilityOf(Base) / 1000f * Rigidbody.velocity.magnitude / 4 / Base.GetBase<DurabilityItem>().MaxDurability * 500)
             {
                 GameManager.Main.PlayAudio(AudioSources.Prop, "se.water.splash");
-                for (int i = 0; i < ItemRegistry.Main.GetObject<WaterBottleItem>("water_bottle").MassOf(Base) * 100; i++)
+                for (int i = 0; i < Base.GetBase<DurabilityItem>().DurabilityOf(Base) / 5; i++)
                 {
                     WaterDropBullet b = Instantiate(GameManager.Templates["water_drop"], transform.position, Quaternion.identity).GetComponent<WaterDropBullet>();
                     b.Init(this, Random.Range(1, Rigidbody.velocity.magnitude / 2), Random.Range(0, 360f), Thrower.CriticalRate, Thrower.CriticalMultiplier, GetAttackAmount());
@@ -39,7 +39,7 @@ namespace EscapeGuan.Entities.Bullet
         {
             Init(thrower, initvel, angle);
             Base = @base;
-            Rigidbody.mass = (float)Base.Attributes[WaterBottleItem.Mass];
+            Rigidbody.mass = Base.GetBase<DurabilityItem>().DurabilityOf(Base) / 1000f;
             transform.eulerAngles = new(0, 0, Random.Range(0f, 360));
             Rigidbody.angularVelocity = Random.Range(45f, 135f);
         }

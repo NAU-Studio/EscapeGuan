@@ -178,6 +178,8 @@ namespace EscapeGuan.Entities.Player
             GameManager.Action.Player.Movement.performed -= PerformMovement;
             GameManager.Action.Player.RunningToggle.performed -= PerformRunningToggle;
             GameManager.Action.Player.Attack.performed -= PerformAttack;
+
+            GameManager.Action.Player.Use.performed -= QuickInventory.Use;
         }
 
         public void InControl()
@@ -185,6 +187,8 @@ namespace EscapeGuan.Entities.Player
             GameManager.Action.Player.Movement.performed += PerformMovement;
             GameManager.Action.Player.RunningToggle.performed += PerformRunningToggle;
             GameManager.Action.Player.Attack.performed += PerformAttack;
+
+            GameManager.Action.Player.Use.performed += QuickInventory.Use;
         }
 
         private void PerformMovement(InputAction.CallbackContext x) => movement = x.ReadValue<Vector2>();
