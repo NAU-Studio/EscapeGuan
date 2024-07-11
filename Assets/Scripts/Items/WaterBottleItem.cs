@@ -4,65 +4,40 @@ using UnityEngine;
 
 namespace EscapeGuan.Items
 {
-    public class WaterBottleItem : Item, IThrowableItem
+    public class WaterBottleItem : DurabilityItem, IThrowableItem
     {
         public override int MaxCount => 1;
-
-
-        public const float MaxMass = 0.55f;
-
-        public const string Mass = "WaterBottleItem_Mass";
+        public override int MaxDurability => 550;
 
         public WaterBottleItem(string name, string description, Sprite icon) : base(name, description, icon)
         { }
 
-        public override void Use(ItemStack sender, Entity from)
+        public override void Use(ItemStack i, Entity sender)
         {
-            if (from.Id == GameManager.ControlledId)
-                Drink(sender);
+            if (sender.Id == GameManager.ControlledId)
+                Drink(i);
         }
 
-        public void Drink(ItemStack sender)
+        public void Drink(ItemStack i)
         {
-            float amount = Mathf.Min(MassOf(sender), Random.Range(0.045f, 0.08f));
-            sender.Attributes[Mass] = MassOf(sender) - amount;
-            if (MassOf(sender) <= 0)
+            int amount = Mathf.Min(DurabilityOf(i), Random.Range(45, 120));
+            i.Attributes[Durability] = DurabilityOf(i) - amount;
+            if (DurabilityOf(i) <= 0)
             {
-                sender.Delete();
+                Break(i);
                 GameManager.Player.AddItem(ItemRegistry.Main.CreateItemStack("empty_bottle"));
             }
-            GameManager.Main.ItemProfile.SetText(Name, GetDescription(sender));
-        }
-
-        public override ItemStack CreateItemStack(int count = 1)
-        {
-            ItemStack i = base.CreateItemStack(count);
-            i.Attributes.Add(Mass, MaxMass);
-            return i;
-        }
-
-        public ItemStack CreateItemStack(int count = 1, float mass = MaxMass)
-        {
-            ItemStack i = new(this, count);
-            i.Attributes.Add(Mass, MaxMass);
-            return i;
-        }
-
-        public override float GetDurability(ItemStack i)
-        {
-            return MassOf(i) / MaxMass;
+            GameManager.Main.ItemProfile.SetText(Name, GetDescription(i));
         }
 
         public override string GetDescription(ItemStack i)
         {
-            return $"{Description}剩余量：{MassOf(i) * 1000:0.00} mL";
+            return $"{Description}剩余量：{DurabilityOf(i)} mL";
         }
 
         public void Throw(ItemStack i)
         {
             throw new System.NotImplementedException();
         }
-
-        public float MassOf(ItemStack i) => (float)i.Attributes[Mass];
     }
 }

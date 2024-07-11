@@ -11,7 +11,7 @@ namespace EscapeGuan.UI.Items
 {
     public class QuickInventory : MonoBehaviour
     {
-        public List<QuickInventorySlot> Slots;
+        public List<InventorySlot> Slots;
         ItemStack prevItem;
 
         public RectTransform SelectionBox;
@@ -25,31 +25,8 @@ namespace EscapeGuan.UI.Items
         public ItemStack Current => Slots[Selection].Item;
         public bool CurrentEmpty => Current == null;
 
-        public void Set(int index, ItemStack item)
-        {
-            Slots[index].Item = item;
-        }
-
-        public bool Add(ItemStack item)
-        {
-            foreach (QuickInventorySlot s in Slots)
-            {
-                if (s.Item == null)
-                {
-                    s.Item = item;
-                    return true;
-                }
-                if (s.Item.Combine(item))
-                    return true;
-            }
-            return false;
-        }
-
         private void Update()
         {
-            foreach (QuickInventorySlot s in Slots)
-                s.Item = GameManager.Player.Inventory[s.Index];
-
             float scr = Input.mouseScrollDelta.y;
             if (scr > 0)
             {
@@ -78,16 +55,11 @@ namespace EscapeGuan.UI.Items
                     prevItem.OnHoldUp();
                 }
                 else
-                    GameManager.Main.ItemProfile.Hide();
+                    GameManager.Main.ItemProfile.HideFast();
             }
         }
 
-        private void Start()
-        {
-            GameManager.Action.Player.Use.performed += Use;
-        }
-
-        public void Use(InputAction.CallbackContext cbc)
+        public void Use(InputAction.CallbackContext x)
         {
             Slots[Selection].Use();
         }

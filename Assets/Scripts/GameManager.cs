@@ -7,6 +7,7 @@ using DG.Tweening;
 using EscapeGuan.Entities;
 using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
+using EscapeGuan.Items.Recipes;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Items;
 
@@ -48,6 +49,8 @@ namespace EscapeGuan
 
         public static Vector2 CursorPosition { get { RectTransformUtility.ScreenPointToWorldPointInRectangle(Main.MainCanvas, Mouse.current.position.value, Camera.main, out Vector3 v); return v; } }
 
+        public static List<Recipe> Recipes = new();
+
         private void Start()
         {
             Main = this;
@@ -55,12 +58,14 @@ namespace EscapeGuan
             #region Initialize Resources
             ImageResources.Add("water_bottle", Resources.Load<Sprite>("Sprites/Items/water_bottle_item"));
             ImageResources.Add("small_stick", Resources.Load<Sprite>("Sprites/Items/small_stick"));
+            ImageResources.Add("refined_stick", Resources.Load<Sprite>("Sprites/Items/refined_stick"));
             #endregion
 
             #region Initialize Item Registry
             ItemRegistry.Main.RegisterObject("water_bottle", new WaterBottleItem("蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL。能扔能喝，还能往里兑水，水越多砸人越疼。扔出去后有概率爆炸，水珠也会造成伤害，而且概率与速度和水量有关。", ImageResources["water_bottle"]));
             ItemRegistry.Main.RegisterObject("empty_bottle", new EmptyWaterBottleItem("空的蓝标矿泉水", "一瓶蓝标矿泉水，净含量550 mL。但是里面没有水，不过可以往里倒，空的砸人就别想要伤害了。", ImageResources["water_bottle"]));
             ItemRegistry.Main.RegisterObject("small_stick", new SmallStickItem("小树枝", "攻击伤害和攻击距离提升，但是容易断。", ImageResources["small_stick"]));
+            ItemRegistry.Main.RegisterObject("refined_stick", new("木棍", "精致加工的木棍，可以用于合成，但没有任何攻击加成", ImageResources["refined_stick"]));
             #endregion
 
             #region Initialize Templates
@@ -96,6 +101,11 @@ namespace EscapeGuan
             Audios.Add("entity.stone_2", Resources.Load<AudioClip>("Audios/Damage/stone2"));
             Audios.Add("entity.stone_3", Resources.Load<AudioClip>("Audios/Damage/stone3"));
             Audios.Add("entity.stone_4", Resources.Load<AudioClip>("Audios/Damage/stone4"));
+            #endregion
+
+            #region Initialize recipes
+            foreach (TextAsset asset in Resources.LoadAll<TextAsset>("Datas/Recipe"))
+                Recipes.Add(Recipe.FromFile(asset.text));
             #endregion
         }
 

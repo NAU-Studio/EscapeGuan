@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
+using DG.Tweening;
 
 using EscapeGuan.Entities.Bullet;
 using EscapeGuan.Entities.Items;
@@ -7,13 +10,11 @@ using EscapeGuan.Items;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Items;
 
-using static UnityEngine.Mathf;
-
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using System.Linq;
-using DG.Tweening;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
+
+using static UnityEngine.Mathf;
 
 namespace EscapeGuan.Entities.Player
 {
@@ -59,9 +60,7 @@ namespace EscapeGuan.Entities.Player
             base.Start();
 
             GameManager.Action = new();
-            GameManager.Action.Player.Movement.performed += x => movement = x.ReadValue<Vector2>();
-            GameManager.Action.Player.RunningToggle.performed += x => Running = true;
-            GameManager.Action.Player.Attack.performed += x => AttackSelector();
+            InControl();
             GameManager.Action.Enable();
 
             QuickInventory.OnChangeSelection += UpdateAttackState;
@@ -102,7 +101,7 @@ namespace EscapeGuan.Entities.Player
                     Inventory.Set(i, sender);
                     break;
                 }
-                if (Inventory[i].Combine(sender))
+                if (Inventory[i].Merge(sender))
                     break;
             }
         }
@@ -174,6 +173,32 @@ namespace EscapeGuan.Entities.Player
             Rigidbody.velocity = final * movement;
             #endregion
         }
+
+        public void OutControl()
+        {
+            GameManager.Action.Player.Movement.performed -= PerformMovement;
+            GameManager.Action.Player.RunningToggle.performed -= PerformRunningToggle;
+            GameManager.Action.Player.Attack.performed -= PerformAttack;
+            GameManager.Action.Player.Use.performed -= QuickInventory.Use;
+
+            movement = Vector2.zero;
+            Running = false;
+        }
+
+        public void InControl()
+        {
+            GameManager.Action.Player.Movement.performed += PerformMovement;
+            GameManager.Action.Player.RunningToggle.performed += PerformRunningToggle;
+            GameManager.Action.Player.Attack.performed += PerformAttack;
+            GameManager.Action.Player.Use.performed += QuickInventory.Use;
+
+            movement = Vector2.zero;
+            Running = false;
+        }
+
+        private void PerformMovement(InputAction.CallbackContext x) => movement = x.ReadValue<Vector2>();
+        private void PerformRunningToggle(InputAction.CallbackContext x) => Running = true;
+        private void PerformAttack(InputAction.CallbackContext x) => AttackSelector();
 
         public void UpdateAttackState(int id, ItemStack item)
         {

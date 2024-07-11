@@ -31,6 +31,8 @@ namespace EscapeGuan.Items
 
         private int count;
 
+        public T GetBase<T>() where T : Item => (T)Base;
+
         public ItemEntity CreateEntity(GameObject itemTemplate)
         {
             GameObject go = Object.Instantiate(itemTemplate);
@@ -49,12 +51,10 @@ namespace EscapeGuan.Items
 
         public void Use(Entity i) => Base.Use(this, i);
 
-        public bool Combine(ItemStack i)
+        public bool Merge(ItemStack i)
         {
-            if (i.Base == Base && i.Base.GetDurability(i) == Base.GetDurability(this))
+            if (i.Base == Base && i.Count + Count <= i.Base.MaxCount)
             {
-                if (i.Count + Count > i.Base.MaxCount)
-                    return false;
                 Count += i.Count;
                 return true;
             }
@@ -71,6 +71,9 @@ namespace EscapeGuan.Items
 
         public void OnHoldUp() => Base.OnHoldUp(this);
         public void OnPutDown() => Base.OnPutDown(this);
+
+        public ItemStack Duplicate(int count) => Base.CreateItemStack(count);
+
 
         internal ItemStack(Item b, int c = 1)
         {

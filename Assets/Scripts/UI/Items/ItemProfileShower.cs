@@ -44,6 +44,12 @@ namespace EscapeGuan.UI.Items
             GetComponent<CanvasGroup>().blocksRaycasts = false;
             GetComponent<CanvasGroup>().interactable = false;
         }
-    }
 
+        public void HideFast()
+        {
+            tween = GetComponent<CanvasGroup>().DOFade(0, Transition);
+            GetComponent<CanvasGroup>().blocksRaycasts = false;
+            GetComponent<CanvasGroup>().interactable = false;
+        }
+    }
 }
