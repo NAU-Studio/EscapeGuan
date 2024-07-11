@@ -35,16 +35,21 @@ public class DurabilityItem : Item
 
     public void Damage(ItemStack i, int amount)
     {
-        i.Attributes[Durability] = DurabilityOf(i) - amount;
+        SetDurability(i, DurabilityOf(i) - amount);
         if (DurabilityOf(i) <= 0)
             Break(i);
     }
 
+    public void DamageNoCheck(ItemStack i, int amount)
+    {
+        SetDurability(i, DurabilityOf(i) - amount);
+    }
+
     public void Repair(ItemStack i, int amount)
     {
-        i.Attributes[Durability] = (int)i.Attributes[Durability] + amount;
+        SetDurability(i, DurabilityOf(i) + amount);
         if ((int)i.Attributes[Durability] > MaxDurability)
-            i.Attributes[Durability] = 1;
+            i.Attributes[Durability] = MaxDurability;
     }
 
     public override float GetDurability(ItemStack i)
@@ -53,6 +58,7 @@ public class DurabilityItem : Item
     }
 
     public int DurabilityOf(ItemStack i) => (int)i.Attributes[Durability];
+    public void SetDurability(ItemStack i, int amount) => i.Attributes[Durability] = amount;
 
     public void Break(ItemStack i)
     {

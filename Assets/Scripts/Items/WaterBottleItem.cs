@@ -12,22 +12,22 @@ namespace EscapeGuan.Items
         public WaterBottleItem(string name, string description, Sprite icon) : base(name, description, icon)
         { }
 
-        public override void Use(ItemStack sender, Entity from)
+        public override void Use(ItemStack i, Entity sender)
         {
-            if (from.Id == GameManager.ControlledId)
-                Drink(sender);
+            if (sender.Id == GameManager.ControlledId)
+                Drink(i);
         }
 
-        public void Drink(ItemStack sender)
+        public void Drink(ItemStack i)
         {
-            int amount = Mathf.Min(DurabilityOf(sender), Random.Range(45, 120));
-            sender.Attributes[Durability] = DurabilityOf(sender) - amount;
-            if (DurabilityOf(sender) <= 0)
+            int amount = Mathf.Min(DurabilityOf(i), Random.Range(45, 120));
+            i.Attributes[Durability] = DurabilityOf(i) - amount;
+            if (DurabilityOf(i) <= 0)
             {
-                Break(sender);
+                Break(i);
                 GameManager.Player.AddItem(ItemRegistry.Main.CreateItemStack("empty_bottle"));
             }
-            GameManager.Main.ItemProfile.SetText(Name, GetDescription(sender));
+            GameManager.Main.ItemProfile.SetText(Name, GetDescription(i));
         }
 
         public override string GetDescription(ItemStack i)
