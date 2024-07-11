@@ -69,6 +69,7 @@ namespace EscapeGuan.UI.Items
                 GameManager.Player.InControl();
                 GameManager.Action.Player.Attack.performed -= Select;
                 GameManager.Action.Player.Use.performed -= Tweak;
+                GameManager.Action.Player.Close.performed -= Toggle;
                 Hidable.Hide();
             }
             else
@@ -76,6 +77,7 @@ namespace EscapeGuan.UI.Items
                 GameManager.Player.OutControl();
                 GameManager.Action.Player.Attack.performed += Select;
                 GameManager.Action.Player.Use.performed += Tweak;
+                GameManager.Action.Player.Close.performed += Toggle;
                 Hidable.Show();
             }
             Showed = !Showed;
