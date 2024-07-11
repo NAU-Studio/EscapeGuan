@@ -32,8 +32,10 @@ namespace EscapeGuan.UI.Items
 
             foreach (InventoryOperationSlot i in CraftingIngredientSlots)
                 i.OnItemChanged += UpdateCrafting;
+            CraftingResultSlot.OnItemChanged += PickCraftingResult;
         }
 
+        private bool Crafting = false;
         private void UpdateCrafting()
         {
             CraftingInput input = new(CraftingIngredientSlots, CraftingIngredientWidth, CraftingIngredientHeight);
@@ -41,11 +43,20 @@ namespace EscapeGuan.UI.Items
             {
                 if (r.Match(input))
                 {
-                    CraftingResultSlot.SetItem(r.Result.CreateItemStack());
+                    CraftingResultSlot.SetItemSilently(r.Result.CreateItemStack());
+                    Crafting = true;
                     return;
                 }
             }
             CraftingResultSlot.SetItem();
+        }
+        private void PickCraftingResult()
+        {
+            if (!Crafting)
+                return;
+            foreach (InventoryOperationSlot i in CraftingIngredientSlots)
+                i.SetItemSilently();
+            Crafting = false;
         }
 
         private bool Showed;

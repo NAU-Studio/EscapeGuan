@@ -17,5 +17,10 @@ namespace EscapeGuan.UI.Items
             item = i;
             OnItemChanged();
         }
+
+        public void SetItemSilently(ItemStack i = null)
+        {
+            item = i;
+        }
     }
 }
