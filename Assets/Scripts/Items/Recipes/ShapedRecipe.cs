@@ -19,12 +19,12 @@ namespace EscapeGuan.Items.Recipes
                 for (int x = 0; x < Width; x++)
                 {
                     Item i = Ingredients[x + y * Width];
-                    if (i == null)
-                    {
-                        if (input.Items[x + y * Width] != null)
-                            return false;
-                    }
-                    else if (input.Items[x + y * input.Width].Base != i)
+                    ItemStack n = input.Items[x + y * Width];
+                    if (i == null != (n == null)) // 如果 i 的null性与 n 的null性不匹配（即 i 和 n 一个为null一个不为null）
+                        return false;
+                    if (i == null && n == null)
+                        continue;
+                    if (input.Items[x + y * input.Width].Base != i)
                         return false;
                 }
             }

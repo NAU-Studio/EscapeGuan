@@ -40,10 +40,12 @@ namespace EscapeGuan.UI.Items
             foreach (Recipe r in GameManager.Recipes)
             {
                 if (r.Match(input))
+                {
                     CraftingResultSlot.SetItem(r.Result.CreateItemStack());
-                else
-                    CraftingResultSlot.SetItem();
+                    return;
+                }
             }
+            CraftingResultSlot.SetItem();
         }
 
         private bool Showed;
