@@ -48,7 +48,7 @@ namespace EscapeGuan.UI.Items
                     return;
                 }
             }
-            CraftingResultSlot.SetItem();
+            CraftingResultSlot.SetItemSilently();
         }
         private void PickCraftingResult()
         {
@@ -71,6 +71,20 @@ namespace EscapeGuan.UI.Items
                 GameManager.Action.Player.Use.performed -= Tweak;
                 GameManager.Action.Player.Close.performed -= Toggle;
                 Hidable.Hide();
+
+                foreach (InventoryOperationSlot i in CraftingIngredientSlots)
+                {
+                    if (i.Item != null)
+                    {
+                        GameManager.Player.AddItem(i.Item);
+                        i.SetItem();
+                    }
+                }
+                if (CursorSlot.Item != null)
+                {
+                    GameManager.Player.AddItem(CursorSlot.Item);
+                    CursorSlot.SetItem();
+                }
             }
             else
             {
