@@ -7,6 +7,7 @@ using DG.Tweening;
 using EscapeGuan.Entities;
 using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
+using EscapeGuan.Items.Recipes;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Items;
 
@@ -47,6 +48,8 @@ namespace EscapeGuan
         public static PlayerAction Action;
 
         public static Vector2 CursorPosition { get { RectTransformUtility.ScreenPointToWorldPointInRectangle(Main.MainCanvas, Mouse.current.position.value, Camera.main, out Vector3 v); return v; } }
+
+        public static List<Recipe> Recipes = new();
 
         private void Start()
         {
@@ -98,6 +101,11 @@ namespace EscapeGuan
             Audios.Add("entity.stone_2", Resources.Load<AudioClip>("Audios/Damage/stone2"));
             Audios.Add("entity.stone_3", Resources.Load<AudioClip>("Audios/Damage/stone3"));
             Audios.Add("entity.stone_4", Resources.Load<AudioClip>("Audios/Damage/stone4"));
+            #endregion
+
+            #region Initialize recipes
+            foreach (TextAsset asset in Resources.LoadAll<TextAsset>("Datas/Recipe"))
+                Recipes.Add(Recipe.FromFile(asset.text));
             #endregion
         }
 

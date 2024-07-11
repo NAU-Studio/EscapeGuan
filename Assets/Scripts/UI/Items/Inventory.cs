@@ -1,150 +1,171 @@
 using DG.Tweening;
 
-using EscapeGuan;
 using EscapeGuan.Items;
-using EscapeGuan.UI;
+using EscapeGuan.Items.Recipes;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Inventory : MonoBehaviour
+namespace EscapeGuan.UI.Items
 {
-    public InventorySlotBase[] Slots;
-
-    public RectTransform Selection;
-    public CursorInventorySlot CursorSlot;
-    public Hidable SelectionHidable => Selection.GetComponent<Hidable>();
-
-    private bool Selected;
-    private InventorySlotBase CurrentSlot;
-
-    private void Start()
+    public class Inventory : MonoBehaviour
     {
-        foreach (InventorySlotBase s in Slots)
-            s.MouseEvent += UpdateSelection;
+        public InventorySlotBase[] Slots;
 
-        GameManager.Action.Player.OpenInventory.performed += Toggle;
-    }
+        public RectTransform Selection;
+        public CursorInventorySlot CursorSlot;
+        public Hidable SelectionHidable => Selection.GetComponent<Hidable>();
 
-    private bool Showed;
-    private Hidable Hidable => GetComponent<Hidable>();
+        public InventoryOperationSlot[] CraftingIngredientSlots;
+        public int CraftingIngredientWidth, CraftingIngredientHeight;
+        public InventoryOperationSlot CraftingResultSlot;
 
-    private void Toggle(InputAction.CallbackContext x)
-    {
-        if (Showed)
+        private bool Selected;
+        private InventorySlotBase CurrentSlot;
+
+        private void Start()
         {
-            GameManager.Player.InControl();
-            GameManager.Action.Player.Attack.performed -= Select;
-            GameManager.Action.Player.Use.performed -= Tweak;
-            Hidable.Hide();
+            foreach (InventorySlotBase s in Slots)
+                s.MouseEvent += UpdateSelection;
+
+            GameManager.Action.Player.OpenInventory.performed += Toggle;
+
+            foreach (InventoryOperationSlot i in CraftingIngredientSlots)
+                i.OnItemChanged += UpdateCrafting;
         }
-        else
-        {
-            GameManager.Player.OutControl();
-            GameManager.Action.Player.Attack.performed += Select;
-            GameManager.Action.Player.Use.performed += Tweak;
-            Hidable.Show();
-        }
-        Showed = !Showed;
-    }
 
-    private void Select(InputAction.CallbackContext x)
-    {
-        if (CursorSlot.IsNull)
+        private void UpdateCrafting()
         {
-            if (CurrentSlot != null && !CurrentSlot.IsNull)
+            CraftingInput input = new(CraftingIngredientSlots, CraftingIngredientWidth, CraftingIngredientHeight);
+            foreach (Recipe r in GameManager.Recipes)
             {
-                CursorSlot.SetItem(CurrentSlot.Item);
-                CurrentSlot.SetItem();
+                if (r.Match(input))
+                    CraftingResultSlot.SetItem(r.Result.CreateItemStack());
+                else
+                    CraftingResultSlot.SetItem();
             }
         }
-        else if (CurrentSlot != null)
+
+        private bool Showed;
+        private Hidable Hidable => GetComponent<Hidable>();
+
+        private void Toggle(InputAction.CallbackContext x)
         {
-            if (CurrentSlot.IsNull)
+            if (Showed)
             {
-                CurrentSlot.SetItem(CursorSlot.Item);
-                CursorSlot.SetItem();
+                GameManager.Player.InControl();
+                GameManager.Action.Player.Attack.performed -= Select;
+                GameManager.Action.Player.Use.performed -= Tweak;
+                Hidable.Hide();
             }
             else
             {
-                if (CurrentSlot.Item.Merge(CursorSlot.Item))
+                GameManager.Player.OutControl();
+                GameManager.Action.Player.Attack.performed += Select;
+                GameManager.Action.Player.Use.performed += Tweak;
+                Hidable.Show();
+            }
+            Showed = !Showed;
+        }
+
+        private void Select(InputAction.CallbackContext x)
+        {
+            if (CursorSlot.IsNull)
+            {
+                if (CurrentSlot != null && !CurrentSlot.IsNull)
+                {
+                    CursorSlot.SetItem(CurrentSlot.Item);
+                    CurrentSlot.SetItem();
+                }
+            }
+            else if (CurrentSlot != null)
+            {
+                if (CurrentSlot.IsNull)
+                {
+                    CurrentSlot.SetItem(CursorSlot.Item);
                     CursorSlot.SetItem();
+                }
                 else
                 {
-                    ItemStack mediation = CurrentSlot.Item;
-                    CurrentSlot.SetItem(CursorSlot.Item);
-                    CursorSlot.SetItem(mediation);
+                    if (CurrentSlot.Item.Merge(CursorSlot.Item))
+                        CursorSlot.SetItem();
+                    else
+                    {
+                        ItemStack mediation = CurrentSlot.Item;
+                        CurrentSlot.SetItem(CursorSlot.Item);
+                        CursorSlot.SetItem(mediation);
+                    }
                 }
             }
         }
-    }
 
-    private void Tweak(InputAction.CallbackContext x)
-    {
-        if (CursorSlot.IsNull)
+        private void Tweak(InputAction.CallbackContext x)
         {
-            if (CurrentSlot != null && !CurrentSlot.IsNull)
+            if (CursorSlot.IsNull)
             {
-                int pickCount = Mathf.FloorToInt((float)CurrentSlot.Item.Count / 2);
-                if (pickCount <= 0)
-                    return;
-                CursorSlot.SetItem(CurrentSlot.Item.Duplicate(pickCount));
-                CurrentSlot.Item.Count -= pickCount;
+                if (CurrentSlot != null && !CurrentSlot.IsNull)
+                {
+                    int pickCount = Mathf.FloorToInt((float)CurrentSlot.Item.Count / 2);
+                    if (pickCount <= 0)
+                        return;
+                    CursorSlot.SetItem(CurrentSlot.Item.Duplicate(pickCount));
+                    CurrentSlot.Item.Count -= pickCount;
+                }
+            }
+            else if (CurrentSlot != null)
+            {
+                if (CurrentSlot.IsNull)
+                {
+                    CurrentSlot.SetItem(CursorSlot.Item.Duplicate(1));
+                    CursorSlot.Item.Count--;
+                }
+                else
+                {
+                    if (CurrentSlot.Item.Merge(CursorSlot.Item.Duplicate(1)))
+                    {
+                        CursorSlot.Item.Count--;
+                        if (CursorSlot.Item.Count <= 0)
+                            CursorSlot.SetItem();
+                    }
+                    else
+                    {
+                        ItemStack mediation = CurrentSlot.Item;
+                        CurrentSlot.SetItem(CursorSlot.Item);
+                        CursorSlot.SetItem(mediation);
+                    }
+                }
             }
         }
-        else if (CurrentSlot != null)
+
+        private void UpdateSelection(InventorySlotBase sender)
         {
-            if (CurrentSlot.IsNull)
+            CurrentSlot = sender;
+            if (sender != null)
             {
-                CurrentSlot.SetItem(CursorSlot.Item.Duplicate(1));
-                CursorSlot.Item.Count--;
+                Selection.DOAnchorPos(GetCanvasPosition(sender.transform), .2f).SetEase(Ease.OutCubic);
+                Selection.DOPivot(sender.transform.pivot, .2f).SetEase(Ease.OutCubic);
+                if (!Selected)
+                {
+                    Selected = true;
+                    SelectionHidable.Show();
+                }
             }
             else
             {
-                if (CurrentSlot.Item.Merge(CursorSlot.Item.Duplicate(1)))
+                if (Selected)
                 {
-                    CursorSlot.Item.Count--;
-                    if (CursorSlot.Item.Count <= 0)
-                        CursorSlot.SetItem();
-                }
-                else
-                {
-                    ItemStack mediation = CurrentSlot.Item;
-                    CurrentSlot.SetItem(CursorSlot.Item);
-                    CursorSlot.SetItem(mediation);
+                    Selected = false;
+                    SelectionHidable.Hide();
                 }
             }
         }
-    }
 
-    private void UpdateSelection(InventorySlotBase sender)
-    {
-        CurrentSlot = sender;
-        if (sender != null)
+        private RectTransform Parent => (RectTransform)GetComponentInParent<Canvas>().transform;
+
+        private Vector2 GetCanvasPosition(RectTransform t)
         {
-            Selection.DOAnchorPos(GetCanvasPosition(sender.transform), .2f).SetEase(Ease.OutCubic);
-            Selection.DOPivot(sender.transform.pivot, .2f).SetEase(Ease.OutCubic);
-            if (!Selected)
-            {
-                Selected = true;
-                SelectionHidable.Show();
-            }
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(Parent, Camera.main.WorldToScreenPoint(t.position), Camera.main, out Vector2 ret);
+            return ret;
         }
-        else
-        {
-            if (Selected)
-            {
-                Selected = false;
-                SelectionHidable.Hide();
-            }
-        }
-    }
-
-    private RectTransform Parent => (RectTransform)GetComponentInParent<Canvas>().transform;
-
-    private Vector2 GetCanvasPosition(RectTransform t)
-    {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(Parent, Camera.main.WorldToScreenPoint(t.position), Camera.main, out Vector2 ret);
-        return ret;
     }
 }

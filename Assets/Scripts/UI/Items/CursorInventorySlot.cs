@@ -1,12 +1,15 @@
 using EscapeGuan.Items;
 
-public class CursorInventorySlot : InventorySlotBase
+namespace EscapeGuan.UI.Items
 {
-    public override ItemStack Item => item;
-    private ItemStack item;
-
-    public override void SetItem(ItemStack i = null)
+    public class CursorInventorySlot : InventorySlotBase
     {
-        item = i;
+        public override ItemStack Item => item;
+        private ItemStack item;
+
+        public override void SetItem(ItemStack i = null)
+        {
+            item = i;
+        }
     }
 }

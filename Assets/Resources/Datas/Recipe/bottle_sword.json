@@ -1,0 +1,17 @@
+{
+    "shaped": true,
+    "ingredients": [
+        "empty_bottle",
+        "refined_stick"
+    ],
+    "shape": [
+        "-1;0;-1",
+        "-1;1;-1",
+        "-1;1;-1"
+    ],
+    "result": "refined_stick",
+    "c": [
+        "这是注释",
+        "我还没做蓝标矿泉剑，所以先放着木棍"
+    ]
+}

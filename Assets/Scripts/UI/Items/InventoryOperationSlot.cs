@@ -1,14 +1,21 @@
 using EscapeGuan.Items;
 
-public class InventoryOperationSlot : InventorySlotBase
+namespace EscapeGuan.UI.Items
 {
-    public override ItemStack Item => item;
-    public bool PlayerPlacable;
-
-    private ItemStack item;
-
-    public override void SetItem(ItemStack i = null)
+    public class InventoryOperationSlot : InventorySlotBase
     {
-        item = i;
+        public override ItemStack Item => item;
+        public bool PlayerPlacable;
+
+        public delegate void OnItemChangedEventHandler();
+        public OnItemChangedEventHandler OnItemChanged = () => { };
+
+        private ItemStack item;
+
+        public override void SetItem(ItemStack i = null)
+        {
+            item = i;
+            OnItemChanged();
+        }
     }
 }

@@ -1,69 +1,71 @@
 using EscapeGuan.Items;
-using EscapeGuan.UI;
 
 using TMPro;
 
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class InventorySlotBase : RectBehaviour, IPointerEnterHandler, IPointerExitHandler
+namespace EscapeGuan.UI.Items
 {
-    public Image Image;
-    public TMP_Text Count;
-    public SlicedFilledImage Durability;
-    public Hidable DurabilityHidable => Durability.GetComponentInParent<Hidable>();
-
-    public abstract ItemStack Item { get; }
-    public virtual bool IsNull => Item == null;
-
-    protected bool DurabilityShown = false;
-
-    protected virtual void Update()
+    public abstract class InventorySlotBase : RectBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        if (!IsNull)
+        public Image Image;
+        public TMP_Text Count;
+        public SlicedFilledImage Durability;
+        public Hidable DurabilityHidable => Durability.GetComponentInParent<Hidable>();
+
+        public abstract ItemStack Item { get; }
+        public virtual bool IsNull => Item == null;
+
+        protected bool DurabilityShown = false;
+
+        protected virtual void Update()
         {
-            Image.sprite = Item.Base.Icon;
-            Image.color = new(1, 1, 1, 1);
-            Count.text = Item.GetCountString();
-            float du = Item.Durability;
-            if (du >= 1 && DurabilityShown)
+            if (!IsNull)
             {
-                DurabilityHidable.Hide();
-                DurabilityShown = false;
+                Image.sprite = Item.Base.Icon;
+                Image.color = new(1, 1, 1, 1);
+                Count.text = Item.GetCountString();
+                float du = Item.Durability;
+                if (du >= 1 && DurabilityShown)
+                {
+                    DurabilityHidable.Hide();
+                    DurabilityShown = false;
+                }
+                if (du < 1 && !DurabilityShown)
+                {
+                    DurabilityHidable.Show();
+                    DurabilityShown = true;
+                }
+                Durability.SetFillAmount(du);
             }
-            if (du < 1 && !DurabilityShown)
+            else
             {
-                DurabilityHidable.Show();
-                DurabilityShown = true;
+                Image.sprite = null;
+                Image.color = new(1, 1, 1, 0);
+                Count.text = "";
+                if (DurabilityShown)
+                {
+                    DurabilityHidable.Hide();
+                    DurabilityShown = false;
+                }
             }
-            Durability.SetFillAmount(du);
         }
-        else
+
+        public abstract void SetItem(ItemStack i = null);
+
+        public void OnPointerEnter(PointerEventData eventData)
         {
-            Image.sprite = null;
-            Image.color = new(1, 1, 1, 0);
-            Count.text = "";
-            if (DurabilityShown)
-            {
-                DurabilityHidable.Hide();
-                DurabilityShown = false;
-            }
+            MouseEvent(this);
         }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            MouseEvent(null);
+        }
+
+        public MouseEventHandler MouseEvent = x => { };
+
+        public delegate void MouseEventHandler(InventorySlotBase sender);
     }
-
-    public abstract void SetItem(ItemStack i = null);
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        MouseEvent(this);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        MouseEvent(null);
-    }
-
-    public MouseEventHandler MouseEvent = x => { };
-
-    public delegate void MouseEventHandler(InventorySlotBase sender);
 }
