@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
+using DG.Tweening;
 
 using EscapeGuan.Entities.Bullet;
 using EscapeGuan.Entities.Items;
@@ -7,13 +10,11 @@ using EscapeGuan.Items;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Items;
 
-using static UnityEngine.Mathf;
-
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using System.Linq;
-using DG.Tweening;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
+
+using static UnityEngine.Mathf;
 
 namespace EscapeGuan.Entities.Player
 {

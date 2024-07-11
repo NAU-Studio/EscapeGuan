@@ -1,5 +1,6 @@
 using EscapeGuan.Entities;
 using EscapeGuan.Items;
+
 using UnityEngine;
 
 public class DurabilityItem : Item

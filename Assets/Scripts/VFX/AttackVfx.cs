@@ -1,4 +1,5 @@
 using EscapeGuan.Entities;
+
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]

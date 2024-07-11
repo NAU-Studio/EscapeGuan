@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-using EscapeGuan.Items;
-
 using Newtonsoft.Json.Linq;
 
 namespace EscapeGuan.Items.Recipes

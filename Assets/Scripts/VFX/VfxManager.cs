@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+
 using DG.Tweening;
+
 using EscapeGuan.Entities;
+
 using UnityEngine;
 
 public class VfxManager : MonoBehaviour
