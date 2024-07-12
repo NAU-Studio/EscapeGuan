@@ -46,6 +46,8 @@ namespace EscapeGuan.Entities.Player
 
         public BloodAmountEffect BloodEffectA, BloodEffectB;
 
+        public ParticleSystem BloodDropParticle;
+
         private Rigidbody2D Rigidbody => GetComponent<Rigidbody2D>();
 
         public override int InventoryLength => 36;
@@ -269,6 +271,9 @@ namespace EscapeGuan.Entities.Player
 
             BloodEffectA.SetAmount(0.2f - HealthPoint / MaxHealthPoint);
             BloodEffectB.SetAmount(1 - HealthPoint / MaxHealthPoint);
+
+            base.Damage(amount);
+            BloodDropParticle.Emit((int)(amount / 100));
         }
 
         public override float GetAttackAmount()

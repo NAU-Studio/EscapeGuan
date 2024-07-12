@@ -840,6 +840,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81705435}
   m_CullTransparentMesh: 1
+--- !u!4 &97439057 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+  m_PrefabInstance: {fileID: 1598377131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &97439059 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2378096330520043969, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+  m_PrefabInstance: {fileID: 1598377131}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &101648618 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 706404409887694775, guid: 7ec319d805d380949937cf5bc857f2f2, type: 3}
@@ -3765,9 +3775,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57a4877e5c178e346b3b8b956c6a9be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthPoint: 35000
-  MaxHealthPoint: 35000
-  AttackValue: 4900
+  HealthPoint: 80000
+  MaxHealthPoint: 80000
+  AttackValue: 6600
   CriticalMultiplier: 2.2
   CriticalRate: 0.4
   Knockback: 1
@@ -3797,6 +3807,7 @@ MonoBehaviour:
   AttackState: 0
   BloodEffectA: {fileID: 226590469}
   BloodEffectB: {fileID: 795744542}
+  BloodDropParticle: {fileID: 1990822876}
   ItemPickupRange: 1
   NearItems: 
   List: {fileID: 1151086893}
@@ -3864,7 +3875,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1990822874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &428953555
@@ -7190,7 +7202,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99926126
+  m_Size: 0.9999708
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7850,7 +7862,8 @@ Transform:
   m_LocalPosition: {x: 6, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 97439057}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &804682820
@@ -7962,7 +7975,6 @@ MonoBehaviour:
   Drag: 0.5
   Id: 0
   IntervalRemaining: 0
-  Emotion: {fileID: 2105235914}
   Destinator: {fileID: 1199027329}
   NoticeDistance: 5
   LoseDistance: 15
@@ -7976,12 +7988,9 @@ MonoBehaviour:
   AttackStaminaCost: 5
   StaminaRestore: 3
   AttackDelay: 0.5
-  ThrowBottleInterval: 0
-  BottleCount: 5
-  IdleSprite: {fileID: 0}
-  MovementClip: {fileID: 0}
   EmotionManager: {fileID: 2105235917}
   State: 0
+  BloodDropParticle: {fileID: 97439059}
 --- !u!50 &804682824
 Rigidbody2D:
   serializedVersion: 4
@@ -10504,7 +10513,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000058592577}
+  m_AnchoredPosition: {x: 0, y: 0.0002376686}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892
@@ -10764,6 +10773,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57091f6aceabde84b987250de9ca18cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1194778501
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 428953554}
+    m_Modifications:
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286129427934840388, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_Name
+      value: Blood Drop Particle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
 --- !u!1 &1199027328
 GameObject:
   m_ObjectHideFlags: 0
@@ -14096,6 +14162,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581348946}
   m_CullTransparentMesh: 1
+--- !u!1001 &1598377131
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 804682819}
+    m_Modifications:
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286129427934840388, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+      propertyPath: m_Name
+      value: Blood Drop Particle
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
 --- !u!1001 &1598551763
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17687,6 +17810,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1687863416}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1990822874 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5155401968660025981, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+  m_PrefabInstance: {fileID: 1194778501}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1990822876 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2378096330520043969, guid: 4aca7ea44fe80b3469df3ca3b0b226a7, type: 3}
+  m_PrefabInstance: {fileID: 1194778501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1992230999
 GameObject:
   m_ObjectHideFlags: 0
