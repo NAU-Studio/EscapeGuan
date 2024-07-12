@@ -26,7 +26,9 @@ namespace EscapeGuan.Entities.Player
 
         public float Stamina;
         public float MaxStamina;
-        public float StaminaRestoreDelay;
+        public float StaminaRestoreWaitTime;
+        public float StaminaRestoreAmount;
+        public float StaminaCostAmount;
 
         public float AttackDistance;
 
@@ -109,11 +111,8 @@ namespace EscapeGuan.Entities.Player
         #region Stamina Actions
         private IEnumerator SetRestorable()
         {
-            while (Restorable)
-                yield return null;
-            yield return new WaitForSecondsRealtime(StaminaRestoreDelay);
+            yield return new WaitForSecondsRealtime(StaminaRestoreWaitTime);
             Restorable = true;
-            StartCoroutine(SetRestorable());
         }
 
         public bool CostStamina(float amount)
@@ -152,12 +151,14 @@ namespace EscapeGuan.Entities.Player
             base.FixedUpdate();
             #region Stamina
             if ((movement.x != 0 || movement.y != 0) && Running)
-                RunStaminaCostable = CostStamina((CurrentSpeed - 1) * Time.fixedDeltaTime);
+                RunStaminaCostable = CostStamina(Time.fixedDeltaTime * StaminaCostAmount);
             else
                 RunStaminaCostable = true;
 
             if (Restorable)
-                RestoreStamina(Time.fixedDeltaTime);
+                RestoreStamina(Time.fixedDeltaTime * StaminaRestoreAmount);
+            else
+                StartCoroutine(SetRestorable());
             #endregion
             #region Movement Control
             if (!RunStaminaCostable || (movement == Vector2.zero))

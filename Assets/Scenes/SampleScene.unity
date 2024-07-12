@@ -3765,11 +3765,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57a4877e5c178e346b3b8b956c6a9be5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthPoint: 2000
-  MaxHealthPoint: 2000
-  AttackValue: 340
-  CriticalMultiplier: 1.3
-  CriticalRate: 0.2
+  HealthPoint: 35000
+  MaxHealthPoint: 35000
+  AttackValue: 4900
+  CriticalMultiplier: 2.2
+  CriticalRate: 0.4
   Knockback: 1
   RecieveHealthMultiplier: 1
   SendHealthValue: 1
@@ -3777,13 +3777,14 @@ MonoBehaviour:
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
-  Pointed: 0
   IntervalRemaining: 0
-  Speed: 2
-  RunSpeedMultiplier: 2
+  Speed: 3
+  RunSpeedMultiplier: 1.9
   Stamina: 100
   MaxStamina: 100
-  StaminaRestoreDelay: 1
+  StaminaRestoreWaitTime: 0
+  StaminaRestoreAmount: 0
+  StaminaCostAmount: 0
   AttackDistance: 2
   Map: {fileID: 587148108}
   SlowdownTiles:
@@ -7189,7 +7190,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1992231000}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99926126
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7896,7 +7897,7 @@ MonoBehaviour:
     mode: 2
     interval: 0.5
     sensitivity: 10
-    maximumInterval: 1
+    maximumInterval: 5
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
@@ -7948,19 +7949,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97bf9054ff1e67745bc6768497a1530a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthPoint: 12000
-  MaxHealthPoint: 12000
-  AttackValue: 360
-  CriticalMultiplier: 1.6
+  HealthPoint: 1590000
+  MaxHealthPoint: 1590000
+  AttackValue: 5700
+  CriticalMultiplier: 1.9
   CriticalRate: 0.3
   Knockback: 1
   RecieveHealthMultiplier: 1
   SendHealthValue: 1
-  DefenseValue: 190
+  DefenseValue: 220
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
-  Pointed: 0
   IntervalRemaining: 0
   Emotion: {fileID: 2105235914}
   Destinator: {fileID: 1199027329}
@@ -7970,8 +7970,8 @@ MonoBehaviour:
   AttackRange: 1.5
   WanderInterval: 5
   AttackInterval: 0.5
-  WanderSpeed: 1
-  AttackSpeed: 3
+  WanderSpeed: 4
+  AttackSpeed: 5
   MaxStamina: 50
   AttackStaminaCost: 5
   StaminaRestore: 3
@@ -10504,7 +10504,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000073918227}
+  m_AnchoredPosition: {x: 0, y: 0.000058592577}
   m_SizeDelta: {x: 0, y: 24}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1151086892

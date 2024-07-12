@@ -64,8 +64,5 @@ public class DurabilityItem : Item
     {
         i.Count--;
         i.Attributes[Durability] = MaxDurability;
-
-        if (i.Count <= 0)
-            i.Delete();
     }
 }
