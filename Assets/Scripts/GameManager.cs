@@ -44,7 +44,16 @@ namespace EscapeGuan
         public static int ControlledId;
         public static Dictionary<int, Entity> EntityPool = new();
         public static HashSet<int> ItemEntities = new();
-        public static Player Player => (Player)EntityPool[ControlledId];
+        public static Player Player
+        {
+            get
+            {
+                if (EntityPool.TryGetValue(ControlledId, out Entity e))
+                    return (Player)e;
+                else
+                    return null;
+            }
+        }
         public static PlayerAction Action;
 
         public static Vector2 CursorPosition { get { RectTransformUtility.ScreenPointToWorldPointInRectangle(Main.MainCanvas, Mouse.current.position.value, Camera.main, out Vector3 v); return v; } }
