@@ -17,22 +17,15 @@ namespace EscapeGuan.Entities.Enemy
     public class Guan : Entity, IBoss
     {
         [Header("Guan Attributes")]
-        public GameObject Emotion;
         public Transform Destinator;
 
         public float NoticeDistance, LoseDistance, MaxWanderDistance, AttackRange,
             WanderInterval, AttackInterval, WanderSpeed, AttackSpeed, MaxStamina, AttackStaminaCost, StaminaRestore,
             AttackDelay;
 
-        [Header("Bottle")]
-        public float ThrowBottleInterval;
-        public int BottleCount = 5;
-        [Header("Sprites")]
-        public Sprite IdleSprite;
-        public AnimationClip MovementClip;
-
         public GuanEmotionManager EmotionManager;
         public Status State = Status.Wander;
+        public ParticleSystem BloodDropParticle;
 
         public override bool GuanAttackable => false;
         public override int InventoryLength => 9;
@@ -46,10 +39,8 @@ namespace EscapeGuan.Entities.Enemy
         private Animator MovementAnimator => GetComponent<Animator>();
 
         private Entity AttackTarget;
-
-
-
-        private float Stamina, AttackTimer, DamageMultiplier = 1;
+        private float AttackTimer;
+        private float DamageMultiplier = 1;
         private bool Attacking;
 
         public enum Status
@@ -61,8 +52,6 @@ namespace EscapeGuan.Entities.Enemy
 
         public override void Start()
         {
-            Stamina = MaxStamina;
-
             base.Start();
             TargetDestinationSetter.target = Destinator;
             TargetPath.maxSpeed = WanderSpeed;
@@ -112,34 +101,6 @@ namespace EscapeGuan.Entities.Enemy
             if (AttackTarget != null && State == Status.Attack)
                 Destinator.position = AttackTarget.transform.position;
 
-            #region Rest
-            if (State == Status.Attack)
-            {
-                Stamina -= AttackStaminaCost * Time.fixedDeltaTime;
-
-                if (Stamina <= 0)
-                {
-                    Destinator.position = transform.position;
-                    State = Status.Rest;
-                    EmotionManager.ChangeEmotion(GuanEmotion.Rest);
-                    DamageMultiplier = 0.5f;
-                }
-            }
-            if (State != Status.Attack)
-            {
-                if (Stamina < MaxStamina)
-                    Stamina += StaminaRestore * Time.fixedDeltaTime;
-                else
-                    Stamina = MaxStamina;
-
-                if (State == Status.Rest && Stamina >= MaxStamina - Random.Range(0, MaxStamina / 5))
-                {
-                    State = Status.Attack;
-                    DamageMultiplier = 1;
-                }
-            }
-            #endregion
-
             #region Normal Attack
             if (State == Status.Attack | State == Status.Rest)
             {
@@ -162,7 +123,7 @@ namespace EscapeGuan.Entities.Enemy
             }
             #endregion
 
-            #region Sprite
+            #region Motion
             Vector2 v = TargetPath.velocity;
             MovementAnimator.SetBool("Moving", v.x != 0 && v.y != 0);
             if (v.x < 0)
@@ -175,32 +136,23 @@ namespace EscapeGuan.Entities.Enemy
 
         private void OnDrawGizmos()
         {
-            Color rc = Gizmos.color;
             Gizmos.color = new(.5f, 0, 0);
             Gizmos.DrawWireSphere(transform.position, AttackRange);
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, NoticeDistance);
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, LoseDistance);
-            if (State != Status.Attack)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(transform.position, Destinator.position);
-            }
-            Gizmos.DrawWireSphere(Destinator.position, .25f);
-            Gizmos.color = rc;
         }
 
         protected override void Damage(float amount)
         {
             base.Damage(amount);
-            ParticleSystem ps = Instantiate(GameManager.Templates["blood_drop_particle"], transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
-            ps.Emit((int)(amount / 10));
+            BloodDropParticle.Emit((int)(amount / 100));
         }
 
         public override float GetAttackAmount()
         {
-            return (Random.value < CriticalRate ? CriticalMultiplier : 1) * AttackValue * DamageMultiplier;
+            return (Random.value < CriticalRate ? CriticalMultiplier : 1) * AttackValue;
         }
 
         public override void PickItem(ItemEntity sender)

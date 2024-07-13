@@ -50,8 +50,6 @@ namespace EscapeGuan.Entities
         public virtual bool ShowHealthBarAtTop => true;
         public virtual Vector3 HealthBarOffset => Vector3.zero;
 
-        public bool Pointed = false;
-
         [HideInInspector] public float IntervalRemaining = 0;
 
         public virtual void Start()
@@ -198,16 +196,6 @@ namespace EscapeGuan.Entities
 
         public virtual void PickItem(ItemEntity sender) { }
         public virtual void AddItem(ItemStack sender) { }
-
-        protected virtual void OnMouseEnter()
-        {
-            Pointed = true;
-        }
-
-        private void OnMouseExit()
-        {
-            Pointed = false;
-        }
     }
 
     public abstract class Attribute
