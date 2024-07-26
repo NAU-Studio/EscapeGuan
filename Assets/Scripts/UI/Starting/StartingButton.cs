@@ -3,30 +3,35 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class StartingButton : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
+namespace EscapeGuan.UI.Starting
 {
-    public RectTransform DecorationHighlight;
-    public Color ClickDownColor;
-
-    public Image DecorationHighlightImage => DecorationHighlight.GetComponent<Image>();
-
-    public void OnPointerDown(PointerEventData eventData)
+    public class StartingButton : Button
     {
-        DecorationHighlightImage.CrossFadeColor(ClickDownColor, .2f, false, true);
-    }
+        public RectTransform DecorationHighlight;
+        public Color ClickDownColor;
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        DecorationHighlight.DOScaleX(1, .2f).SetEase(Ease.OutCubic);
-    }
+        public Image DecorationHighlightImage => DecorationHighlight.GetComponent<Image>();
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        DecorationHighlight.DOScaleX(0, .2f).SetEase(Ease.InCubic);
-    }
+        public override void OnPointerDown(PointerEventData e)
+        {
+            DecorationHighlightImage.CrossFadeColor(ClickDownColor, Transition, false, true);
+        }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        DecorationHighlightImage.CrossFadeColor(Color.white, .2f, false, true);
+        public override void OnPointerEnter(PointerEventData e)
+        {
+            base.OnPointerEnter(e);
+            DecorationHighlight.DOScaleX(1, Transition).SetEase(Ease.OutCubic);
+        }
+
+        public override void OnPointerExit(PointerEventData e)
+        {
+            DecorationHighlight.DOScaleX(0, Transition).SetEase(Ease.InCubic);
+        }
+
+        public override void OnPointerUp(PointerEventData e)
+        {
+            base.OnPointerUp(e);
+            DecorationHighlightImage.CrossFadeColor(Color.white, Transition, false, true);
+        }
     }
 }

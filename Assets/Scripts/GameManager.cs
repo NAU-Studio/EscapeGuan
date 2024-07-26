@@ -97,7 +97,11 @@ namespace EscapeGuan
 
             #region Initialize Audios
             Audios.Add("ui.button.hover", Resources.Load<AudioClip>("Audios/UI/Hover"));
-            Audios.Add("ui.button.click", Resources.Load<AudioClip>("Audios/UI/Click"));
+            Audios.Add("ui.button.click_n2", Resources.Load<AudioClip>("Audios/UI/Click -2"));
+            Audios.Add("ui.button.click_n1", Resources.Load<AudioClip>("Audios/UI/Click -1"));
+            Audios.Add("ui.button.click_0", Resources.Load<AudioClip>("Audios/UI/Click 0"));
+            Audios.Add("ui.button.click_1", Resources.Load<AudioClip>("Audios/UI/Click 1"));
+            Audios.Add("ui.button.click_2", Resources.Load<AudioClip>("Audios/UI/Click 2"));
             Audios.Add("player.pickup", Resources.Load<AudioClip>("Audios/Player/pop"));
             Audios.Add("se.rock_break", Resources.Load<AudioClip>("Audios/SE/Rock Break"));
             Audios.Add("se.water.splash", Resources.Load<AudioClip>("Audios/SE/Water Splash"));
