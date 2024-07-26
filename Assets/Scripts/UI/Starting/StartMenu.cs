@@ -7,40 +7,21 @@ using DG.Tweening;
 using UnityEditor;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace EscapeGuan.Starting
 {
     public class StartMenu : MonoBehaviour
     {
-        public List<FadeAnimationNode> Animation = new();
-        public List<CanvasGroup> StartHide = new();
         public AudioSource Music;
 
         public CanvasGroup Main;
-
-        private void Start()
-        {
-            foreach (CanvasGroup c in StartHide)
-                c.alpha = 0;
-        }
+        public Image BlackMask;
 
         public void Awake()
         {
-            StartCoroutine(AnimationCoroutine());
-        }
-
-        public IEnumerator AnimationCoroutine()
-        {
-            yield return new WaitForSeconds(.5f);
-            Music.Play();
-            foreach (FadeAnimationNode node in Animation)
-            {
-                yield return new WaitForSeconds(node.Delay);
-                node.Target.DOFade(node.EndValue, node.Duration);
-                yield return new WaitForSeconds(node.Duration);
-                if (node.EndValue == 0)
-                    node.Target.blocksRaycasts = false;
-            }
+            Main.alpha = 0;
+            Main.DOFade(1, .2f);
         }
 
         public void Exit()
@@ -50,9 +31,11 @@ namespace EscapeGuan.Starting
 
         public IEnumerator ExitCoroutine()
         {
-            Main.DOFade(0, .5f);
-            Music.DOFade(0, .9f);
-            yield return new WaitForSeconds(1);
+            Main.DOFade(0, 1f);
+            Music.DOFade(0, 1.5f);
+            yield return new WaitForSeconds(.5f);
+            BlackMask.DOColor(new(0, 0, 0, 1), .5f);
+            yield return new WaitForSeconds(.6f);
 #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();
 #else
