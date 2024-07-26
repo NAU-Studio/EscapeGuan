@@ -37,6 +37,8 @@ namespace EscapeGuan.Entities.Items
 
         protected override void Update()
         {
+            if (GameManager.Player == null)
+                return;
             if (Vector3.Distance(GameManager.Player.transform.position, transform.position) <= GameManager.Player.ItemPickupRange && !GameManager.Player.NearItems.Contains(Id))
                 GameManager.Player.AddNear(Id);
             if (Vector3.Distance(GameManager.Player.transform.position, transform.position) > GameManager.Player.ItemPickupRange && GameManager.Player.NearItems.Contains(Id))

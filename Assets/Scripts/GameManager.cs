@@ -44,7 +44,16 @@ namespace EscapeGuan
         public static int ControlledId;
         public static Dictionary<int, Entity> EntityPool = new();
         public static HashSet<int> ItemEntities = new();
-        public static Player Player => (Player)EntityPool[ControlledId];
+        public static Player Player
+        {
+            get
+            {
+                if (EntityPool.TryGetValue(ControlledId, out Entity e))
+                    return (Player)e;
+                else
+                    return null;
+            }
+        }
         public static PlayerAction Action;
 
         public static Vector2 CursorPosition { get { RectTransformUtility.ScreenPointToWorldPointInRectangle(Main.MainCanvas, Mouse.current.position.value, Camera.main, out Vector3 v); return v; } }
@@ -88,7 +97,11 @@ namespace EscapeGuan
 
             #region Initialize Audios
             Audios.Add("ui.button.hover", Resources.Load<AudioClip>("Audios/UI/Hover"));
-            Audios.Add("ui.button.click", Resources.Load<AudioClip>("Audios/UI/Click"));
+            Audios.Add("ui.button.click_n2", Resources.Load<AudioClip>("Audios/UI/Click -2"));
+            Audios.Add("ui.button.click_n1", Resources.Load<AudioClip>("Audios/UI/Click -1"));
+            Audios.Add("ui.button.click_0", Resources.Load<AudioClip>("Audios/UI/Click 0"));
+            Audios.Add("ui.button.click_1", Resources.Load<AudioClip>("Audios/UI/Click 1"));
+            Audios.Add("ui.button.click_2", Resources.Load<AudioClip>("Audios/UI/Click 2"));
             Audios.Add("player.pickup", Resources.Load<AudioClip>("Audios/Player/pop"));
             Audios.Add("se.rock_break", Resources.Load<AudioClip>("Audios/SE/Rock Break"));
             Audios.Add("se.water.splash", Resources.Load<AudioClip>("Audios/SE/Water Splash"));

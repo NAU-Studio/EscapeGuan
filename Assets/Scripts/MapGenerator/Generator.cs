@@ -46,16 +46,32 @@ namespace EscapeGuan.MapGenerator
 
         public IEnumerator GenerationTask()
         {
-            ((GridGraph)Path.graphs[0]).SetDimensions(Size, Size, 1);
-            ((GridGraph)Path.graphs[0]).Scan();
-            BorderT.localScale = new(Size + BorderWidth * 2, BorderWidth);
-            BorderR.localScale = new(BorderWidth, Size + BorderWidth * 2);
-            BorderB.localScale = BorderT.localScale;
-            BorderL.localScale = BorderR.localScale;
-            BorderT.position = new(0, Size / 2 + BorderWidth / 2);
-            BorderR.position = new(Size / 2 + BorderWidth / 2, 0);
-            BorderB.position = new(0, -(Size / 2 + BorderWidth / 2));
-            BorderL.position = new(-(Size / 2 + BorderWidth / 2), 0);
+            if (Path != null)
+            {
+                ((GridGraph)Path.graphs[0]).SetDimensions(Size, Size, 1);
+                ((GridGraph)Path.graphs[0]).Scan();
+            }
+            if (BorderT != null)
+            {
+                BorderT.localScale = new(Size + BorderWidth * 2, BorderWidth);
+                BorderT.position = new(0, Size / 2 + BorderWidth / 2);
+            }
+            if (BorderR != null)
+            {
+                BorderR.localScale = new(BorderWidth, Size + BorderWidth * 2);
+                BorderR.position = new(Size / 2 + BorderWidth / 2, 0);
+            }
+            if (BorderB != null)
+            {
+                BorderB.localScale = new(Size + BorderWidth * 2, BorderWidth);
+                BorderB.position = new(0, -(Size / 2 + BorderWidth / 2));
+            }
+            if (BorderL != null)
+            {
+                BorderL.localScale = new(BorderWidth, Size + BorderWidth * 2);
+                BorderL.position = new(-(Size / 2 + BorderWidth / 2), 0);
+            }
+
             Tile[] t = new Tile[Size * Size];
             Array.Fill(t, GrassTile);
             HashSet<Vector3Int> v = new();
