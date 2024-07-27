@@ -18,5 +18,10 @@ namespace EscapeGuan.Items
         {
             throw new System.NotImplementedException();
         }
+
+        public override float GetDurability(ItemStack i)
+        {
+            return 0;
+        }
     }
 }

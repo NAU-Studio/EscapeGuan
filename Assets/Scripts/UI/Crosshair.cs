@@ -5,11 +5,10 @@ using UnityEngine.InputSystem;
 
 namespace EscapeGuan.UI
 {
-    public class Crosshair : CursorFollower
+    public class Crosshair : ScreenSpaceCursorFollower
     {
         public TMP_Text VelocityText;
-
-        public override bool ScreenSpace => true;
+        public GameObject NormalCursor;
 
         public float Velocity
         {
@@ -36,6 +35,16 @@ namespace EscapeGuan.UI
             float floating = -(76800 / (GameManager.Player.ThrowStability / 100 * (CenterPos.magnitude - 1281))) - 5000 / GameManager.Player.ThrowStability;
             transform.anchoredPosition += new Vector2(Random.Range(-floating / 2, floating / 2), Random.Range(-floating / 2, floating / 2));
             VelocityText.text = $"{Velocity:0.00} m/s";
+        }
+
+        private void OnEnable()
+        {
+            NormalCursor.SetActive(false);
+        }
+
+        private void OnDisable()
+        {
+            NormalCursor.SetActive(true);
         }
     }
 }
