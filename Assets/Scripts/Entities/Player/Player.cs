@@ -12,6 +12,8 @@ using EscapeGuan.UI.Items;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 using static UnityEngine.Mathf;
@@ -44,7 +46,9 @@ namespace EscapeGuan.Entities.Player
 
         public AttackState AttackState;
 
-        public BloodAmountEffect BloodEffectA, BloodEffectB;
+        public BloodAmountEffect BloodEffect;
+
+        public Volume PostProcessing;
 
         public ParticleSystem BloodDropParticle;
 
@@ -266,14 +270,25 @@ namespace EscapeGuan.Entities.Player
         protected override void Damage(float amount)
         {
             base.Damage(amount);
-            Camera.main.GetComponent<SmoothFollower>().Shake(.1f);
-            Camera.main.GetComponent<SmoothFollower>().ShakeDrag = (HealthPoint / MaxHealthPoint + 0.01f) * 0.75f;
-
-            BloodEffectA.SetAmount(0.2f - HealthPoint / MaxHealthPoint);
-            BloodEffectB.SetAmount(1 - HealthPoint / MaxHealthPoint);
+            Camera.main.GetComponent<SmoothFollower>().Shake(.3f);
+            Camera.main.GetComponent<SmoothFollower>().ShakeDrag = (HealthPoint / MaxHealthPoint + 0.01f) * 1f;
 
             base.Damage(amount);
             BloodDropParticle.Emit((int)(amount / 100));
+        }
+
+        public override void OnHealthChange()
+        {
+            base.OnHealthChange();
+            BloodEffect.SetAmount(.75f);
+
+            foreach (VolumeComponent c in PostProcessing.profile.components)
+            {
+                if (c is Bloom b)
+                    b.threshold.SetValue(new FloatParameter(Lerp(0, 2, HealthPoint / MaxHealthPoint)));
+                if (c is MotionBlur m)
+                    m.intensity.SetValue(new FloatParameter(Lerp(1, .5f, HealthPoint / MaxHealthPoint)));
+            }
         }
 
         public override float GetAttackAmount()

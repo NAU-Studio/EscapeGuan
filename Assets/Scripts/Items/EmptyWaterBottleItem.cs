@@ -6,8 +6,6 @@ namespace EscapeGuan.Items
 {
     public class EmptyWaterBottleItem : Item, IThrowableItem
     {
-        public override int MaxCount => 99;
-
         public EmptyWaterBottleItem(string name, string description, Sprite icon) : base(name, description, icon)
         { }
 
