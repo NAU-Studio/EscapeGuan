@@ -57,11 +57,11 @@ namespace EscapeGuan.Entities.Player
         public override int InventoryLength => 36;
         public override bool ShowHealthBarAtTop => false;
 
-        public Dictionary<string, float> AttackDistanceGains = new();
-        public Dictionary<string, float> AttackDamageGains = new();
+        public Dictionary<string, float> AttackDistanceModifiers = new();
+        public Dictionary<string, float> AttackDamageModifiers = new();
 
-        private float TotalAttackDistanceGain => AttackDistanceGains.Sum(x => x.Value) + 1;
-        private float TotalAttackDamageGain => AttackDamageGains.Sum(x => x.Value) + 1;
+        private float TotalAttackDistanceModifiers => AttackDistanceModifiers.Sum(x => x.Value) + 1;
+        private float TotalAttackDamageModifiers => AttackDamageModifiers.Sum(x => x.Value) + 1;
 
         public override void Start()
         {
@@ -78,8 +78,6 @@ namespace EscapeGuan.Entities.Player
             Attributes.Add(new Attribute<float>("Stamina", () => Stamina, x => Stamina = x));
             Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, x => MaxStamina = x));
             GameManager.ControlledId = Id;
-
-            StartCoroutine(SetRestorable());
         }
 
         [Header("Item Pickup System")]
@@ -115,12 +113,6 @@ namespace EscapeGuan.Entities.Player
         }
         #endregion
         #region Stamina Actions
-        private IEnumerator SetRestorable()
-        {
-            yield return new WaitForSecondsRealtime(StaminaRestoreWaitTime);
-            Restorable = true;
-        }
-
         public bool CostStamina(float amount)
         {
             if (amount <= 0)
@@ -128,7 +120,7 @@ namespace EscapeGuan.Entities.Player
             if (Stamina - amount < 0)
                 return false;
             Stamina -= amount;
-            Restorable = false;
+            RestoreTimer = 0;
             return true;
         }
 
@@ -150,24 +142,24 @@ namespace EscapeGuan.Entities.Player
         private bool Running, RunStaminaCostable;
         private bool Restorable;
 
-        private Vector2 movement;
+        private Vector2 ControlledMotion;
 
+        private float RestoreTimer = 0;
         public override void FixedUpdate()
         {
             base.FixedUpdate();
             #region Stamina
-            if ((movement.x != 0 || movement.y != 0) && Running)
+            if ((ControlledMotion.x != 0 || ControlledMotion.y != 0) && Running)
                 RunStaminaCostable = CostStamina(Time.fixedDeltaTime * StaminaCostAmount);
             else
                 RunStaminaCostable = true;
 
-            if (Restorable)
+            if (RestoreTimer >= StaminaRestoreWaitTime)
                 RestoreStamina(Time.fixedDeltaTime * StaminaRestoreAmount);
-            else
-                StartCoroutine(SetRestorable());
+
             #endregion
             #region Movement Control
-            if (!RunStaminaCostable || (movement == Vector2.zero))
+            if (!RunStaminaCostable || (ControlledMotion == Vector2.zero))
                 Running = false;
             if (Running)
                 CurrentSpeed = RunSpeedMultiplier;
@@ -177,7 +169,7 @@ namespace EscapeGuan.Entities.Player
             float final = Speed * CurrentSpeed;
             if (SlowdownTiles.Contains(Map.GetTile(new(RoundToInt(transform.position.x) - 1, RoundToInt(transform.position.y) - 1))))
                 final *= SlowdownMultiplier;
-            Rigidbody.velocity = final * movement;
+            Rigidbody.velocity = final * ControlledMotion;
             #endregion
         }
 
@@ -188,7 +180,7 @@ namespace EscapeGuan.Entities.Player
             GameManager.Action.Player.Attack.performed -= PerformAttack;
             GameManager.Action.Player.Use.performed -= QuickInventory.Use;
 
-            movement = Vector2.zero;
+            ControlledMotion = Vector2.zero;
             Running = false;
         }
 
@@ -199,11 +191,11 @@ namespace EscapeGuan.Entities.Player
             GameManager.Action.Player.Attack.performed += PerformAttack;
             GameManager.Action.Player.Use.performed += QuickInventory.Use;
 
-            movement = Vector2.zero;
+            ControlledMotion = Vector2.zero;
             Running = false;
         }
 
-        private void PerformMovement(InputAction.CallbackContext x) => movement = x.ReadValue<Vector2>();
+        private void PerformMovement(InputAction.CallbackContext x) => ControlledMotion = x.ReadValue<Vector2>();
         private void PerformRunningToggle(InputAction.CallbackContext x) => Running = true;
         private void PerformAttack(InputAction.CallbackContext x) => AttackSelector();
 
@@ -256,15 +248,10 @@ namespace EscapeGuan.Entities.Player
 
         public void Attack()
         {
-            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * TotalAttackDistanceGain), this, .1f, Ease.OutSine);
+            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * TotalAttackDistanceModifiers), this, .1f, Ease.OutSine);
 
             if (!QuickInventory.CurrentEmpty && QuickInventory.Current.Base is IPlayerGainItem && QuickInventory.Current.Base is DurabilityItem)
                 QuickInventory.Current.Use(this);
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(transform.position, AttackDistance * TotalAttackDistanceGain);
         }
 
         protected override void Damage(float amount)
@@ -273,7 +260,6 @@ namespace EscapeGuan.Entities.Player
             Camera.main.GetComponent<SmoothFollower>().Shake(.3f);
             Camera.main.GetComponent<SmoothFollower>().ShakeDrag = (HealthPoint / MaxHealthPoint + 0.01f) * 1f;
 
-            base.Damage(amount);
             BloodDropParticle.Emit((int)(amount / 100));
         }
 
@@ -291,9 +277,15 @@ namespace EscapeGuan.Entities.Player
             }
         }
 
+        public override void Kill()
+        {
+            base.Kill();
+            OutControl();
+        }
+
         public override float GetAttackAmount()
         {
-            return base.GetAttackAmount() * TotalAttackDamageGain;
+            return base.GetAttackAmount() * TotalAttackDamageModifiers;
         }
     }
 

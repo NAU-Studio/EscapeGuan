@@ -13,14 +13,14 @@ namespace EscapeGuan.Items
 
         public override void OnHoldUp(ItemStack i)
         {
-            GameManager.Player.AttackDistanceGains.Add("small_stick.attack_distance_gain", .5f);
-            GameManager.Player.AttackDamageGains.Add("small_stick.attack_damage_gain", .2f);
+            GameManager.Player.AttackDistanceModifiers.Add("small_stick.attack_distance_gain", .5f);
+            GameManager.Player.AttackDamageModifiers.Add("small_stick.attack_damage_gain", .2f);
         }
 
         public override void OnPutDown(ItemStack i)
         {
-            GameManager.Player.AttackDistanceGains.Remove("small_stick.attack_distance_gain");
-            GameManager.Player.AttackDamageGains.Remove("small_stick.attack_damage_gain");
+            GameManager.Player.AttackDistanceModifiers.Remove("small_stick.attack_distance_gain");
+            GameManager.Player.AttackDamageModifiers.Remove("small_stick.attack_damage_gain");
         }
     }
 }

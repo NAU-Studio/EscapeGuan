@@ -3703,9 +3703,9 @@ MonoBehaviour:
   RunSpeedMultiplier: 1.9
   Stamina: 100
   MaxStamina: 100
-  StaminaRestoreWaitTime: 0
-  StaminaRestoreAmount: 0
-  StaminaCostAmount: 0
+  StaminaRestoreWaitTime: 0.25
+  StaminaRestoreAmount: 10
+  StaminaCostAmount: 9
   AttackDistance: 2
   Map: {fileID: 587148108}
   SlowdownTiles:
@@ -3798,7 +3798,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 428953551}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
