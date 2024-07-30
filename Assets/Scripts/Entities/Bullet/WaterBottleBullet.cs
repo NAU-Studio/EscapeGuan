@@ -24,7 +24,7 @@ namespace EscapeGuan.Entities.Bullet
                 for (int i = 0; i < Base.GetBase<DurabilityItem>().DurabilityOf(Base) / 5; i++)
                 {
                     WaterDropBullet b = Instantiate(GameManager.Templates["water_drop"], transform.position, Quaternion.identity).GetComponent<WaterDropBullet>();
-                    b.Init(this, Random.Range(1, Rigidbody.velocity.magnitude / 2), Random.Range(0, 360f), Thrower.CriticalRate, Thrower.CriticalMultiplier, GetAttackAmount());
+                    b.Init(Thrower, Random.Range(1, Rigidbody.velocity.magnitude / 2), Random.Range(0, 360f));
                 }
                 base.Drop();
                 return;

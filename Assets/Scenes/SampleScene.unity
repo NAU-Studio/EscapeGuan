@@ -1167,12 +1167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e1b85817df231344b47f2b3738a8ac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Getters:
-  - Name: Stamina
-    KeyValue: value
-  - Name: MaxStamina
-    KeyValue: max
-  Format: value / max
+  Properties:
+  - Stamina
+  - MaxStamina
+  Format: '{Stamina} / {MaxStamina}'
 --- !u!114 &127899315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3687,14 +3685,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HealthPoint: 80000
-  MaxHealthPoint: 80000
-  AttackValue: 6600
-  CriticalMultiplier: 2.2
-  CriticalRate: 0.4
-  Knockback: 1
-  RecieveHealthMultiplier: 1
+  MaxHealthPoint:
+    BaseValue: 80000
+  AttackValue:
+    BaseValue: 3600
+  CriticalMultiplier:
+    BaseValue: 0.5
+  CriticalRate:
+    BaseValue: 0.5
+  Knockback:
+    BaseValue: 1
+  RecieveHealthMultiplier:
+    BaseValue: 1
   SendHealthValue: 1
-  DefenseValue: 160
+  DefenseValue:
+    BaseValue: 100
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
@@ -3703,10 +3708,11 @@ MonoBehaviour:
   RunSpeedMultiplier: 1.9
   Stamina: 100
   MaxStamina: 100
-  StaminaRestoreWaitTime: 0.25
+  StaminaRestoreWaitTime: 0.5
   StaminaRestoreAmount: 10
   StaminaCostAmount: 9
-  AttackDistance: 2
+  AttackDistance:
+    BaseValue: 2
   Map: {fileID: 587148108}
   SlowdownTiles:
   - {fileID: 11400000, guid: b3702f95e475afb4fbf1665bd4428b28, type: 2}
@@ -7958,15 +7964,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97bf9054ff1e67745bc6768497a1530a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthPoint: 1590000
-  MaxHealthPoint: 1590000
-  AttackValue: 5700
-  CriticalMultiplier: 1.9
-  CriticalRate: 0.3
-  Knockback: 1
-  RecieveHealthMultiplier: 1
+  HealthPoint: 640000
+  MaxHealthPoint:
+    BaseValue: 640000
+  AttackValue:
+    BaseValue: 3000
+  CriticalMultiplier:
+    BaseValue: 0.75
+  CriticalRate:
+    BaseValue: 0.6
+  Knockback:
+    BaseValue: 1
+  RecieveHealthMultiplier:
+    BaseValue: 1
   SendHealthValue: 1
-  DefenseValue: 220
+  DefenseValue:
+    BaseValue: 100
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
@@ -9747,12 +9760,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e1b85817df231344b47f2b3738a8ac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Getters:
-  - Name: HealthPoint
-    KeyValue: value
-  - Name: MaxHealthPoint
-    KeyValue: max
-  Format: value / max
+  Properties:
+  - HealthPoint
+  - MaxHealthPoint
+  Format: '{HealthPoint} / {MaxHealthPoint}'
 --- !u!114 &1055132320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16280,8 +16291,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e980f0a73196b49bea638c0cce5b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeName: HealthPoint
-  MaxAttributeName: MaxHealthPoint
+  ValueProperty: HealthPoint
+  MaxValueProperty: MaxHealthPoint
   Image: {fileID: 1393882359}
   HideOnFull: 0
 --- !u!114 &1775499504
@@ -16799,8 +16810,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e980f0a73196b49bea638c0cce5b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttributeName: Stamina
-  MaxAttributeName: MaxStamina
+  ValueProperty: Stamina
+  MaxValueProperty: MaxStamina
   Image: {fileID: 422695998}
   HideOnFull: 0
 --- !u!114 &1844848822

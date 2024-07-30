@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace EscapeGuan.Entities.Player
         public float StaminaRestoreAmount;
         public float StaminaCostAmount;
 
-        public float AttackDistance;
+        public Modifiable AttackDistance;
 
         [Header("Other settings")]
         public Tilemap Map;
@@ -57,12 +58,6 @@ namespace EscapeGuan.Entities.Player
         public override int InventoryLength => 36;
         public override bool ShowHealthBarAtTop => false;
 
-        public Dictionary<string, float> AttackDistanceModifiers = new();
-        public Dictionary<string, float> AttackDamageModifiers = new();
-
-        private float TotalAttackDistanceModifiers => AttackDistanceModifiers.Sum(x => x.Value) + 1;
-        private float TotalAttackDamageModifiers => AttackDamageModifiers.Sum(x => x.Value) + 1;
-
         public override void Start()
         {
             base.Start();
@@ -73,10 +68,6 @@ namespace EscapeGuan.Entities.Player
 
             QuickInventory.OnChangeSelection += UpdateAttackState;
 
-            Attributes.Add(new Attribute<float>("Speed", () => Speed, x => Speed = x));
-            Attributes.Add(new Attribute<float>("RunSpeedMultiplier", () => RunSpeedMultiplier, x => RunSpeedMultiplier = x));
-            Attributes.Add(new Attribute<float>("Stamina", () => Stamina, x => Stamina = x));
-            Attributes.Add(new Attribute<float>("MaxStamina", () => MaxStamina, x => MaxStamina = x));
             GameManager.ControlledId = Id;
         }
 
@@ -129,10 +120,11 @@ namespace EscapeGuan.Entities.Player
             if (amount <= 0)
                 return true;
             if (Stamina + amount > MaxStamina)
-                if (Stamina < MaxStamina)
+            {
+                if (Stamina != MaxStamina)
                     Stamina = MaxStamina;
-                else
-                    return false;
+                return false;
+            }
             Stamina += amount;
             return true;
         }
@@ -140,7 +132,6 @@ namespace EscapeGuan.Entities.Player
 
         private float CurrentSpeed;
         private bool Running, RunStaminaCostable;
-        private bool Restorable;
 
         private Vector2 ControlledMotion;
 
@@ -171,6 +162,12 @@ namespace EscapeGuan.Entities.Player
                 final *= SlowdownMultiplier;
             Rigidbody.velocity = final * ControlledMotion;
             #endregion
+        }
+
+        private void Update()
+        {
+            if (RestoreTimer < StaminaRestoreWaitTime)
+                RestoreTimer += Time.deltaTime;
         }
 
         public void OutControl()
@@ -248,9 +245,9 @@ namespace EscapeGuan.Entities.Player
 
         public void Attack()
         {
-            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance * TotalAttackDistanceModifiers), this, .1f, Ease.OutSine);
+            VfxManager.CreateLinearAttackTrail("vfx_attack_trail_glow_0", transform.position, (Vector2)transform.position + Vector2.ClampMagnitude(GameManager.CursorPosition - (Vector2)Camera.main.transform.position, AttackDistance), this, .1f, Ease.OutSine);
 
-            if (!QuickInventory.CurrentEmpty && QuickInventory.Current.Base is IPlayerGainItem && QuickInventory.Current.Base is DurabilityItem)
+            if (!QuickInventory.CurrentEmpty && QuickInventory.Current.Base is IPlayerModifierItem && QuickInventory.Current.Base is DurabilityItem)
                 QuickInventory.Current.Use(this);
         }
 
@@ -281,11 +278,6 @@ namespace EscapeGuan.Entities.Player
         {
             base.Kill();
             OutControl();
-        }
-
-        public override float GetAttackAmount()
-        {
-            return base.GetAttackAmount() * TotalAttackDamageModifiers;
         }
     }
 
