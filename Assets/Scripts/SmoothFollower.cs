@@ -13,17 +13,9 @@ namespace EscapeGuan
         public float ShakeDrag;
         private float ShakeRange;
 
-        private Vector3 posBuffer;
-
         private void Update()
         {
-            if (Target == null)
-                transform.position = posBuffer + new Vector3(Random.Range(-ShakeRange, ShakeRange), Random.Range(-ShakeRange, ShakeRange));
-            else
-            {
-                posBuffer = Vector3.Lerp(transform.position, Target.position + Offset, FollowSpeed * Time.deltaTime);
-                transform.position = posBuffer + new Vector3(Random.Range(-ShakeRange, ShakeRange), Random.Range(-ShakeRange, ShakeRange));
-            }
+            transform.position = Vector3.Lerp(transform.position, Target.position + Offset, FollowSpeed * Time.deltaTime) + new Vector3(Random.Range(-ShakeRange, ShakeRange), Random.Range(-ShakeRange, ShakeRange));
         }
 
         public void Shake(float range)

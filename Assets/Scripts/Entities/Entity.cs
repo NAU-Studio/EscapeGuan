@@ -133,7 +133,6 @@ namespace EscapeGuan.Entities
             DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
             dtx.Value = GetDamageAmount(amount);
             dtx.gameObject.SetActive(true);
-            OnHealthChange();
 
             if (ShowHealthBarAtTop && !HealthBarCreated)
             {
@@ -168,7 +167,6 @@ namespace EscapeGuan.Entities
             DamageText dtx = Instantiate(GameManager.Main.DamageText, transform.position + Vector3.back + (Vector3)(Vector2.one * Random.Range(-.1f, .1f)), Quaternion.identity).GetComponent<DamageText>();
             dtx.Value = amount;
             dtx.gameObject.SetActive(true);
-            OnHealthChange();
         }
 
         public AttributeList Attributes = new();
@@ -198,9 +196,6 @@ namespace EscapeGuan.Entities
 
         public virtual void PickItem(ItemEntity sender) { }
         public virtual void AddItem(ItemStack sender) { }
-
-        // Events
-        public virtual void OnHealthChange() { }
     }
 
     public abstract class Attribute
