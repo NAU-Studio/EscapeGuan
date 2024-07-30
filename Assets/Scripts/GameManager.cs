@@ -120,8 +120,6 @@ namespace EscapeGuan
             foreach (TextAsset asset in Resources.LoadAll<TextAsset>("Datas/Recipe"))
                 Recipes.Add(Recipe.FromFile(asset.text));
             #endregion
-
-            Cursor.visible = false;
         }
 
         public void PlayAudio(AudioSources src, string name, float volume = 1, float pitch = 1)
