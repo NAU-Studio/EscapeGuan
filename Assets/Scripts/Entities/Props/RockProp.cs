@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class RockProp : PropEntity
 {
-    public override bool GuanAttackable => true;
-
     protected override string[] GetDamageSE() => new string[] { "entity.stone_1", "entity.stone_2", "entity.stone_3", "entity.stone_4" };
 
     public override void Kill()
