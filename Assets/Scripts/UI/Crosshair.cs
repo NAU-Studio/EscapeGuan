@@ -5,17 +5,16 @@ using UnityEngine.InputSystem;
 
 namespace EscapeGuan.UI
 {
-    public class Crosshair : CursorFollower
+    public class Crosshair : ScreenSpaceCursorFollower
     {
         public TMP_Text VelocityText;
-
+        public GameObject NormalCursor;
 
         public float Velocity
         {
             get
             {
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(Parent, Mouse.current.position.value, Camera.main, out Vector2 pos);
-                return pos.magnitude / (10 * Mathf.PI);
+                return (Mouse.current.position.value / ScaleFactor - new Vector2(Width / 2, Height / 2)).magnitude / (10 * Mathf.PI);
             }
         }
 
@@ -23,25 +22,29 @@ namespace EscapeGuan.UI
         {
             get
             {
-                if (transform.anchoredPosition.x > 0)
-                    return 90 - Mathf.Atan(transform.anchoredPosition.y / transform.anchoredPosition.x) * Mathf.Rad2Deg;
-                else if (transform.anchoredPosition.x < 0)
-                    return -90 - Mathf.Atan(transform.anchoredPosition.y / transform.anchoredPosition.x) * Mathf.Rad2Deg;
-                else if (transform.anchoredPosition.y > 0)
-                    return 0;
-                else if (transform.anchoredPosition.y < 0)
-                    return 180;
+                if (CenterPos.x != 0)
+                    return (CenterPos.x > 0 ? 90 : -90) - Mathf.Atan(CenterPos.y / CenterPos.x) * Mathf.Rad2Deg;
                 else
-                    return 0;
+                    return CenterPos.y < 0 ? 180 : 0;
             }
         }
 
         protected override void Update()
         {
             base.Update();
-            float floating = -(1920 / (GameManager.Player.ThrowStability / 10)) * (1920 / (transform.anchoredPosition.magnitude - 1920) + 1);
+            float floating = -(76800 / (GameManager.Player.ThrowStability / 100 * (CenterPos.magnitude - 1281))) - 5000 / GameManager.Player.ThrowStability;
             transform.anchoredPosition += new Vector2(Random.Range(-floating / 2, floating / 2), Random.Range(-floating / 2, floating / 2));
-            VelocityText.text = $"{transform.anchoredPosition.magnitude / (10 * Mathf.PI):0.00} m/s";
+            VelocityText.text = $"{Velocity:0.00} m/s";
+        }
+
+        private void OnEnable()
+        {
+            NormalCursor.SetActive(false);
+        }
+
+        private void OnDisable()
+        {
+            NormalCursor.SetActive(true);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace EscapeGuan.UI
 
         public string ToString(string format = "0")
         {
-            return GameManager.Player.GetAttribute<float>(Name).ToString(format);
+            return GameManager.Player == null ? "已死亡" : GameManager.Player.GetAttribute<float>(Name).ToString(format);
         }
     }
 }
