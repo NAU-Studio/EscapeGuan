@@ -164,7 +164,7 @@ namespace EscapeGuan.Entities.Player
             #endregion
         }
 
-        protected override void Update()
+        private void Update()
         {
             if (RestoreTimer < StaminaRestoreWaitTime)
                 RestoreTimer += Time.deltaTime;

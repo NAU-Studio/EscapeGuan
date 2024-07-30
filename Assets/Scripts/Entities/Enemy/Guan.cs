@@ -40,7 +40,6 @@ namespace EscapeGuan.Entities.Enemy
 
         private Entity AttackTarget;
         private float AttackTimer;
-        private float DamageMultiplier = 1;
         private bool Attacking;
 
         public enum Status

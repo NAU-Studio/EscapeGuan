@@ -171,17 +171,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c20728ef3dd2254891621fe75eb5ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthPoint: 1500
-  MaxHealthPoint: 1500
-  AttackValue: 250
-  CriticalMultiplier: 1.5
-  CriticalRate: 0.5
-  Knockback: 1
-  RecieveHealthMultiplier: 1
+  HealthPoint: 50000
+  MaxHealthPoint:
+    BaseValue: 50000
+  AttackValue:
+    BaseValue: 0
+  CriticalMultiplier:
+    BaseValue: 1
+  CriticalRate:
+    BaseValue: 1
+  Knockback:
+    BaseValue: 1
+  RecieveHealthMultiplier:
+    BaseValue: 1
   SendHealthValue: 1
-  DefenseValue: 0
+  DefenseValue:
+    BaseValue: 0
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
-  Pointed: 0
   CollisionCD: 0.4

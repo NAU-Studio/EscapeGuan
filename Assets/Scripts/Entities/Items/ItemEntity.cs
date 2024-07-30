@@ -35,7 +35,7 @@ namespace EscapeGuan.Entities.Items
             throw new EntityCannotPickupException(Id);
         }
 
-        protected override void Update()
+        private void Update()
         {
             if (GameManager.Player == null)
                 return;

@@ -15,12 +15,10 @@ namespace EscapeGuan.Entities.Props
         public override int InventoryLength => throw new Exception($"{Id} has no inventory!");
         public override Vector3 HealthBarOffset => new(0, 0.75f, 0);
 
-
         private float CollisionRemaining = 0;
 
-        protected override void Update()
+        private void Update()
         {
-            base.Update();
             if (CollisionRemaining > 0)
                 CollisionRemaining -= Time.deltaTime;
         }

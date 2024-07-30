@@ -50,8 +50,6 @@ namespace EscapeGuan.Entities
         public virtual bool ShowHealthBarAtTop => true;
         public virtual Vector3 HealthBarOffset => Vector3.zero;
 
-        [HideInInspector] public float IntervalRemaining = 0;
-
         public virtual void Start()
         {
             Id = Random.Range(int.MinValue, int.MaxValue);
@@ -81,8 +79,6 @@ namespace EscapeGuan.Entities
                 return;
             if (amount <= 0.1f)
                 return;
-            if (target.IntervalRemaining > 0)
-                return;
             target.Damage(amount, this);
             target.KnockbackVelocity += (Vector2)(target.transform.position - transform.position).normalized * Knockback;
         }
@@ -94,12 +90,6 @@ namespace EscapeGuan.Entities
                 KnockbackVelocity -= KnockbackVelocity * Drag;
                 transform.Translate(KnockbackVelocity);
             }
-        }
-
-        protected virtual void Update()
-        {
-            if (IntervalRemaining > 0)
-                IntervalRemaining -= Time.deltaTime;
         }
 
         public virtual float GetAttackAmount()
@@ -116,8 +106,6 @@ namespace EscapeGuan.Entities
         private HealthBar HealthBar;
         protected virtual void Damage(float amount)
         {
-            IntervalRemaining = GameManager.DamageInterval;
-
             GameManager.Main.PlayRandomAudio(AudioSources.Player, 1, Random.Range(.8f, 1.2f), GetDamageSE());
 
             HealthPoint -= GetDamageAmount(amount);
