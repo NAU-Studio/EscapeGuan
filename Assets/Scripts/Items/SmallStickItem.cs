@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace EscapeGuan.Items
 {
-    public class SmallStickItem : DurabilityItem, IPlayerGainItem
+    public class SmallStickItem : DurabilityItem, IPlayerModifierItem
     {
         public override int MaxCount => 1;
 
@@ -13,14 +13,14 @@ namespace EscapeGuan.Items
 
         public override void OnHoldUp(ItemStack i)
         {
-            GameManager.Player.AttackDistanceModifiers.Add("small_stick.attack_distance_gain", .5f);
-            GameManager.Player.AttackDamageModifiers.Add("small_stick.attack_damage_gain", .2f);
+            GameManager.Player.AttackValue.Add("small_stick_item", new(1.5f, true));
+            GameManager.Player.AttackDistance.Add("small_stick_item", new(1.2f, true));
         }
 
         public override void OnPutDown(ItemStack i)
         {
-            GameManager.Player.AttackDistanceModifiers.Remove("small_stick.attack_distance_gain");
-            GameManager.Player.AttackDamageModifiers.Remove("small_stick.attack_damage_gain");
+            GameManager.Player.AttackValue.Remove("small_stick_item");
+            GameManager.Player.AttackDistance.Remove("small_stick_item");
         }
     }
 }

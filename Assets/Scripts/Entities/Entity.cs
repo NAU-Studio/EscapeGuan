@@ -17,20 +17,20 @@ namespace EscapeGuan.Entities
         [Header("Entity Base Attributes")]
         [Header("- Health Point")]
         public float HealthPoint;
-        public float MaxHealthPoint;
+        public Modifiable MaxHealthPoint;
 
         [Header("- Attack")]
-        public float AttackValue;
-        public float CriticalMultiplier = 1;
-        public float CriticalRate = 1;
-        public float Knockback = 1;
+        public Modifiable AttackValue;
+        public Modifiable CriticalMultiplier = 1;
+        public Modifiable CriticalRate = 1;
+        public Modifiable Knockback = 1;
 
         [Header("- Health")]
-        public float RecieveHealthMultiplier = 1;
+        public Modifiable RecieveHealthMultiplier = 1;
         public float SendHealthValue = 1;
 
         [Header("- Defense")]
-        public float DefenseValue;
+        public Modifiable DefenseValue;
 
         [Header("- Knockback")]
         public Vector2 KnockbackVelocity;
@@ -68,15 +68,6 @@ namespace EscapeGuan.Entities
         public virtual void RegisterEntity()
         {
             GameManager.EntityPool.Add(Id, this);
-            Attributes.Add(new Attribute<float>("HealthPoint", () => HealthPoint, (x) => HealthPoint = x));
-            Attributes.Add(new Attribute<float>("MaxHealthPoint", () => MaxHealthPoint, (x) => MaxHealthPoint = x));
-            Attributes.Add(new Attribute<float>("AttackValue", () => AttackValue, (x) => AttackValue = x));
-            Attributes.Add(new Attribute<float>("CriticalMultiplier", () => CriticalMultiplier, (x) => CriticalMultiplier = x));
-            Attributes.Add(new Attribute<float>("CriticalRate", () => CriticalRate, (x) => CriticalRate = x));
-            Attributes.Add(new Attribute<float>("Knockback", () => Knockback, (x) => Knockback = x));
-            Attributes.Add(new Attribute<float>("RecieveHealthMultiplier", () => RecieveHealthMultiplier, (x) => RecieveHealthMultiplier = x));
-            Attributes.Add(new Attribute<float>("SendHealthValue", () => SendHealthValue, (x) => SendHealthValue = x));
-            Attributes.Add(new Attribute<float>("DefenseValue", () => DefenseValue, (x) => DefenseValue = x));
         }
 
         public virtual void Attack(Entity target)
@@ -171,85 +162,13 @@ namespace EscapeGuan.Entities
             OnHealthChange();
         }
 
-        public AttributeList Attributes = new();
-
-        public virtual T GetAttribute<T>(string name)
-        {
-            foreach (Attribute attre in Attributes)
-            {
-                if (attre.Name.Equals(name) && attre is Attribute<T> attr)
-                    return attr.Getter();
-            }
-            throw new Exception("Attribute not found.");
-        }
-
-        public virtual void SetAttribute<T>(string name, T value)
-        {
-            foreach (Attribute attre in Attributes)
-            {
-                if (attre.Name.Equals(name) && attre is Attribute<T> attr)
-                {
-                    attr.Setter(value);
-                    return;
-                }
-            }
-            throw new Exception("Attribute not found.");
-        }
-
         public virtual void PickItem(ItemEntity sender) { }
         public virtual void AddItem(ItemStack sender) { }
 
         // Events
         public virtual void OnHealthChange() { }
     }
-
-    public abstract class Attribute
-    {
-        public string Name;
-        public abstract Type Type { get; }
-    }
-
-    public class Attribute<T> : Attribute
-    {
-        public AttributeGetter<T> Getter;
-        public AttributeSetter<T> Setter;
-
-        public override Type Type => typeof(T);
-
-        public Attribute(string name, AttributeGetter<T> getter, AttributeSetter<T> setter)
-        {
-            Name = name;
-            Getter = getter;
-            Setter = setter;
-        }
-    }
-
-    public delegate T AttributeGetter<T>();
-    public delegate void AttributeSetter<T>(T x);
-
-    public class AttributeList : List<Attribute>
-    {
-        public int IndexOfName(string name)
-        {
-            for (int i = 0; i < Count; ++i)
-                if (this[i].Name.Equals(name))
-                    return i;
-            return -1;
-        }
-
-        public bool ContainsName(string name)
-        {
-            return IndexOfName(name) != -1;
-        }
-
-        public Attribute this[string n]
-        {
-            get => this[IndexOfName(n)];
-        }
-    }
 }
-
-
 [Serializable]
 public class EntityCannotPickupException : Exception
 {
