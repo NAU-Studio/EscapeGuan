@@ -4,16 +4,13 @@ namespace EscapeGuan.Entities.Bullet
 {
     public class WaterDropBullet : Bullet
     {
-        public void Init(Entity thrower, float initvel, float ang, float cr, float cm, float aa)
+        public override void Init(Entity thrower, float initvel, float ang)
         {
-            base.Start();
-            Init(thrower, initvel, ang);
-            CriticalRate = cr;
-            CriticalMultiplier = cm;
-            AttackValue = aa;
+            base.Init(thrower, initvel, ang);
             Highest = Random.Range(1f, 2);
             transform.eulerAngles = new(0, 0, 180 - ang);
             Rigidbody.angularVelocity = 0;
+            Rigidbody.mass = 0.005f;
         }
 
         public override void Drop()

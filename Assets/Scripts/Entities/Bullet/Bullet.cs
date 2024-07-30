@@ -61,7 +61,7 @@ namespace EscapeGuan.Entities.Bullet
 
         public override float GetAttackAmount() => (Random.value < Thrower.CriticalRate ? Thrower.CriticalMultiplier : 1) * Thrower.AttackValue * Rigidbody.mass * Rigidbody.velocity.magnitude;
 
-        public void Init(Entity thrower, float initvel, float ang)
+        public virtual void Init(Entity thrower, float initvel, float ang)
         {
             Thrower = thrower;
             InitialVelocity = initvel;
