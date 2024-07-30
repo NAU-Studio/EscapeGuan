@@ -80,6 +80,7 @@ namespace EscapeGuan
             #region Initialize Templates
             Templates.Add("item", Resources.Load<GameObject>("Prefabs/Item"));
             Templates.Add("rock", Resources.Load<GameObject>("Prefabs/Rock"));
+            Templates.Add("water_bottle_stack", Resources.Load<GameObject>("Prefabs/Water Bottle Stack"));
             Templates.Add("water_bottle_bullet", Resources.Load<GameObject>("Prefabs/Water Bottle Bullet"));
             Templates.Add("water_drop", Resources.Load<GameObject>("Prefabs/Water Drop"));
 
@@ -114,6 +115,9 @@ namespace EscapeGuan
             Audios.Add("entity.stone_2", Resources.Load<AudioClip>("Audios/Damage/stone2"));
             Audios.Add("entity.stone_3", Resources.Load<AudioClip>("Audios/Damage/stone3"));
             Audios.Add("entity.stone_4", Resources.Load<AudioClip>("Audios/Damage/stone4"));
+            Audios.Add("entity.plastic_1", Resources.Load<AudioClip>("Audios/Damage/plastic1"));
+            Audios.Add("entity.plastic_2", Resources.Load<AudioClip>("Audios/Damage/plastic2"));
+            Audios.Add("entity.plastic_3", Resources.Load<AudioClip>("Audios/Damage/plastic3"));
             #endregion
 
             #region Initialize recipes

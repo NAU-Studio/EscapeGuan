@@ -33,9 +33,9 @@ namespace EscapeGuan.Items
 
         public T GetBase<T>() where T : Item => (T)Base;
 
-        public ItemEntity CreateEntity(GameObject itemTemplate)
+        public ItemEntity CreateEntity()
         {
-            GameObject go = Object.Instantiate(itemTemplate);
+            GameObject go = Object.Instantiate(GameManager.Templates["item"]);
             go.GetComponent<ItemEntity>().item = this;
             go.GetComponent<SpriteRenderer>().sprite = Base.Icon;
             return go.GetComponent<ItemEntity>();

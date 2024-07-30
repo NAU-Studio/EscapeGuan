@@ -37,6 +37,7 @@ namespace EscapeGuan.MapGenerator
         public int MinRocksCount;
         public int MaxRocksCount;
         public int MinBottlesCount, MaxBottlesCount;
+        public int MinBottleStacksCount, MaxBottleStacksCount;
         public int MinSticksCount, MaxSticksCount;
 
         private void Start()
@@ -165,29 +166,36 @@ namespace EscapeGuan.MapGenerator
             // Rocks
             for (int _ = 0; _ < Random.Range(MinRocksCount, MaxRocksCount + 1); _++)
             {
-                Vector2 pos = new(Random.Range(-Size / 2, Size / 2), Random.Range(-Size / 2, Size / 2));
+                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2f), Random.Range(-Size / 2f, Size / 2f));
                 Instantiate(GameManager.Templates["rock"], position: pos, Quaternion.identity);
             }
 
             // Bottles
             for (int _ = 0; _ < Random.Range(MinBottlesCount, MaxBottlesCount + 1); _++)
             {
-                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
+                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2f), Random.Range(-Size / 2f, Size / 2f));
                 ItemStack ix = ((WaterBottleItem)ItemRegistry.Main.GetObject("water_bottle")).CreateItemStack(1, true);
                 ix.CreateEntity(pos, new(0, 0, Random.Range(0f, 360)));
+            }
+
+            // Bottle Stacks
+            for (int _ = 0; _ < Random.Range(MinBottleStacksCount, MaxBottleStacksCount + 1); _++)
+            {
+                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2f), Random.Range(-Size / 2f, Size / 2f));
+                Instantiate(GameManager.Templates["water_bottle_stack"], position: pos, Quaternion.identity);
             }
 
             // Sticks
             for (int _ = 0; _ < Random.Range(MinSticksCount, MaxSticksCount + 1); _++)
             {
-                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
+                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2f), Random.Range(-Size / 2f, Size / 2f));
                 ItemStack ix = ItemRegistry.Main.CreateItemStack("small_stick");
                 ix.CreateEntity(pos, new(0, 0, Random.Range(0f, 360)));
             }
 
             for (int _ = 0; _ < Random.Range(MinSticksCount / 4, MaxSticksCount / 4 + 1); _++)
             {
-                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2), Random.Range(-Size / 2f, Size / 2));
+                Vector2 pos = new(Random.Range(-Size / 2f, Size / 2f), Random.Range(-Size / 2f, Size / 2f));
                 ItemStack ix = ItemRegistry.Main.CreateItemStack("refined_stick");
                 ix.CreateEntity(pos, new(0, 0, Random.Range(0f, 360)));
             }

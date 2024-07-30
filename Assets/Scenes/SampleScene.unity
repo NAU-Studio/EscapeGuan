@@ -3703,7 +3703,6 @@ MonoBehaviour:
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
-  IntervalRemaining: 0
   Speed: 3
   RunSpeedMultiplier: 1.9
   Stamina: 100
@@ -7983,7 +7982,6 @@ MonoBehaviour:
   KnockbackVelocity: {x: 0, y: 0}
   Drag: 0.5
   Id: 0
-  IntervalRemaining: 0
   Destinator: {fileID: 1199027329}
   NoticeDistance: 5
   LoseDistance: 15
@@ -11684,6 +11682,8 @@ MonoBehaviour:
   MaxRocksCount: 256
   MinBottlesCount: 256
   MaxBottlesCount: 256
+  MinBottleStacksCount: 8
+  MaxBottleStacksCount: 8
   MinSticksCount: 256
   MaxSticksCount: 256
 --- !u!4 &1332052864
