@@ -1,0 +1,9 @@
+{
+    "shaped": false,
+    "ingredients": [
+        "refined_stick",
+        "straw_string",
+        "rock_sharp"
+    ],
+    "result": "rock_knife"
+}

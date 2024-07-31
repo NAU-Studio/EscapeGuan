@@ -8,15 +8,12 @@ namespace EscapeGuan.Items.Recipes
     {
         public override bool Match(CraftingInput input)
         {
-            List<ItemStack> il = input.ShapelessList;
+            List<Item> il = input.ShapelessList;
             if (Ingredients.Count != il.Count)
                 return false;
-            bool m = true;
-            for (int i = 0; i < il.Count; i++)
-            {
-                if (il[i].Base != Ingredients[i])
-                    m = false;
-            }
+            bool m = false;
+            foreach (Item i in Ingredients)
+                m = il.Contains(i);
             return m;
         }
 

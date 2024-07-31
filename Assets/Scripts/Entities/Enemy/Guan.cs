@@ -54,7 +54,6 @@ namespace EscapeGuan.Entities.Enemy
             base.Start();
             TargetDestinationSetter.target = Destinator;
             TargetPath.maxSpeed = WanderSpeed;
-            // Wander
             GameManager.IntervalAction(this, () => State == Status.Wander, () =>
             {
                 TargetPath.maxSpeed = WanderSpeed;

@@ -16,6 +16,10 @@ namespace EscapeGuan.UI.Items
         public override void SetItem(ItemStack i = null)
         {
             GameManager.Player.Inventory[Index] = i;
+            if (i != null)
+                i.OnRemove += SetItemEmpty;
         }
+
+        private void SetItemEmpty(ItemStack _) => SetItem();
     }
 }

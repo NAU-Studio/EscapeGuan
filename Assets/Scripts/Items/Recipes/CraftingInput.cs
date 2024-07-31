@@ -17,14 +17,14 @@ namespace EscapeGuan.Items.Recipes
                 Items.Add(i.Item);
         }
 
-        public List<ItemStack> ShapelessList
+        public List<Item> ShapelessList
         {
             get
             {
-                List<ItemStack> l = new();
+                List<Item> l = new();
                 foreach (ItemStack i in Items)
                     if (i != null)
-                        l.Add(i);
+                        l.Add(i.Base);
                 return l;
             }
         }
