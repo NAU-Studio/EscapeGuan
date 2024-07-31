@@ -69,6 +69,8 @@ namespace EscapeGuan
             ImageResources.Add("small_stick", Resources.Load<Sprite>("Sprites/Items/small_stick"));
             ImageResources.Add("refined_stick", Resources.Load<Sprite>("Sprites/Items/refined_stick"));
             ImageResources.Add("rock_sharp", Resources.Load<Sprite>("Sprites/Items/rock_sharp"));
+            ImageResources.Add("straw_string", Resources.Load<Sprite>("Sprites/Items/straw_string"));
+            ImageResources.Add("rock_knife", Resources.Load<Sprite>("Sprites/Items/rock_knife"));
             #endregion
 
             #region Initialize Item Registry
@@ -77,6 +79,8 @@ namespace EscapeGuan
             ItemRegistry.Main.RegisterObject("small_stick", new SmallStickItem("小树枝", "攻击伤害和攻击距离提升，但是容易断。", ImageResources["small_stick"]));
             ItemRegistry.Main.RegisterObject("refined_stick", new("木棍", "精致加工的木棍，可以用于合成，但没有任何攻击加成。", ImageResources["refined_stick"]));
             ItemRegistry.Main.RegisterObject("rock_sharp", new RockSharpItem("石头碎片", "尖锐的石头碎片，不会提升攻击距离但会大幅提升攻击伤害。", ImageResources["rock_sharp"]));
+            ItemRegistry.Main.RegisterObject("straw_string", new("草绳", "用叶子攥成的绳子，可以用于合成。", ImageResources["straw_string"]));
+            ItemRegistry.Main.RegisterObject("rock_knife", new RockKnifeItem("石刀", "石器时代的一个象征，大幅度提升伤害，小幅度攻击距离。", ImageResources["rock_knife"]));
             #endregion
 
             #region Initialize Templates

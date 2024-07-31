@@ -15,6 +15,8 @@ namespace EscapeGuan.UI.Items
         public override void SetItem(ItemStack i = null)
         {
             item = i;
+            if (i != null)
+                item.OnRemove = (x) => { };
             OnItemChanged();
         }
 

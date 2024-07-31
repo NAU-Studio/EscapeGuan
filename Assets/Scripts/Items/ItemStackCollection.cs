@@ -7,15 +7,11 @@ namespace EscapeGuan.Items
         public new void Add(ItemStack i)
         {
             base.Add(i);
-            if (i != null)
-                i.OnRemove += Remove;
         }
 
         public void Set(int index, ItemStack i)
         {
             this[index] = i;
-            if (i != null)
-                i.OnRemove += Remove;
         }
 
         public new void Remove(ItemStack i)

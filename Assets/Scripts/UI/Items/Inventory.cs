@@ -72,8 +72,16 @@ namespace EscapeGuan.UI.Items
             if (!Crafting)
                 return;
             foreach (InventoryOperationSlot i in CraftingIngredientSlots)
-                i.SetItemSilently();
+            {
+                if (!i.IsNull)
+                {
+                    i.Item.Count--;
+                    if (i.Item.Count <= 0)
+                        i.SetItem();
+                }
+            }
             Crafting = false;
+            UpdateCrafting();
         }
         #endregion
         #region Pouring
@@ -175,6 +183,8 @@ namespace EscapeGuan.UI.Items
             }
             else if (CurrentSlot != null)
             {
+                if (CurrentSlot is InventoryOperationSlot os && !os.PlayerPlacable)
+                    return;
                 if (CurrentSlot.IsNull)
                 {
                     CurrentSlot.SetItem(CursorSlot.Item);
