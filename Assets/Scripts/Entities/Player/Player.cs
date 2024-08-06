@@ -8,6 +8,7 @@ using DG.Tweening;
 using EscapeGuan.Entities.Bullet;
 using EscapeGuan.Entities.Items;
 using EscapeGuan.Items;
+using EscapeGuan.Items.Prop;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Items;
 
@@ -42,7 +43,7 @@ namespace EscapeGuan.Entities.Player
 
         public QuickInventory QuickInventory;
 
-        public GameObject ThrowCrosshair, ThrowCrosshairVelocity;
+        public GameObject ThrowCrosshair, ThrowCrosshairVelocity, PlaceCursor;
         public float ThrowStability;
 
         public AttackState AttackState;
@@ -212,6 +213,13 @@ namespace EscapeGuan.Entities.Player
                 return;
             }
 
+            if (item.Base is IPlacableItem)
+            {
+                AttackState = AttackState.Normal;
+                PlaceCursor.SetActive(true);
+                return;
+            }
+
         def:
             AttackState = AttackState.Normal;
         }
@@ -279,6 +287,8 @@ namespace EscapeGuan.Entities.Player
             base.Kill();
             OutControl();
         }
+
+        public Vector2 GetPlacePosition() => Camera.main.ScreenToWorldPoint(PlaceCursor.GetComponent<RectTransform>().anchoredPosition);
     }
 
     public enum AttackState

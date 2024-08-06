@@ -7,6 +7,7 @@ using DG.Tweening;
 using EscapeGuan.Entities;
 using EscapeGuan.Entities.Player;
 using EscapeGuan.Items;
+using EscapeGuan.Items.Prop;
 using EscapeGuan.Items.Recipes;
 using EscapeGuan.UI;
 using EscapeGuan.UI.Items;
@@ -71,6 +72,7 @@ namespace EscapeGuan
             ImageResources.Add("rock_sharp", Resources.Load<Sprite>("Sprites/Items/rock_sharp"));
             ImageResources.Add("straw_string", Resources.Load<Sprite>("Sprites/Items/straw_string"));
             ImageResources.Add("rock_knife", Resources.Load<Sprite>("Sprites/Items/rock_knife"));
+            ImageResources.Add("planks", Resources.Load<Sprite>("Sprites/Items/planks"));
             #endregion
 
             #region Initialize Item Registry
@@ -81,6 +83,7 @@ namespace EscapeGuan
             ItemRegistry.Main.RegisterObject("rock_sharp", new RockSharpItem("石头碎片", "尖锐的石头碎片，不会提升攻击距离但会大幅提升攻击伤害。", ImageResources["rock_sharp"]));
             ItemRegistry.Main.RegisterObject("straw_string", new("草绳", "用叶子攥成的绳子，可以用于合成。", ImageResources["straw_string"]));
             ItemRegistry.Main.RegisterObject("rock_knife", new RockKnifeItem("石刀", "石器时代的一个象征，大幅度提升伤害，小幅度攻击距离。", ImageResources["rock_knife"]));
+            ItemRegistry.Main.RegisterObject("planks", new PlanksProp("木板", "可以放下来挡住任何生物，但是会被破坏。", ImageResources["planks"]));
             #endregion
 
             #region Initialize Templates
@@ -89,6 +92,7 @@ namespace EscapeGuan
             Templates.Add("water_bottle_stack", Resources.Load<GameObject>("Prefabs/Water Bottle Stack"));
             Templates.Add("water_bottle_bullet", Resources.Load<GameObject>("Prefabs/Water Bottle Bullet"));
             Templates.Add("water_drop", Resources.Load<GameObject>("Prefabs/Water Drop"));
+            Templates.Add("planks", Resources.Load<GameObject>("Prefabs/Planks"));
 
             // Particles
             Templates.Add("rock_destroy_particle", Resources.Load<GameObject>("Prefabs/Rock Destroy Particle"));
